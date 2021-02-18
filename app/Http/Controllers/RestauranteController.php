@@ -1,0 +1,339 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use SebastianBergmann\CodeCoverage\Driver\Selector;
+use App\Http\Requests\RestaurantRegisterRequest;
+use App\Http\Requests\RestaurantModifyRequest;
+use Illuminate\Support\Collection;
+use App\Mail\EnviarCorreoGerente;
+use Illuminate\Support\Facades\Mail;
+
+class RestauranteController extends Controller
+{
+
+    public function read(Request $request){
+
+        $restaurantes = DB::select("SELECT tbl_cuina.*, tbl_restaurant.*, tbl_restaurant.*, tbl_imatge.* FROM tbl_cuina INNER JOIN tbl_tipus_cuina ON tbl_cuina.Id_cuina = tbl_tipus_cuina.Id_cuina INNER JOIN tbl_restaurant ON tbl_tipus_cuina.Id_restaurant = tbl_restaurant.Id_restaurant INNER JOIN tbl_imatge ON tbl_restaurant.Id_restaurant = tbl_imatge.Id_restaurant");
+        foreach($restaurantes as $restaurante){
+            if($restaurante->Ruta_Imatge != null){
+                $restaurante->Ruta_Imatge = base64_encode($restaurante->Ruta_Imatge);
+            }
+        }
+        // Unicamente esto para ficheros ubicados en campos blob
+        // echo "hola";
+        //return response()->json($restaurantes, 200);
+    }
+
+    public function crearRestaurante(RestaurantRegisterRequest $request){
+        $datos=$request->except('_token', 'Crear');
+        //print_r($datos['tiposCocinas']);
+        $data = DB::table('tbl_restaurant')->insertGetId(['Nom_restaurant'=>$datos['nom_restaurant'],'Adreca_restaurant'=>$datos['adreca_restaurant'],'Preu_mitja_restaurant'=>$datos['preu_mitja'], 'Correu_gerent_restaurant'=>$datos['correu_gerent'], 'Descripcio_restaurant'=>$datos['descripcio_restaurant']]);
+        
+        $tipos_cocinas = $datos['tiposCocinas'];
+        // print_r($);
+        // print_r($data);
+
+        foreach($tipos_cocinas as $tipoCocina){
+            $cocinas = DB::table('tbl_cuina')
+            ->where([['Nom_cuina','=',$tipoCocina]])->get();
+            foreach($cocinas as $cocina){
+                DB::table('tbl_tipus_cuina')->insertGetId(['Id_restaurant'=>$data, 'Id_cuina'=>$cocina->Id_cuina]);
+            }
+        }
+
+        $img = $request->file('imatge')->getRealPath();
+        $bin = file_get_contents($img);
+        DB::table('tbl_imatge')->insertGetId(['Id_restaurant'=>$data, 'Id_usuari'=>$datos['userId'], 'Ruta_imatge'=>$bin, 'Titol'=>$datos['nom_restaurant']]);
+        return redirect('/');
+    }
+
+    // public function modificarRestaurante($id){
+    //     // $id_restaurant = intval($id);
+    //     // var_dump ($id);
+    //     $restaurant=DB::table('tbl_imatge')
+    //                     ->select('*')
+    //                     ->join('tbl_restaurant', 'tbl_imatge.Id_restaurant', '=', 'tbl_restaurant.Id_restaurant')
+    //                     ->where('tbl_restaurant.Id_restaurant', '=', $id)
+    //                     ->first();
+    //     $lista_cuines_restaurant = DB::table('tbl_restaurant')
+    //                     ->select('tbl_cuina.Nom_cuina')
+    //                     ->join('tbl_tipus_cuina', 'tbl_restaurant.Id_restaurant', '=', 'tbl_tipus_cuina.Id_restaurant')
+    //                     ->join('tbl_cuina', 'tbl_tipus_cuina.Id_cuina', '=', 'tbl_cuina.Id_cuina')
+    //                     ->where('tbl_restaurant.Id_restaurant', '=', $id)
+    //                     ->get();
+
+    //     $lista_totes_cuines = DB::select("SELECT * FROM tbl_cuina");
+    //     // foreach($lista_cuinesaa as $cuina){
+            
+    //     //     $query = "SELECT * FROM tbl_cuina WHERE Nom_Cuina NOT LIKE '$cuina->Nom_cuina'";
+    //     //     $lista_cuines = $restaurantes = DB::select($query);
+    //     // }  
+         
+    //     // ->whereNull('tbl_tipus_cuina')
+        
+
+    //     //$queryRestaurant = DB::select("Select * from tbl_restaurant ");
+    //     // print_r($lista_totes_cuines);
+    //     //return view('dv_modificar', compact('restaurant'), compact('lista_cuines'));
+    //     // return view('prueba');
+    // }
+
+    public function modificarRestauranteDatos($id){
+        //Recoger los datos de la BBDD del registro que existe en base al id. 
+        if(!session()->has('admin')) {
+            return redirect('login');
+        }
+        //Método para actualizar restaurantes
+        $restaurant=DB::table('tbl_restaurant')->WHERE('Id_restaurant','=', $id)->first(); 
+        $lista_cuines = DB::table('tbl_cuina')->get();
+        $cocinas_seleccionadas = DB::select("SELECT t.id_tipus_cuina, t.id_restaurant, t.id_cuina, c.Nom_cuina FROM      tbl_tipus_cuina AS t INNER JOIN tbl_cuina AS c ON t.Id_cuina = c.Id_cuina WHERE t.Id_restaurant = $id");
+        $primeraImatge = DB::select("SELECT r.Id_restaurant, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant FROM tbl_restaurant r
+        LEFT JOIN (SELECT MIN(id_imatge) as id_imatge, id_restaurant FROM `tbl_imatge` GROUP BY Id_restaurant) i ON r.Id_restaurant = i.id_restaurant
+        LEFT JOIN tbl_imatge i2 ON i2.Id_imatge = i.id_imatge and i.id_restaurant = i2.id_restaurant WHERE r.Id_restaurant = $id");
+        // print_r($primeraImatge);
+        // die();
+        //Devolver esos datos y mostrarlos
+        return view('dv_modificar', compact('restaurant', 'lista_cuines', 'cocinas_seleccionadas', 'primeraImatge')); 
+    }
+
+    public function actualizarRestaurante(RestaurantModifyRequest $request){
+        $datos_restaurante=request()->except('_token', 'continuar', '_method', 'tiposCocinas', 'imatge', 'userId', 'destinatario', 'nom_gerent');
+        $datos_cocinas=request()->except('_token', 'continuar', '_method', 'Nom_restaurant', 'Adreca_restaurant', 'Preu_mitja_restaurant', 'Correu_gerent_restaurant', 'Descripcio_restaurant');
+        $datos_imagen = request()->except('_token', 'continuar', '_method');
+        $id = $datos_restaurante['Id_restaurant'];
+        print_r($datos_cocinas);
+        DB::table('tbl_restaurant')->where('Id_restaurant', "=", $id)->update($datos_restaurante);
+        DB::table('tbl_tipus_cuina')->where('Id_restaurant', '=', $id)->delete();
+        if(isset($datos_cocinas['tiposCocinas'])){
+            $tipos_cocinas = $datos_cocinas['tiposCocinas'];
+            foreach($tipos_cocinas as $tipoCocina){
+                $cocinas = DB::table('tbl_cuina')
+                ->where([['Nom_cuina','=',$tipoCocina]])->get();
+                foreach($cocinas as $cocina){
+                    echo $cocina->Id_cuina;
+                    echo $id;
+                    DB::table('tbl_tipus_cuina')->insert(['Id_restaurant'=>$id, 'Id_cuina'=>$cocina->Id_cuina]);
+                }
+            }
+        }
+        if ($request->file('imatge')) {
+            $img = $request->file('imatge')->getRealPath();
+            $bin = file_get_contents($img);
+            DB::table('tbl_imatge')->where('Id_restaurant', '=', $id)->update(['Ruta_imatge'=>$bin]);
+        }
+        $co = $datos_imagen['destinatario'];
+        //$co = '100006748.joan23@fje.edu';
+        $datos_correo = "Estimado Sr/a. ".$datos_imagen['nom_gerent']." Informarle de que su restaurante ".$datos_imagen['Nom_restaurant']. " ha sido modificado Saludos cordiales, Deliveroo";
+        $enviar = new EnviarCorreoGerente($datos_correo);
+        $enviar->asunto = "Asunto test";
+        Mail::to($co)->send($enviar);
+        return redirect('/');
+
+    }
+
+    public function verRestaurante($id) {
+        $restaurant=DB::table('tbl_restaurant')->WHERE('Id_restaurant','=', $id)->first(); 
+        $lista_cuines = DB::table('tbl_cuina')->get();
+        $cocinas_seleccionadas = DB::select("SELECT t.id_tipus_cuina, t.id_restaurant, t.id_cuina, c.Nom_cuina FROM  tbl_tipus_cuina AS t INNER JOIN tbl_cuina AS c ON t.Id_cuina = c.Id_cuina WHERE t.Id_restaurant = $id");
+        $primeraImatge = DB::select("SELECT r.Id_restaurant, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant FROM tbl_restaurant r
+        LEFT JOIN (SELECT MIN(id_imatge) as id_imatge, id_restaurant FROM `tbl_imatge` GROUP BY Id_restaurant) i ON r.Id_restaurant = i.id_restaurant
+        LEFT JOIN tbl_imatge i2 ON i2.Id_imatge = i.id_imatge and i.id_restaurant = i2.id_restaurant WHERE r.Id_restaurant = $id");
+        //Devolver esos datos y mostrarlos
+        return view('ver_restaurante', compact('restaurant', 'lista_cuines', 'cocinas_seleccionadas', 'primeraImatge'));
+    }
+    
+    public function filter(Request $request) {
+        $nombreRestaurante = $request->input('nombreRestaurante');
+        $precioMedio = $request->input('precioMedio');
+        $valoracion = $request->input('valoracion');
+        $tipoCocina = $request->input('tipoCocina');
+        // $query = 'SELECT * FROM tbl_restaurant r';
+        $query = 'SELECT r.Id_restaurant, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant FROM tbl_restaurant r
+        LEFT JOIN (SELECT MIN(id_imatge) as id_imatge, id_restaurant FROM `tbl_imatge` GROUP BY Id_restaurant) i ON r.Id_restaurant = i.id_restaurant
+        LEFT JOIN tbl_imatge i2 ON i2.Id_imatge = i.id_imatge and i.id_restaurant = i2.id_restaurant';
+        $queryConditions = '';
+        $queryParams = [];
+        if ($nombreRestaurante != '') {
+            $queryConditions .= ' WHERE Nom_restaurant LIKE ? ';
+            array_push($queryParams, '%'.$nombreRestaurante.'%');
+        }
+        if ($precioMedio != '') {
+            // $queryConditions .= ' WHERE Preu_mitja_restaurant <= ? ';
+            $queryConditions .= ($queryConditions != '' ?' AND ':' WHERE ') . ' Preu_mitja_restaurant <= ? ';
+            array_push($queryParams, intval($precioMedio));
+        }
+        if ($valoracion != '') {
+            $queryConditions .= ($queryConditions != '' ?' AND ':' WHERE ') . ' Valoracio >= ? ';
+            array_push($queryParams, intval($valoracion));
+        }
+        if ($tipoCocina != '') {
+            $queryConditions .= ($queryConditions != '' ?' AND ':' WHERE ') . ' EXISTS (
+                SELECT Id_tipus_cuina 
+                FROM tbl_tipus_cuina tc
+                INNER JOIN tbl_cuina c 
+                ON tc.Id_cuina = c.Id_cuina 
+                WHERE tc.Id_restaurant = r.Id_restaurant 
+                AND c.Nom_cuina IN (' .$tipoCocina .')
+            )';
+        }
+        /* 
+            SELECT Id_restaurant 
+            FROM tbl_restaurant r 
+            WHERE EXISTS (
+                SELECT Id_tipus_cuina 
+                FROM tbl_tipus_cuina tc
+                INNER JOIN tbl_cuina c 
+                ON tc.Id_cuina = c.Id_cuina 
+                WHERE tc.Id_restaurant = r.Id_restaurant 
+                AND c.Nom_cuina IN ('Chino')
+            )
+        */
+        $restaurantes = DB::select($query. $queryConditions, $queryParams);
+    
+        foreach($restaurantes as $restaurante) {
+            if($restaurante->Ruta_Imatge!=null) {
+                $restaurante->Ruta_Imatge = base64_encode($restaurante->Ruta_Imatge);
+            }
+        }
+        return response()->json($restaurantes, 200);
+    }
+    // END Actualziación Castedo
+
+    public function eliminarRestaurante(Request $request) {
+        $id = $request->input('id_restaurante');
+        try {
+            DB::table('tbl_comentari')->where('Id_restaurant', '=', $id)->delete();
+            DB::table('tbl_imatge')->where('Id_restaurant', '=', $id)->delete();
+            DB::table('tbl_tipus_cuina')->where('Id_restaurant', '=', $id)->delete();
+            DB::table('tbl_valoracio')->where('Id_restaurant', '=', $id)->delete();
+            DB::table('tbl_restaurant')->where('Id_restaurant', '=', $id)->delete();
+            return redirect('dv_admin');
+            // return response()->json(array('resultado'=>'OK'),200);
+        } catch (\Throwable $th) {
+            // REVIEW
+            // echo "error";
+            // return response()->json(array('resultado'=>'NOK '. $th->getMessage()),200);
+            // END REVIEW
+        }
+    }
+
+    // COMENTARIOS
+    public function getComentarios(Request $request) {
+        // $token = $request->input('_token');
+        $id = intval($request->input('id_restaurant'));
+        $query = 'SELECT c.Id_comentari, c.Id_restaurant, c.Id_usuari, c.Comentari, u.Nom_usuari
+        FROM tbl_comentari c INNER JOIN tbl_usuari u ON c.Id_usuari = u.Id_usuari
+        WHERE c.Id_restaurant = ? ORDER BY c.Id_Comentari DESC';
+        $comentarios = DB::select($query, [$id]);
+        return response()->json($comentarios, 200);
+    }
+
+    public function addComentario(Request $request) {
+        $token = $request->input('_token');
+        $id_restaurant = intval($request->input('id_restaurant'));
+        $id_usuari = intval($request->input('id_usuari'));
+        $comentario = $request->input('comentario');
+        try {
+            DB::table('tbl_comentari')->insert([
+                'Id_restaurant' => $id_restaurant,
+                'Id_usuari' => $id_usuari,
+                'Comentari' => $comentario,
+            ]);
+            return response()->json(array('resultado'=>'OK'),200);
+        } catch (\Throwable $th) {
+            echo "error";
+        }
+    }
+
+    // FUNCIONA
+    // public function puntuar(Request $request) {
+    //     $token = $request->input('_token');
+    //     $id_restaurant = intval($request->input('id_restaurant'));
+    //     $id_usuari = intval($request->input('id_usuari'));
+    //     $puntuacion = $request->input('puntuacion');
+    //     try {
+    //         $userQuery = DB::table('tbl_valoracio')
+    //         ->where([['Id_restaurant','=',$id_restaurant], ['Id_usuari','=',$id_usuari]])->count(); 
+    //         if ($userQuery >= 1) {
+    //             $respuesta = 'error';
+    //             // Mostrar puntuació
+    //             // $respuesta = DB::select("SELECT Valoracio FROM tbl_valoracio WHERE Id_restaurant = $id_restaurant AND Id_usuari = $id_usuari");
+    //             // return response()->json(array('resultado'=>$respuesta),200);
+    //         } else {
+    //             DB::table('tbl_valoracio')->insert([
+    //                 'Id_restaurant' => $id_restaurant,
+    //                 'Id_usuari' => $id_usuari,
+    //                 'Valoracio' => $puntuacion,
+    //             ]);
+    //             $queryPuntuacion = DB::select("SELECT SUM(Valoracio) AS suma FROM tbl_valoracio WHERE Id_restaurant = $id_restaurant");
+    //             $totalPuntuacion = $queryPuntuacion[0]->suma;
+    //             $countValoracio = DB::table('tbl_valoracio')->where([['Id_restaurant','=',$id_restaurant]])->count();
+    //             $puntuacionMedia = $totalPuntuacion / $countValoracio;
+    //             print_r('Puntuacion media:', $puntuacionMedia);
+    //             print_r('countValoracio:', $countValoracio);
+    //             print_r('countValoracio:', $countValoracio);
+    //             DB::table('tbl_restaurant')->WHERE('Id_restaurant', '=', $id_restaurant)->update(['Valoracio'=>$puntuacionMedia]);
+
+    //             // return response()->json($puntuacionMedia, 200);
+    //             return response()->json(['puntuacionUsuario' => $puntuacion, 'puntuacionMedia' => $puntuacionMedia]);
+    //         }
+    //     } catch (\Throwable $th) {
+    //         echo "error";
+    //     }
+    //     // return response()->json($respuesta, 200);
+    // }
+    // FIN FUNCIONA
+
+    public function getValoracion(Request $request) {
+        $token = $request->input('_token');
+        $id_restaurant = intval($request->input('id_restaurant'));
+        $id_usuari = intval($request->input('id_usuari'));
+
+        $userQuery = DB::table('tbl_valoracio')
+            ->where([['Id_restaurant','=',$id_restaurant], ['Id_usuari','=',$id_usuari]])->count(); 
+            if ($userQuery > 0) {
+            // Entonces el usuario ha valorado el restaurante actual
+            // Nos traemos la valoración 
+            $queryValoracion = DB::select("SELECT Valoracio FROM tbl_valoracio WHERE Id_restaurant = $id_restaurant AND Id_usuari = $id_usuari");
+            $valoracion = $queryValoracion[0]->Valoracio;
+            return response()->json($valoracion, 200);
+        }  
+    }
+
+public function puntuar(Request $request) {
+        $token = $request->input('_token');
+        $id_restaurant = intval($request->input('id_restaurant'));
+        $id_usuari = intval($request->input('id_usuari'));
+        $puntuacion = $request->input('puntuacion');
+        try {
+            $userQuery = DB::table('tbl_valoracio')
+            ->where([['Id_restaurant','=',$id_restaurant], ['Id_usuari','=',$id_usuari]])->count();
+            if ($userQuery == 1) {
+                // Este usuario ha valorado anteriormente este restaurante, por lo que actualizamos la puntuación:
+                DB::table('tbl_valoracio')->where([['Id_restaurant', '=', $id_restaurant], ['Id_usuari', '=', $id_usuari]])->update(['Valoracio'=>$puntuacion]);
+            } else {
+                // El usuario puntúa por primera vez el restaurante
+                DB::table('tbl_valoracio')->insert([
+                    'Id_restaurant' => $id_restaurant,
+                    'Id_usuari' => $id_usuari,
+                    'Valoracio' => $puntuacion,
+                ]);
+            }
+            $queryPuntuacion = DB::select("SELECT SUM(Valoracio) AS suma FROM tbl_valoracio WHERE Id_restaurant = $id_restaurant");
+            $totalPuntuacion = $queryPuntuacion[0]->suma;
+            $countValoracio = DB::table('tbl_valoracio')->where([['Id_restaurant','=',$id_restaurant]])->count();
+            $puntuacionMedia = $totalPuntuacion / $countValoracio;
+            print_r('Puntuacion media:', $puntuacionMedia);
+            print_r('countValoracio:', $countValoracio);
+            print_r('countValoracio:', $countValoracio);
+            DB::table('tbl_restaurant')->WHERE('Id_restaurant', '=', $id_restaurant)->update(['Valoracio'=>$puntuacionMedia]);
+        } catch (\Throwable $th) {
+            echo "error";
+        }
+        // return response()->json($puntuacion, 200);
+    }
+    // FIN COMENTARIOS
+}
