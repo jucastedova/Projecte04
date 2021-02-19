@@ -13,7 +13,7 @@
     <nav class="menu_nav">
         <div class="logo_nav">
             <a href="{{url('dv_admin')}}">
-                <img src="{{asset('img/logo-teal.svg')}}" alt="logo deliberoo">
+                <img src="{{asset('img/LogoProjecte04.png')}}" alt="logo geoeat">
             </a>
         </div>
             <!-- Si inicia sessió -->

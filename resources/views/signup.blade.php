@@ -10,7 +10,7 @@
 </head>
 <body class="page-2 signup">
     <nav class="menu_nav">
-        <div class="logo_nav"><a href="{{url('/')}}"><img src="{{asset('img/logo-teal.svg')}}" alt="logo deliberoo"></a></div>
+        <div class="logo_nav"><a href="{{url('/')}}"><img src="{{asset('img/LogoProjecte04.png')}}" alt="logo geoeat"></a></div>
         <div class="registro_nav">
             <a href="{{url('login')}}"><i class="fas fa-home"></i>Inicia sesión</a>
         </div>

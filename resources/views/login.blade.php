@@ -10,7 +10,7 @@
 </head>
 <body class="page-1 login">
     <nav class="menu_nav">
-        <div class="logo_nav"><a href="{{url('/')}}"><img src="{{asset('img/logo-teal.svg')}}" alt="logo deliberoo"></a></div>
+        <div class="logo_nav"><a href="{{url('/')}}"><img src="{{asset('img/LogoProjecte04.png')}}" alt="logo geoeat"></a></div>
 
         <div class="registro_nav">
             <a href="{{url('signupView')}}"><i class="fas fa-user-plus"></i>Registrate</a>
