@@ -1,4 +1,5 @@
 window.onload = function() {
+    getLocation();
     modal = document.getElementById('modal-filter');
     modalMap = document.getElementById('modal-map');
     filterAdmin = document.getElementById('filterAdmin');
@@ -62,6 +63,8 @@ function onPositionObtained(position) { // Funció que obté la posició actual 
 	myLat1 = position.coords.latitude; // Latitud
 	myLong1 = position.coords.longitude; // Longitud
 	L.marker([myLat1,myLong1]).addTo(map).bindPopup("<b>La meva adreça!</b>").openPopup(); // Adreça segons navegador
+    console.log('mi lat:', myLat1);
+    console.log('mi long:', myLong1);
 }
 
 var lastControl;
