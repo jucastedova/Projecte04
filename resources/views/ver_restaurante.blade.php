@@ -11,7 +11,7 @@
 </head>
 <body class="pg-verRestaurante">
     <nav class="menu_nav">
-        <div class="logo_nav"><a href="{{url('/')}}"><img src="{{asset('img/logo-teal.svg')}}" alt="logo deliberoo"></a></div>
+        <div class="logo_nav"><a href="{{url('/')}}"><img src="{{asset('img/LogoProjecte04.png')}}" alt="logo geoeat"></a></div>
         @if (session()->has('admin') || session()->has('estandard'))
             <!-- Si inicia sessió -->
         <h2>{{ session()->get('userName') }}</h2>

@@ -22,7 +22,7 @@
     <!-- Tener en cuenta que el menú cambia si está o no logueado. También paarecerá o no el cerrar sesión -->
     <!-- FIN RREVIEW -->
     <nav class="menu_nav">
-        <div class="logo_nav"><a href="{{url('dv_admin')}}"><img src="{{asset('img/logo-teal.svg')}}" alt="logo deliberoo"></a></div>
+        <div class="logo_nav"><a href="{{url('dv_admin')}}"><img src="{{asset('img/LogoProjecte04.png')}}" alt="logo geoeat"></a></div>
         @if (session()->has('admin'))
             <!-- Si inicia sessió -->
         <h2>{{ session()->get('userName') }}</h2>
