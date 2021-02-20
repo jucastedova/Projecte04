@@ -67,6 +67,7 @@
                 </div>
                 <div class="logo-filtro">
                     <i class="fas fa-filter" onclick="openModal()"></i>
+                    <a href="/dv_tags" class="btn btn-info">Ver tags</a>
                 </div>
             </div>
         </div>

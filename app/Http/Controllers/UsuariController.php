@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 
 class UsuariController extends Controller {
+    public function viewDv_tags() { // Mètode que redirigeix a la vista tags
+        return view('dv_tags');
+    }
+
     public function viewLogin() { // Mètode que redirigeix a la vista login
         return view('login');
     }
@@ -52,7 +56,6 @@ class UsuariController extends Controller {
         $data = request()->except('_token', 'continuar');
         $userQuery = DB::table('tbl_usuari')
             ->where([['Correu_usuari','=',$data['email']], ['Pwd_usuari','=',$data['pwd']]])->count(); // Retorna 1 si troba l'usuari, 0 si no el troba
-            //->where('Correu_usuari','=','admin@admin.es')->count();
         if ($userQuery == 1) {
             // Entra si troba usuari
             // Mirem el rol
@@ -82,10 +85,7 @@ class UsuariController extends Controller {
             }
         } else {
             //Si el resultat  del count() és 0 ->  torna al login
-            // REVIEW            
             return redirect('login')->with('error', 'noLogin');
-            // return redirect('login');
-            // END REVIEW
         }
     }
 
@@ -123,15 +123,10 @@ class UsuariController extends Controller {
                 'Cognom_usuari'=>$data['apellido'],
                 'Id_rol' => 1, 
                  'Correu_usuari'=>$data['email']]);
-            // $request->session()->put(['admin'=>$data['email']]);
-            // $request->session()->regenerate();
-            // REVIEW (A esta vista?)
+
             return redirect('dv_admin');
-            // FIN REVIEW
         } catch (\Throwable $th) {
-            // REVIEW (modificar!!)
             echo 'Error';
-            // END REVIEW
         }
     }
 

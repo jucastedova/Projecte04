@@ -2,10 +2,10 @@ window.onload = function() {
     modal = document.getElementById('modal-filter');
     modalMap = document.getElementById('modal-map');
     filterAdmin = document.getElementById('filterAdmin');
-    if (filterAdmin){
+    if (filterAdmin) {
         searchRestaurantsAdmin();
-    }else{
-        searchRestaurants();  
+    } else {
+        searchRestaurants();
     }
 }
 
@@ -138,11 +138,11 @@ function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina
         if (tipoCocina[i].checked) {
             arrayTiposCocinasSeleccionados.push(`'${tipoCocina[i].value}'`);
             console.log(`Array tipos cocina: ${arrayTiposCocinasSeleccionados}`);
-        }        
+        }
     }
     console.log(`Array: ${arrayTiposCocinasSeleccionados}`);
     var ajax = new objetoAjax();
-    var datasend = new FormData(); 
+    var datasend = new FormData();
     datasend.append('nombreRestaurante', nombreRestaurante);
     datasend.append('precioMedio', precioMedio);
     datasend.append('valoracion', valoracion);
@@ -217,15 +217,12 @@ function renderRestaurantsAdmin(respuesta) {
             renderedResults += '<h4>' + respuesta[i].Nom_restaurant + '</h4>';
             renderedResults += '<div class="container--progress">';
             renderedResults += '<div class="capa-progress"></div>';
-            // renderedResults += '<div><img src="img/forkoverlay.png" alt="'+respuesta[i].Valoracio+'"></div>';
             renderedResults += `<div id="progress" class="progress" style="width: calc(${respuesta[i].Valoracio} * 100%/5)"></div>`;
             renderedResults += '</div>';
             renderedResults += '<h4>' + respuesta[i].Preu_mitja_restaurant + '€</h4>';
             renderedResults += '<h4>' + respuesta[i].Adreca_restaurant + '</h4>';
-            // renderedResults += `<button href="modificarRestaurante/${respuesta[i].Id_restaurant}">Modificar</button>`;
             renderedResults += '<input type="hidden" name="id_restaurant" id="id_restaurant" href="modificarView">';
             renderedResults += '<div class="btn--modificar-eliminar">';
-            // renderedResults += '<a href="modificarView">Modificar</a>';
             renderedResults += `<button onclick="eliminarRestaurante(${respuesta[i].Id_restaurant})">Eliminar</button>`;
             renderedResults += `<a href="modificarRestauranteDatos/${respuesta[i].Id_restaurant}">Modificar</a>`;
             renderedResults += '</div>';
@@ -262,7 +259,7 @@ function eliminarRestaurante($id, event) {
     } else {
         var token = document.getElementById('token').getAttribute('content');
         var ajax = new objetoAjax();
-        var datasend = new FormData(); 
+        var datasend = new FormData();
         datasend.append('_token', token);
         datasend.append('id_restaurante', $id);
         ajax.open('POST', 'eliminarRestaurante', true);
@@ -273,8 +270,7 @@ function eliminarRestaurante($id, event) {
             }
         }
     }
-} 
-
+}
 
 /**
  * Agrega o elimina restaurants de favorit.
@@ -286,7 +282,7 @@ function favorito(event, idRestaurant) {
     let userId = document.getElementById('userId').value;
     var token = document.getElementById('token').getAttribute('content');
     var ajax = new objetoAjax();
-    var datasend = new FormData(); 
+    var datasend = new FormData();
     datasend.append('_token', token);
     datasend.append('id_restaurante', idRestaurant);
     datasend.append('id_usuari', userId);
