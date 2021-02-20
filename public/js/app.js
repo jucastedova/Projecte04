@@ -34,7 +34,7 @@ function objetoAjax() {
 }
 
 function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina) {
-    let userId = document.getElementById('userId').value;
+    let userId = document.getElementById('userId');
     var token = document.getElementById('token').getAttribute('content');
     var arrayTiposCocinasSeleccionados = [];
     for (let i = 0; i < tipoCocina.length; i++) {
@@ -50,7 +50,9 @@ function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina
     datasend.append('precioMedio', precioMedio);
     datasend.append('valoracion', valoracion);
     datasend.append('tipoCocina', arrayTiposCocinasSeleccionados);
-    datasend.append('userId', userId);
+    if (userId) {
+        datasend.append('userId', userId.value);
+    }
     datasend.append('_token', token);
     ajax.open('POST', 'filter', true);
     ajax.onreadystatechange = function() {
