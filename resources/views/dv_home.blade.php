@@ -123,6 +123,9 @@
         <div class="container--map">
             <div id="map"></div>
         </div>
+        <div>
+            <p onclick="calcRouteToRestaurant()" class="calc-route">Cómo llegar</p>
+        </div>
     </div>
     <!-- END Modal Map -->   
     <footer>

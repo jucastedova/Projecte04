@@ -643,4 +643,8 @@ footer div {
     height: 500px;
 }
 
+.calc-route {
+    cursor: pointer;
+}
+
 /* END MAP */
