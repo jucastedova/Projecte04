@@ -30,6 +30,7 @@ Route::post('getComentarios', [RestauranteController::class, 'getComentarios']);
 Route::post('addComentario', [RestauranteController::class, 'addComentario']);
 Route::post('puntuar', [RestauranteController::class, 'puntuar']);
 Route::post('getValoracion', [RestauranteController::class, 'getValoracion']);
+Route::post('favorito', [RestauranteController::class, 'favorito']);
 
 /////////////////////////////////////////////
 /////////////////UsuariController////////////

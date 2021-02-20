@@ -34,6 +34,7 @@ function objetoAjax() {
 }
 
 function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina) {
+    let userId = document.getElementById('userId');
     var token = document.getElementById('token').getAttribute('content');
     var arrayTiposCocinasSeleccionados = [];
     for (let i = 0; i < tipoCocina.length; i++) {
@@ -49,6 +50,9 @@ function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina
     datasend.append('precioMedio', precioMedio);
     datasend.append('valoracion', valoracion);
     datasend.append('tipoCocina', arrayTiposCocinasSeleccionados);
+    if (userId) {
+        datasend.append('userId', userId.value);
+    }
     datasend.append('_token', token);
     ajax.open('POST', 'filter', true);
     ajax.onreadystatechange = function() {
@@ -67,6 +71,7 @@ function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina
 
 function renderRestaurants(respuesta) {
     var section = document.getElementById('section-3');
+    let filterEstandard = document.getElementById('filterEstandard');
     var renderedResults = '';
     if (respuesta.length == 0) {
         renderedResults += 'No se han encontrado resultados';
@@ -76,6 +81,11 @@ function renderRestaurants(respuesta) {
             renderedResults += '<div>';
             renderedResults += '<div class="container-img">';
             renderedResults += '<img src="data:image/png;base64,' + respuesta[i].Ruta_Imatge + '" alt="error" width="100px" height="auto"></img>';
+            // REVIEW
+            if (filterEstandard) {
+                renderedResults += `<i class="fas fa-star ${respuesta[i].Id_favorit != null ? 'active' : ''}" onclick="favorito(event, ${respuesta[i].Id_restaurant})"></i>`;
+            }
+            // END REVIEW
             renderedResults += '</div>';
             renderedResults += '<div class="container-details">';
             renderedResults += '<h4>' + respuesta[i].Nom_restaurant + '</h4>';
@@ -161,4 +171,29 @@ function eliminarRestaurante($id, event) {
             }
         }
     }
+}
+
+/**
+ * Agrega o elimina restaurants de favorit.
+ * @param {*} event 
+ * @param {*} idRestaurant 
+ */
+function favorito(event, idRestaurant) {
+    event.target.classList.toggle('active'); // Si no té la classe se la posem, si no, li treiem.
+    let userId = document.getElementById('userId').value;
+    var token = document.getElementById('token').getAttribute('content');
+    var ajax = new objetoAjax();
+    var datasend = new FormData();
+    datasend.append('_token', token);
+    datasend.append('id_restaurante', idRestaurant);
+    datasend.append('id_usuari', userId);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status != 200) {
+            // searchRestaurants();
+            // Si va malament la resposta, mostrem estrella en l'estat anterior a la que estava (abans de que li fes click l'usuari)
+            event.target.classList.toggle('active'); // Si no té la classe se la posem, si no, li treiem.
+        }
+    }
+    ajax.open('POST', 'favorito', true);
+    ajax.send(datasend);
 }

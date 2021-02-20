@@ -243,12 +243,52 @@ input{
         grid-template-columns: repeat(2,1fr);
     }
 }
+/* REVIEW */
+#section-3 .container-img {
+    position: relative;
+}
+/* END REVIEW */
 
 #section-3 .container-img img {
     width: 100%;
     height: 200px;
     object-fit: cover;
 }
+
+/* REVIEW */
+.fa-star {
+    position: absolute;
+    color: rgb(255 255 255);
+    top: 13px;
+    right: 13px;
+    transition: color 0.5s ease;
+    transform: scale(1.7);
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+
+.fa-star:hover,
+.fa-star.active {
+    color: #FED000;
+}
+
+.fa-star:before {
+    z-index: 3;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+i.fas.fa-star:after {
+    content: '\f005';
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    transform: scale(1.2);
+    color: rgba(8, 8, 8, 0.25);
+}
+/* END REVIEW */
 
 #section-3 .container-details {
     padding: 0 20px;
