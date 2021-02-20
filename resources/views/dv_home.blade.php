@@ -4,21 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="css/style.css"> -->
-    <!-- <link rel="preconnect" href="https://fonts.gstatic.com"> -->
     <link rel="stylesheet" href="{{asset('css/estilos.css')}}">
-    
     <script src="https://kit.fontawesome.com/b2a65126dc.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
+    <!-- Load Leaflet from CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+    crossorigin=""></script>
+    <!-- Load Esri Leaflet from CDN -->
+    <script src="https://unpkg.com/esri-leaflet@2.3.2/dist/esri-leaflet.js"
+    integrity="sha512-6LVib9wGnqVKIClCduEwsCub7iauLXpwrd5njR2J507m3A2a4HXJDLMiSZzjcksag3UluIfuW1KzuWVI5n/cuQ=="
+    crossorigin=""></script>
+    <!-- GEOCODER -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/leaflet.esri.geocoder/2.1.0/esri-leaflet-geocoder.css">
+    <script src="https://cdn.jsdelivr.net/leaflet.esri.geocoder/2.1.0/esri-leaflet-geocoder.js"></script>
+    <!-- END GEOCODER -->
+    <!-- ROUTING -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+	<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <!-- END ROUTING -->
     <meta name="csrf-token" id="token" content="{{ csrf_token() }}">
     <title>Home | dv</title>
 </head>
 
 <body>
+    <!-- <div id="map"></div> -->
     @if (session()->has('estandard'))
         <input type="hidden" value="1" id="filterEstandard" name="filterEstandard"> 
         <input type="hidden" value="{{ session()->get('userId') }}" id="userId" name="userId">
     @endif
+    
     <!-- <form action="{{url('cerrarSesion')}}" method="GET">
         <button type="submit" class="btn btn-info">Cerrar sesión</button>
     </form> -->
@@ -58,7 +76,7 @@
     <div class="row" id="section-3">
     </div>
     
-    <div class="modal" id="modal-filter">    
+    <div class="modal" id="modal-filter"> <!-- Modal filtre -->    
         <div class="modal-content">
             <div class="close--modal">
                 <span class="close" onclick="closeModal()">&times;</span>
@@ -95,7 +113,18 @@
                 </div>
             </form>
         </div>
+    </div> <!-- END Modal filtre -->   
+
+    <!-- Modal Map -->   
+    <div id="modal-map" class="modal-map">
+        <div class="close--modal-map">
+            <span class="close--map" onclick="closeMapModal()">&times;</span>
+        </div>
+        <div class="container--map">
+            <div id="map"></div>
+        </div>
     </div>
+    <!-- END Modal Map -->   
     <footer>
         <div>
             <h3>Descubre Deliveroo</h3>
@@ -117,5 +146,17 @@
         </div>
     </footer>
     <script src="{{asset('js/app.js')}}"></script>
+
+    <script>
+        var geocoder = L.esri.Geocoding.geocodeService();
+        
+        var map = L.map('map');
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        map.setView([51.505, -0.09], 13);
+    </script>
 </body>
 </html>

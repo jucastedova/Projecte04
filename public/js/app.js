@@ -1,5 +1,6 @@
 window.onload = function() {
     modal = document.getElementById('modal-filter');
+    modalMap = document.getElementById('modal-map');
     filterAdmin = document.getElementById('filterAdmin');
     if (filterAdmin){
         searchRestaurantsAdmin();
@@ -12,9 +13,46 @@ function openModal() {
     modal.style.display = "block";
 }
 
+// REVIEW
+function openMapModal(address) {
+    console.log('se abre modal mapa');
+    modalMap.style.display = "block";
+    var greenIcon = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+    geocoder.geocode()
+        .address(address)
+        .city(`L'Hospitalet de Llobregat`)
+        .region('ES')
+        .run(function (error, response) {
+            if (error) {
+                return;
+            }
+            map.fitBounds(response.results[0].bounds);
+            console.log('response', response);
+            console.log('bounds', response.results[0].bounds);
+            map.setZoom(18);
+            var marker = L.marker(response.results[0].latlng, {icon: greenIcon});
+            marker.addTo(map)
+                .bindPopup(`<b>${address}</b>`)
+                .openPopup();
+        });
+}
+// END REVIEW
+
 function closeModal() {
     modal.style.display = "none";
 }
+// REVIEW
+function closeMapModal() {
+    modalMap.style.display = "none";
+}
+// END REVIEW
 
 function objetoAjax() {
     var xmlhttp = false;
@@ -82,19 +120,21 @@ function renderRestaurants(respuesta) {
             renderedResults += '<div class="container-img">';
             renderedResults += '<img src="data:image/png;base64,' + respuesta[i].Ruta_Imatge + '" alt="error" width="100px" height="auto"></img>';
             // REVIEW
-            if (filterEstandard) {
+            if (filterEstandard) { // Si no troba id_favorit, llavors no posem classe. Si existeix, posem la clase 'active'
                 renderedResults += `<i class="fas fa-star ${respuesta[i].Id_favorit != null ? 'active' : ''}" onclick="favorito(event, ${respuesta[i].Id_restaurant})"></i>`;
             }
             // END REVIEW
             renderedResults += '</div>';
             renderedResults += '<div class="container-details">';
-            renderedResults += '<h4>' + respuesta[i].Nom_restaurant + '</h4>';
+            renderedResults += `<h4>${respuesta[i].Nom_restaurant}</h4>`;
             renderedResults += '<div class="container--progress">';
             renderedResults += '<div class="capa-progress"></div>';
             renderedResults += `<div id="progress" class="progress" style="width: calc(${respuesta[i].Valoracio} * 100%/5)"></div>`;
             renderedResults += '</div>';
             renderedResults += '<h4>' + respuesta[i].Preu_mitja_restaurant + '€</h4>';
-            renderedResults += `<div class="container--info"><h4>${respuesta[i].Adreca_restaurant}</h4><div><a href="verRestaurante/${respuesta[i].Id_restaurant}"><i class="fas fa-info-circle"></i></a></div></div>`;
+            // REVIEW // Al fer click en l'adreça, s'obre un modal. (passem com a paràmetre la direcció del restaurant) 
+            renderedResults += `<div class="container--info"><h4 onclick="openMapModal('${respuesta[i].Adreca_restaurant}')" class="adress">${respuesta[i].Adreca_restaurant}</h4><div><a href="verRestaurante/${respuesta[i].Id_restaurant}"><i class="fas fa-info-circle"></i></a></div></div>`;
+            // END REVIEW
             renderedResults += '</div>';
             renderedResults += '</div>';
         }
