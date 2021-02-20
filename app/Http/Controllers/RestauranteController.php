@@ -150,12 +150,18 @@ class RestauranteController extends Controller
         $precioMedio = $request->input('precioMedio');
         $valoracion = $request->input('valoracion');
         $tipoCocina = $request->input('tipoCocina');
-        // $query = 'SELECT * FROM tbl_restaurant r';
-        $query = 'SELECT r.Id_restaurant, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant FROM tbl_restaurant r
+        $userId = $request->input('userId');
+        if ($userId == '') { // Si no és un usuari estàndard, establim el valor de userId a -1
+            $userId = -1;
+        }
+        $query = 'SELECT r.Id_restaurant, f.Id_favorit, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant FROM tbl_restaurant r
         LEFT JOIN (SELECT MIN(id_imatge) as id_imatge, id_restaurant FROM `tbl_imatge` GROUP BY Id_restaurant) i ON r.Id_restaurant = i.id_restaurant
-        LEFT JOIN tbl_imatge i2 ON i2.Id_imatge = i.id_imatge and i.id_restaurant = i2.id_restaurant';
+        LEFT JOIN tbl_imatge i2 ON i2.Id_imatge = i.id_imatge and i.id_restaurant = i2.id_restaurant
+        LEFT JOIN tbl_favorit f ON r.Id_restaurant = f.Id_restaurant AND f.Id_usuari = ?';
         $queryConditions = '';
         $queryParams = [];
+        array_push($queryParams, $userId);
+        
         if ($nombreRestaurante != '') {
             $queryConditions .= ' WHERE Nom_restaurant LIKE ? ';
             array_push($queryParams, '%'.$nombreRestaurante.'%');
@@ -336,4 +342,28 @@ public function puntuar(Request $request) {
         // return response()->json($puntuacion, 200);
     }
     // FIN COMENTARIOS
+
+    // REVIEW
+    public function favorito(Request $request) {
+        $id_restaurant = intval($request->input('id_restaurante'));
+        $id_usuari = intval($request->input('id_usuari'));
+        try {
+            DB::beginTransaction();
+            // Primer comprobem si aquest usuari ja te com a favorit aquest restaurant
+            $existFavorite = DB::table('tbl_favorit')->where([['Id_usuari','=',$id_usuari],['Id_restaurant','=',$id_restaurant]])->count();
+
+            if ($existFavorite == '0') { // No el té com a favorit, llavors insertem registre
+                DB::table('tbl_favorit')->insertGetId(['Id_usuari'=>$id_usuari,'Id_restaurant'=>$id_restaurant]);
+            } else {
+                // El té com a favorit, llavors eliminem el registre
+                DB::table('tbl_favorit')->where(['Id_usuari'=>$id_usuari,'Id_restaurant'=>$id_restaurant])->delete();
+            }
+            // die;
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            echo "No va bien $th";
+        }
+    }
+    // END REVIEW
 }

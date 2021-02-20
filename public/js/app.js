@@ -34,6 +34,7 @@ function objetoAjax() {
 }
 
 function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina) {
+    let userId = document.getElementById('userId').value;
     var token = document.getElementById('token').getAttribute('content');
     var arrayTiposCocinasSeleccionados = [];
     for (let i = 0; i < tipoCocina.length; i++) {
@@ -49,6 +50,7 @@ function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina
     datasend.append('precioMedio', precioMedio);
     datasend.append('valoracion', valoracion);
     datasend.append('tipoCocina', arrayTiposCocinasSeleccionados);
+    datasend.append('userId', userId);
     datasend.append('_token', token);
     ajax.open('POST', 'filter', true);
     ajax.onreadystatechange = function() {
@@ -67,6 +69,7 @@ function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina
 
 function renderRestaurants(respuesta) {
     var section = document.getElementById('section-3');
+    let filterEstandard = document.getElementById('filterEstandard');
     var renderedResults = '';
     if (respuesta.length == 0) {
         renderedResults += 'No se han encontrado resultados';
@@ -76,14 +79,16 @@ function renderRestaurants(respuesta) {
             renderedResults += '<div>';
             renderedResults += '<div class="container-img">';
             renderedResults += '<img src="data:image/png;base64,' + respuesta[i].Ruta_Imatge + '" alt="error" width="100px" height="auto"></img>';
+            // REVIEW
+            if (filterEstandard) {
+                renderedResults += `<i class="fas fa-star ${respuesta[i].Id_favorit != null ? 'active' : ''}" onclick="favorito(event, ${respuesta[i].Id_restaurant})"></i>`;
+            }
+            // END REVIEW
             renderedResults += '</div>';
             renderedResults += '<div class="container-details">';
             renderedResults += '<h4>' + respuesta[i].Nom_restaurant + '</h4>';
-            // renderedResults += `<h4><a href="verRestaurante/${respuesta[i].Id_restaurant}"><i class="fas fa-info-circle"></i></a></h4>`;
-            // renderedResults += `<h4><a href="verRestaurante/${respuesta[i].Id_restaurant}">${respuesta[i].Nom_restaurant}</a></h4>`;
             renderedResults += '<div class="container--progress">';
             renderedResults += '<div class="capa-progress"></div>';
-            // renderedResults += '<div><img src="img/forkoverlay.png" alt="'+respuesta[i].Valoracio+'"></div>';
             renderedResults += `<div id="progress" class="progress" style="width: calc(${respuesta[i].Valoracio} * 100%/5)"></div>`;
             renderedResults += '</div>';
             renderedResults += '<h4>' + respuesta[i].Preu_mitja_restaurant + '€</h4>';
@@ -170,3 +175,27 @@ function eliminarRestaurante($id, event) {
 } 
 
 
+/**
+ * Agrega o elimina restaurants de favorit.
+ * @param {*} event 
+ * @param {*} idRestaurant 
+ */
+function favorito(event, idRestaurant) {
+    event.target.classList.toggle('active'); // Si no té la classe se la posem, si no, li treiem.
+    let userId = document.getElementById('userId').value;
+    var token = document.getElementById('token').getAttribute('content');
+    var ajax = new objetoAjax();
+    var datasend = new FormData(); 
+    datasend.append('_token', token);
+    datasend.append('id_restaurante', idRestaurant);
+    datasend.append('id_usuari', userId);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status != 200) {
+            // searchRestaurants();
+            // Si va malament la resposta, mostrem estrella en l'estat anterior a la que estava (abans de que li fes click l'usuari)
+            event.target.classList.toggle('active'); // Si no té la classe se la posem, si no, li treiem.
+        }
+    }
+    ajax.open('POST', 'favorito', true);
+    ajax.send(datasend);
+}

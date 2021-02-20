@@ -53,3 +53,7 @@ Route::post('addComentario', [RestauranteController::class, 'addComentario']);
 Route::post('puntuar', [RestauranteController::class, 'puntuar']);
 
 Route::post('getValoracion', [RestauranteController::class, 'getValoracion']);
+
+// REVIEW
+Route::post('favorito', [RestauranteController::class, 'favorito']);
+// END REVIEW

@@ -15,6 +15,10 @@
 </head>
 
 <body>
+    @if (session()->has('estandard'))
+        <input type="hidden" value="1" id="filterEstandard" name="filterEstandard"> 
+        <input type="hidden" value="{{ session()->get('userId') }}" id="userId" name="userId">
+    @endif
     <!-- <form action="{{url('cerrarSesion')}}" method="GET">
         <button type="submit" class="btn btn-info">Cerrar sesión</button>
     </form> -->
