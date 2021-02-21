@@ -226,7 +226,7 @@ class RestauranteController extends Controller
         }
     }
 
-    public function getRestaurantTags(Request $request) {
+    public function getTags(Request $request) {
         $id = intval($request->input('idUsuario'));
 
         $query = 'SELECT `tbl_tag`.*, `tbl_tag_intermitja`.* FROM `tbl_tag` LEFT JOIN `tbl_tag_intermitja` ON `tbl_tag_intermitja`.`Id_tag` = `tbl_tag`.`Id_tag` WHERE Id_usuari = ' . $id;
@@ -234,7 +234,7 @@ class RestauranteController extends Controller
         return response()->json($tags, 200);
     }
 
-    public function getTags(Request $request) {
+    public function getRestaurantTags(Request $request) {
         $idUsuario = intval($request->input('idUsuario'));
         $id_restaurant = intval($request->input('id_restaurant'));
         
@@ -302,7 +302,6 @@ class RestauranteController extends Controller
     }
 
     public function getValoracion(Request $request) {
-        $token = $request->input('_token');
         $id_restaurant = intval($request->input('id_restaurant'));
         $id_usuari = intval($request->input('id_usuari'));
         $userQuery = DB::table('tbl_valoracio')
@@ -310,8 +309,8 @@ class RestauranteController extends Controller
             if ($userQuery > 0) {
                 // Entonces el usuario ha valorado el restaurante actual
                 // Nos traemos la valoración 
-                $queryValoracion = DB::select("SELECT Valoracio FROM tbl_valoracio WHERE Id_restaurant = $id_restaurant AND Id_usuari = $id_usuari");
-                $valoracion = $queryValoracion[0]->Valoracio;
+                $queryValoracion = DB::table("tbl_valoracio")->where("Id_restaurant", $id_restaurant)->where("Id_usuari", $id_usuari)->first();
+                $valoracion = $queryValoracion->Valoracio;
                 return response()->json($valoracion, 200);
         }  
     }

@@ -1,7 +1,7 @@
-:root{
-  --grey: #dbdbdb;
-  --grey_dark: #828585; 
-  --primary: #00ccbc; 
+:root {
+    --grey: #dbdbdb;
+    --grey_dark: #828585;
+    --primary: #00ccbc;
 }
 
 body {
@@ -38,18 +38,23 @@ input[type='submit'] {
     cursor: pointer;
 }
 
+
 /* ERRORES */
+
 .error,
 #error--checked p {
     list-style: none;
     padding: 0;
     color: #b70000;
 }
+
 .correcto {
     list-style: none;
     padding: 0;
     color: #126d02;
 }
+
+
 /* FIN ERRORES */
 
 
@@ -69,9 +74,10 @@ input{
     margin-left: 50%;
 } */
 
+
 /* NAV */
 
-.menu_nav{
+.menu_nav {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -79,8 +85,9 @@ input{
     border-bottom: 1px solid var(--grey);
     padding-bottom: 15px;
 }
+
 @media (max-width:466px) and (min-width:320px) {
-    .menu_nav{
+    .menu_nav {
         flex-direction: column;
         row-gap: 17px;
         padding-bottom: 24px;
@@ -88,17 +95,17 @@ input{
     }
 }
 
-.menu_nav .logo_nav img{
+.menu_nav .logo_nav img {
     width: 120px;
 }
 
-.menu_nav .registro_nav{
+.menu_nav .registro_nav {
     border: 1px solid var(--grey);
     padding: 8px 15px;
     border-radius: 6px;
 }
 
-.menu_nav .registro_nav a{
+.menu_nav .registro_nav a {
     text-decoration: none;
     color: black;
 }
@@ -108,10 +115,13 @@ input{
     color: var(--primary);
     margin-right: 9px;
 }
+
+
 /* FIN NAV */
 
 
 /* LOGIN Y REGISTRO */
+
 .page-1.login main {
     height: 60vh;
     display: flex;
@@ -123,31 +133,28 @@ input{
 }
 
 .page-1.login main,
-.page-2 main{
+.page-2 main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
 }
 
 .page-1.login label,
-.page-2 label{
+.page-2 label {
     color: var(--grey_dark);
     display: block;
 }
 
 .page-1.login input:not(input[type='submit']),
-.page-2 input:not(input[type='submit']){
+.page-2 input:not(input[type='submit']) {
     border: 1px solid var(--grey);
     border-radius: 3px;
     padding: 7px 0;
     width: 263px;
 }
 
-
-
 .page-1.login input[type='submit'],
-.page-2 input[type='submit']{
+.page-2 input[type='submit'] {
     background: var(--primary);
     color: white;
     border: 1px solid var(--primary);
@@ -157,45 +164,56 @@ input{
     padding: 10px 0;
     margin-top: 10px;
     transition: background-color 0.5s ease;
-
 }
 
 .page-1.login input[type='submit']:hover,
-.page-2 input[type='submit']:hover{
+.page-2 input[type='submit']:hover {
     background: #00c2b3;
 }
 
 .page-1.login .form-group,
-.page-2 .form-group{
+.page-2 .form-group {
     margin-top: 17px;
 }
 
+
 /* FIN LOGIN Y REGISTRO */
 
+
 /* DV_HOME */
+
 .container--info {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 .fa-info-circle {
     cursor: pointer;
     color: var(--primary);
     transition: color 0.5s ease;
 }
+
 .fa-info-circle:hover {
     color: #029e92;
-
 }
+
+
 /* FIN DV_HOME */
 
+
 /* MODAL */
+
 .modal {
     display: none;
 }
+
+
 /* FIN MODAL */
 
+
 /* PROGRESO VALORACIÓN */
+
 .container--progress {
     position: relative;
     width: 200px;
@@ -221,36 +239,47 @@ input{
     z-index: 1;
     background-color: var(--primary);
 }
+
+
 /* FIN PROGRESO VALORACIÓN */
 
+
 /* HOME */
+
 #section-3 {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     width: 95%;
     margin: 0 auto;
 }
 
-#section-3 > div {
+#section-3>div {
     border: 1px solid var(--grey);
     border-radius: 5px;
     box-shadow: 5px 3px 9px 1px #d8d8d8;
 }
+
 @media (max-width:545px) and (min-width:320px) {
     #section-3 {
-        grid-template-columns: repeat(1,1fr);
+        grid-template-columns: repeat(1, 1fr);
     }
 }
+
 @media (max-width:917px) and (min-width:546px) {
     #section-3 {
-        grid-template-columns: repeat(2,1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
 }
+
+
 /* REVIEW */
+
 #section-3 .container-img {
     position: relative;
 }
+
+
 /* END REVIEW */
 
 #section-3 .container-img img {
@@ -259,7 +288,9 @@ input{
     object-fit: cover;
 }
 
+
 /* REVIEW */
+
 .fa-star {
     position: absolute;
     color: rgb(255 255 255);
@@ -292,11 +323,14 @@ i.fas.fa-star:after {
     transform: scale(1.2);
     color: rgba(8, 8, 8, 0.25);
 }
+
+
 /* END REVIEW */
 
 #section-3 .container-details {
     padding: 0 20px;
 }
+
 #section-3 .container-details h4 {
     font-weight: 400;
     color: #8d8a8a;
@@ -314,16 +348,16 @@ i.fas.fa-star:after {
 }
 
 @media (max-width: 412px) and (min-width:320px) {
-    .container--filter  {
+    .container--filter {
         max-width: 80%;
         margin: 40px auto;
         margin-left: 20px;
     }
 }
+
 @media (max-width: 412px) and (min-width:320px) {
     .container--filter .form-control {
         max-width: 180px;
-
     }
 }
 
@@ -334,6 +368,7 @@ i.fas.fa-star:after {
     gap: 15px;
     margin-bottom: 40px;
 }
+
 .container--filter .form-control {
     width: 313px;
     height: 35px;
@@ -343,12 +378,16 @@ i.fas.fa-star:after {
     padding-left: 17px;
 }
 
+
 /* MODAL */
+
+
 /* @media (max-width: 412px) and (min-width:320px) {
     .modal {
         width: 273px;
     }
 } */
+
 .modal {
     position: fixed;
     top: 50%;
@@ -367,18 +406,22 @@ i.fas.fa-star:after {
     justify-content: flex-end;
 }
 
+
 /* MAP */
+
 .map--modal {
     width: 1000px;
     height: 500px;
     margin: auto;
 }
+
 .close--modal-map {
     width: 1000px;
     margin: auto;
     display: flex;
     justify-content: flex-end;
 }
+
 .calc-route {
     width: 1000px;
     margin: auto;
@@ -397,6 +440,7 @@ i.fas.fa-star:after {
         width: 700px;
     }
 }
+
 @media (max-width:767px) and (min-width:540px) {
     .map--modal {
         width: 500px;
@@ -409,6 +453,7 @@ i.fas.fa-star:after {
         width: 500px;
     }
 }
+
 @media (max-width:539px) {
     .map--modal {
         width: 300px;
@@ -429,6 +474,7 @@ i.fas.fa-star:after {
     font-weight: bold;
     text-shadow: 2px -1px 0px white;
 }
+
 .map--ver-restaurant {
     max-width: -webkit-fill-available;
     max-width: -moz-available;
@@ -438,42 +484,56 @@ i.fas.fa-star:after {
 
 .modal-map {
     display: none;
-    position: fixed; /* Stay in place */
-    z-index: 100; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    position: fixed;
+    /* Stay in place */
+    z-index: 100;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
     /* REVIEW */
     /* END REVIEW */
 }
-/* END MAP */
 
+
+/* END MAP */
 
 #modal-filter form {
     line-height: 2.2;
 }
+
 #modal-filter form div {
     display: grid;
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: repeat(2, 1fr);
 }
+
 #modal-filter form .container-tipo-cocina {
     display: grid;
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: repeat(2, 1fr);
 }
+
 #modal-filter form .container-tipo-cocina input {
     justify-self: start;
 }
+
 #modal-filter form input {
     border: 1px solid #d5d5d5;
     border-radius: 3px;
 }
-#modal-filter form div input[type='number']{
+
+#modal-filter form div input[type='number'] {
     height: 21px;
     width: 67px;
 }
@@ -491,9 +551,11 @@ i.fas.fa-star:after {
     justify-content: space-around;
     margin: 13px 0;
 }
+
 #modal-filter form div.form-btn div {
     display: inline-block;
 }
+
 #modal-filter form div.form-btn input[type="submit"] {
     color: white;
     background-color: #00ccbc;
@@ -502,21 +564,29 @@ i.fas.fa-star:after {
     padding: 9px 20px;
     cursor: pointer;
 }
+
 #modal-filter form div.form-btn input[type="reset"] {
     color: #00ccbc;
     background-color: #faf8f8;
     padding: 9px 20px;
     cursor: pointer;
 }
+
+
 /* END MODAL */
+
+
 /* END HOME */
 
+
 /* DV_ADMIN */
+
 .dv_admin .registros {
     width: 94%;
     margin: 0 auto;
     margin-bottom: 28px;
 }
+
 @media (max-width:488px) and (min-width:320px) {
     .dv_admin .registros {
         display: flex;
@@ -542,6 +612,7 @@ i.fas.fa-star:after {
     justify-content: flex-end;
     margin-bottom: 25px;
 }
+
 .dv_admin .btn--modificar-eliminar button {
     border: 1px solid #760303;
     background-color: white;
@@ -549,6 +620,7 @@ i.fas.fa-star:after {
     border-radius: 3px;
     padding: 6px 23px;
 }
+
 .dv_admin .btn--modificar-eliminar a {
     text-decoration: none;
     color: #00867c;
@@ -557,9 +629,13 @@ i.fas.fa-star:after {
     padding: 6px 23px;
     margin-right: 18px;
 }
+
+
 /* FIN DV_ADMIN */
 
+
 /* DV_REGISTER */
+
 .pg-register .form-crear .container-tipo-cocina,
 .pg-modificar .container-tipo-cocina {
     display: flex;
@@ -578,8 +654,9 @@ i.fas.fa-star:after {
     margin-right: 26px;
     border: 1px solid #d7d4d4;
 }
-.pg-register .form-crear textarea, 
-.pg-modificar textarea{
+
+.pg-register .form-crear textarea,
+.pg-modificar textarea {
     border: 1px solid #d7d4d4;
     width: 197px;
 }
@@ -588,7 +665,7 @@ i.fas.fa-star:after {
 .pg-modificar input[type='submit'] {
     color: white;
     background-color: #00ccbc;
-    border:none;
+    border: none;
     padding: 6px;
     padding: 9px 20px;
     border: none!important;
@@ -606,9 +683,13 @@ i.fas.fa-star:after {
     max-width: 250px;
     margin: 32px auto;
 }
+
+
 /* FIN DV_REGISTER */
 
+
 /* VER RESTAURANTE */
+
 .pg-verRestaurante main {
     width: 70%;
     margin: 0 auto;
@@ -624,6 +705,7 @@ i.fas.fa-star:after {
     cursor: pointer;
     transition: background-color 0.5s ease;
 }
+
 .btn--enviarComentario:hover {
     background-color: #029e92;
 }
@@ -634,10 +716,12 @@ i.fas.fa-star:after {
         margin: 0 auto;
     }
 }
+
 .pg-verRestaurante .datos_restaurante {
     display: grid;
     grid-template-columns: 2fr 3fr;
 }
+
 @media (min-width: 768) and (max-width: 1161px) {
     .pg-verRestaurante .datos_restaurante {
         display: grid;
@@ -653,11 +737,30 @@ i.fas.fa-star:after {
 .pg-verRestaurante .comentario {
     border-bottom: 1px solid #d2d2d2;
 }
+
+#mostrarTags {
+    display: flex;
+    width: 35%;
+}
+
+#mostrarTags p {
+    padding: 1px 4px 1px 4px;
+    margin-right: 5px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+#mostrarTags p i {
+    padding: 5px;
+}
+
+
 /* FIN VER RESTAURANTE */
 
 .fork {
     display: inline-block;
 }
+
 .fork .fork-inner {
     width: 40px;
     height: 40px;
@@ -668,9 +771,11 @@ i.fas.fa-star:after {
     transition: background-color 0.5s ease;
     cursor: pointer;
 }
+
 .fork1:hover>.fork-inner {
     background-color: var(--primary);
 }
+
 .fork2:hover>.fork-inner {
     background-color: var(--primary);
 }
@@ -678,13 +783,14 @@ i.fas.fa-star:after {
 .fork3:hover>.fork-inner {
     background-color: var(--primary);
 }
+
 .fork4:hover>.fork-inner {
     background-color: var(--primary);
 }
+
 .fork5:hover>.fork-inner {
     background-color: var(--primary);
 }
-
 
 footer {
     margin-top: 60px;
@@ -701,13 +807,13 @@ footer div {
     border-radius: 3px;
 }
 
-    @media (max-width:500px) {
-        footer {
-            flex-direction: column;
-            align-items: center;
-            padding: 15px 0;
-        }
+@media (max-width:500px) {
+    footer {
+        flex-direction: column;
+        align-items: center;
+        padding: 15px 0;
     }
+}
 
 @media (max-width:697px) {
     footer div {
@@ -719,4 +825,3 @@ footer div {
         display: none;
     }
 }
-

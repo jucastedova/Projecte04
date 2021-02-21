@@ -4,15 +4,15 @@ window.onload = function() {
 
 function renderRestaurantTags() {
     //Recogemos variables de la pagina
-    var section = document.getElementById('mostrarTags');
-    var token = document.getElementById('token').getAttribute('content');
-    var idUsuario = document.getElementById('id_usuari').value;
-    var id_restaurant = document.getElementById('id_restaurant').value;
-    var renderedResults = '';
+    section = document.getElementById('mostrarTags');
+    token = document.getElementById('token').getAttribute('content');
+    idUsuario = document.getElementById('id_usuari').value;
+    id_restaurant = document.getElementById('id_restaurant').value;
+    renderedResults = '';
 
     //Ajax
     var ajax = new objetoAjax();
-    ajax.open('POST', 'getRestaurantTags', true);
+    ajax.open('POST', '../getRestaurantTags', true);
     var datasend = new FormData();
     datasend.append('_token', token);
     datasend.append('idUsuario', idUsuario);
@@ -20,8 +20,13 @@ function renderRestaurantTags() {
     ajax.onreadystatechange = function() {
         if (ajax.status == 200 && ajax.readyState == 4) {
             var respuesta = JSON.parse(ajax.responseText);
+
+            if (respuesta.length == 0) {
+                renderedResults = "No has asignado ningún tag a este restaurante.";
+            }
+
             for (let i = 0; i < respuesta.length; i++) {
-                renderedResults += '<p>' + respuesta[i].Nom_tag + '<i class="fa fa-times" aria-hidden="true"></i></p>';
+                renderedResults += '<p>' + respuesta[i].Nom_tag + '<i class="fa fa-times" aria-hidden="true" onclick="eliminarTag(' + respuesta[i].Id_tag + ')"></i></p>';
             }
             section.innerHTML = renderedResults;
         } else {
@@ -34,7 +39,8 @@ function renderRestaurantTags() {
 function añadirTag(e) {
     e.which = e.which || e.keyCode;
     if (e.which == 13) {
-        tag = document.getElementById('tag').value;
+        tagValue = document.getElementById('tag').value;
+        tag = document.getElementById('tag');
         id_restaurant = document.getElementById('id_restaurant').value;
         id_usuari = document.getElementById('id_usuari').value;
         msgTag = document.getElementById('msgTag');
@@ -42,7 +48,7 @@ function añadirTag(e) {
 
         var ajax = new objetoAjax();
         var datasend = new FormData();
-        datasend.append('tag', tag);
+        datasend.append('tag', tagValue);
         datasend.append('id_restaurant', id_restaurant);
         datasend.append('id_usuari', id_usuari);
         datasend.append('_token', token);
@@ -50,9 +56,9 @@ function añadirTag(e) {
 
         ajax.onreadystatechange = function() {
             if (ajax.status == 200 && ajax.readyState == 4) {
-                // Imprimimos en pantalla un mensaje para el usuario
                 msgTag.innerHTML = "Tag añadido!";
-                renderRestaurantTags()
+                tag.value = "";
+                renderRestaurantTags();
             } else {
                 msgTag.innerHTML = "Tag no añadido!";
                 console.log('App::Problems on comentarios request: ' + ajax.statusText);
@@ -62,5 +68,39 @@ function añadirTag(e) {
             }, 3000);
         }
         ajax.send(datasend);
+    }
+}
+
+function eliminarTag(id_tag) {
+    opcion = confirm("¿Está seguro de borrar el tag?");
+
+    if (opcion == false) {
+        event.preventDefault();
+    } else {
+        var token = document.getElementById('token').getAttribute('content');
+        var msg = document.getElementById('msgTag');
+
+        var ajax = new objetoAjax();
+        var datasend = new FormData();
+        datasend.append('_token', token);
+        datasend.append('id_tag', id_tag);
+        ajax.open('POST', '../eliminarTag', true);
+
+        ajax.send(datasend);
+
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                // Imprimimos en pantalla un mensaje para el usuario
+                msg.innerHTML = "Tag borrado correctamente!";
+
+                //Refrescamos los datos
+                renderRestaurantTags();
+            } else {
+                msg.innerHTML = "Algo ha fallado!";
+            }
+            setTimeout(function() {
+                msg.innerHTML = "";
+            }, 3000);
+        }
     }
 }
