@@ -6,6 +6,25 @@
     <link rel="stylesheet" href="{{asset('css/estilos.css')}}">
     <script src="https://kit.fontawesome.com/b2a65126dc.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
+    <!-- Load Leaflet from CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+    crossorigin=""></script>
+    <!-- Load Esri Leaflet from CDN -->
+    <script src="https://unpkg.com/esri-leaflet@2.3.2/dist/esri-leaflet.js"
+    integrity="sha512-6LVib9wGnqVKIClCduEwsCub7iauLXpwrd5njR2J507m3A2a4HXJDLMiSZzjcksag3UluIfuW1KzuWVI5n/cuQ=="
+    crossorigin=""></script>
+    <!-- GEOCODER -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/leaflet.esri.geocoder/2.1.0/esri-leaflet-geocoder.css">
+    <script src="https://cdn.jsdelivr.net/leaflet.esri.geocoder/2.1.0/esri-leaflet-geocoder.js"></script>
+    <!-- END GEOCODER -->
+    <!-- ROUTING -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+	<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <!-- END ROUTING -->
     <meta name="csrf-token" id="token" content="{{ csrf_token() }}">
     <title>Restaurante</title>
 </head>
@@ -85,7 +104,7 @@
                 <div id="map"></div>
             </div>
             <div>
-                
+                <p onclick="calcRouteToRestaurant()" class="calc-route">Cómo llegar</p>
             </div>
         </div>
         <div class="container--comentarios">
@@ -122,6 +141,45 @@
     </footer>
     <script src="{{asset('js/app1.js')}}"></script>
     <script src="{{asset('js/route.js')}}"></script>
+    <script>
+        var geocoder = L.esri.Geocoding.geocodeService();
+        
+        var map = L.map('map');
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        var greenIcon = new L.Icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+        geocoder.geocode()
+        .address('{{$restaurant->Adreca_restaurant}}')
+        .city(`L'Hospitalet de Llobregat`)
+        .region('ES')
+        .run(function (error, response) {
+            if (error) {
+                return;
+            }
+            map.fitBounds(response.results[0].bounds);
+            console.log('response', response);
+            console.log('bounds', response.results[0].bounds);
+            map.setZoom(18);
+            restMarker = L.marker(response.results[0].latlng, {icon: greenIcon});
+            console.log('latlng', response.results[0].latlng);
+            restMarker.addTo(map)
+                .bindPopup(`<b>{{$restaurant->Adreca_restaurant}}</b>`)
+                .openPopup();
+            restLat = response.results[0].latlng.lat;
+            restLong = response.results[0].latlng.lng;
+        });
+        
+    </script>
 </body>
 </html>
 

@@ -19,17 +19,15 @@ var restLat;
 var restLong;
 var restMarker;
 function openMapModal(address) {
-    // REVIEW 
     console.log('marker:', restMarker);
     if (restMarker) { // Si eixsteix...
-        map.removeControl(restMarker); // Treiem la ruta generada anteriorment
+        map.removeControl(restMarker); // Treiem el marker generat anteriorment (d'un altre restaurant)
         console.log('quitamos marker');
     }
     if (lastControl) { // Si eixsteix...
         console.log('eliminem last contorl');
 		map.removeControl(lastControl); // Treiem la ruta generada anteriorment
 	}
-    // END REVIEW
     console.log('se abre modal mapa');
     modalMap.style.display = "block";
     var greenIcon = new L.Icon({
