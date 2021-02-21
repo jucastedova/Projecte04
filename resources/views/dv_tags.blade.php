@@ -29,7 +29,21 @@
         @endif
     </nav>
 
+    <table>
+        <input type="hidden" value="{{ session()->get('userId') }}" id="idUsuario">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        
+        <tbody id="bodyTable">
 
+        </tbody>
+        <p id="msg"></p>
+    </table>
     
     <footer>
         <div>

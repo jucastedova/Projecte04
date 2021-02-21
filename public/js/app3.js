@@ -1,6 +1,5 @@
 window.onload = function() {
-    renderComentarios();
-    getValoracion();
+    renderTags();
 }
 
 function objetoAjax() {
@@ -20,29 +19,29 @@ function objetoAjax() {
     return xmlhttp;
 }
 
-//  COMENTARIOS
-function renderComentarios() {
-    var section = document.getElementById('content--comentarios');
-    var id_restaurant = document.getElementById('id_restaurant').value;
-    console.log('id restaurant', id_restaurant);
+//  Tags
+function renderTags() {
+    //Recogemos variables de la pagina
+    var section = document.getElementById('bodyTable');
     var token = document.getElementById('token').getAttribute('content');
+    var idUsuario = document.getElementById('idUsuario').value;
     var renderedResults = '';
+
+    //Ajax
     var ajax = new objetoAjax();
-    ajax.open('POST', '../getComentarios', true);
+    ajax.open('POST', 'getTags', true);
     var datasend = new FormData();
-    datasend.append('id_restaurant', id_restaurant);
     datasend.append('_token', token);
+    datasend.append('idUsuario', idUsuario);
     ajax.onreadystatechange = function() {
         if (ajax.status == 200 && ajax.readyState == 4) {
             var respuesta = JSON.parse(ajax.responseText);
-            console.log('App::Obtained comentarios response');
-            console.log(`comentarios: ${respuesta}`);
             for (let i = 0; i < respuesta.length; i++) {
-                renderedResults += '<div class="comentario">';
-                renderedResults += `<h3>${respuesta[i].Nom_usuari}</h3>`;
-                renderedResults += `<p>${respuesta[i].Comentari}</p>`;
-                renderedResults += '</div>';
-                // renderedResults += `${respuesta[i].Nom_usuari}`;
+                renderedResults += '<tr>';
+                renderedResults += '<td>' + respuesta[i].Id_tag + '</td>';
+                renderedResults += '<td>' + respuesta[i].Nom_tag + '</td>';
+                renderedResults += `<td><button onclick="eliminarTag(${respuesta[i].Id_tag})">Eliminar</button></td>`;
+                renderedResults += '</tr>';
             }
             section.innerHTML = renderedResults;
         } else {
@@ -52,9 +51,73 @@ function renderComentarios() {
     ajax.send(datasend);
 }
 
-function enviarComentario() {
-    // console.log('click en enviar comentario');
+function añadirTag(e) {
+    e.which = e.which || e.keyCode;
+    if (e.which == 13) {
+        tag = document.getElementById('tag').value;
+        id_restaurant = document.getElementById('id_restaurant').value;
+        id_usuari = document.getElementById('id_usuari').value;
+        msgTag = document.getElementById('msgTag');
+        var token = document.getElementById('token').getAttribute('content');
 
+        var ajax = new objetoAjax();
+        ajax.open('POST', 'addTag', true);
+        var datasend = new FormData();
+        datasend.append('tag', tag);
+        datasend.append('id_restaurant', id_restaurant);
+        datasend.append('id_usuari', id_usuari);
+        datasend.append('_token', token);
+        ajax.onreadystatechange = function() {
+            if (ajax.status == 200 && ajax.readyState == 4) {
+                // Imprimimos en pantalla un mensaje para el usuario
+                msgTag.innerHTML = "Tag añadido!";
+            } else {
+                msgTag.innerHTML = "Tag no añadido!";
+                console.log('App::Problems on comentarios request: ' + ajax.statusText);
+            }
+            setTimeout(function() {
+                msgTag.innerHTML = "";
+            }, 3000);
+        }
+        ajax.send(datasend);
+    }
+}
+
+function eliminarTag(id_tag) {
+    opcion = confirm("¿Está seguro de borrar el tag?");
+
+    if (opcion == false) {
+        event.preventDefault();
+    } else {
+        var token = document.getElementById('token').getAttribute('content');
+        var msg = document.getElementById('msg');
+
+        var ajax = new objetoAjax();
+        var datasend = new FormData();
+        datasend.append('_token', token);
+        datasend.append('id_tag', id_tag);
+        ajax.open('POST', 'eliminarTag', true);
+
+        ajax.send(datasend);
+
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                // Imprimimos en pantalla un mensaje para el usuario
+                msg.innerHTML = "Tag borrado correctamente!";
+
+                //Refrescamos los datos
+                renderTags();
+            } else {
+                msg.innerHTML = "Algo ha fallado!";
+            }
+            setTimeout(function() {
+                msg.innerHTML = "";
+            }, 3000);
+        }
+    }
+}
+
+function enviarComentario() {
     let comentario = document.getElementById('nuevo_comentario').value;
     let id_restaurant = document.getElementById('id_restaurant').value;
     let id_usuari = document.getElementById('id_usuari').value;

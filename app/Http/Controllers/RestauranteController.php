@@ -201,6 +201,52 @@ class RestauranteController extends Controller
         }
     }
 
+    public function getTags(Request $request) {
+        $id = intval($request->input('idUsuario'));
+
+        $query = 'SELECT `tbl_tag`.*, `tbl_tag_intermitja`.* FROM `tbl_tag` LEFT JOIN `tbl_tag_intermitja` ON `tbl_tag_intermitja`.`Id_tag` = `tbl_tag`.`Id_tag` WHERE Id_usuari = ' . $id;
+        $tags = DB::select($query);
+        return response()->json($tags, 200);
+    }
+
+    public function addTag(Request $request) {
+        $datos=$request->except('_token');
+
+        $data = DB::table('tbl_restaurant')->insertGetId(['Nom_restaurant'=>$datos['nom_restaurant'],'Adreca_restaurant'=>$datos['adreca_restaurant'],'Preu_mitja_restaurant'=>$datos['preu_mitja'], 'Correu_gerent_restaurant'=>$datos['correu_gerent'], 'Descripcio_restaurant'=>$datos['descripcio_restaurant']]);
+        
+        $tipos_cocinas = $datos['tiposCocinas'];
+
+        foreach($tipos_cocinas as $tipoCocina){
+            $cocinas = DB::table('tbl_cuina')
+            ->where([['Nom_cuina','=',$tipoCocina]])->get();
+            foreach($cocinas as $cocina){
+                DB::table('tbl_tipus_cuina')->insertGetId(['Id_restaurant'=>$data, 'Id_cuina'=>$cocina->Id_cuina]);
+            }
+        }
+
+        // Metodo antiguo de almacenamiento para que no pete
+        $img = $request->file('imatge')->getRealPath();
+        $bin = file_get_contents($img);
+
+        // 'uploads' es la carpeta que crea, donde se almacenan las fotos public>uploads.
+        $datos['imatge']=$request->file('imatge')->store('uploads','public');
+        
+        // El ID del user se debe colocar bindeando.
+        DB::table('tbl_imatge')->insertGetId(['Id_restaurant'=>$data, 'Id_usuari'=>$datos['userId'], 'Ruta_imatge'=>$bin, 'Ruta_Text_Imatge'=>$datos['imatge'],
+        'Titol'=>$datos['nom_restaurant']]);
+        
+        return redirect('/');
+    }
+
+    public function eliminarTag(Request $request) {
+        $id_tag = $request->input('id_tag');
+        try {
+            DB::table('tbl_tag')->where('Id_Tag', '=', $id_tag)->delete();
+            DB::table('tbl_tag_intermitja')->where('Id_Tag', '=', $id_tag)->delete();
+        } catch (\Throwable $th) {
+        }
+    }
+
     public function getComentarios(Request $request) {
         // $token = $request->input('_token');
         $id = intval($request->input('id_restaurant'));

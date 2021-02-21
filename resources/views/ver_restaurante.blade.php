@@ -78,6 +78,16 @@
                 </div>
             </div>
         </div>
+
+        <!-- TAGS -->
+        @if (session()->has('estandard'))
+        <div class="tags">
+            <input type="text" id="tag" onkeyup="añadirTag(event)">
+            <p id="msgTag"></p>
+        </div>
+        @endif
+
+
         <!-- REVIEW -->
         @if (session()->has('estandard'))
         <h2>Tu puntuación...</h2>
@@ -139,8 +149,10 @@
             <p>Cocina</p>
         </div>
     </footer>
+    <script src="{{asset('js/app3.js')}}"></script>
     <script src="{{asset('js/app1.js')}}"></script>
     <script src="{{asset('js/route.js')}}"></script>
+
     <script>
         var geocoder = L.esri.Geocoding.geocodeService();
         
