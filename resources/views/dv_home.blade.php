@@ -118,14 +118,17 @@
 
     <!-- Modal Map -->   
     <div id="modal-map" class="modal-map">
-        <div class="close--modal-map">
+        <!-- <div class="close--modal-map">
             <span class="close--map" onclick="closeMapModal()">&times;</span>
-        </div>
+        </div> -->
         <div class="container--map">
-            <div id="map"></div>
-        </div>
-        <div>
-            <p onclick="calcRouteToRestaurant()" class="calc-route">Cómo llegar</p>
+            <div class="close--modal-map">
+                <span class="close--map" onclick="closeMapModal()">&times;</span>
+            </div>
+            <div id="map" class="map--modal"></div>
+            <div>
+                <p onclick="calcRouteToRestaurant()" class="calc-route">Cómo llegar</p>
+            </div>
         </div>
     </div>
     <!-- END Modal Map -->   
@@ -159,7 +162,7 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
-        
+
     </script>
 </body>
 </html>

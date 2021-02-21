@@ -101,10 +101,10 @@
         <!-- END REVIEW -->
         <div class="wc--map">        
             <div class="container--map">
-                <div id="map"></div>
+                <div id="map" class="map--ver-restaurant"></div>
             </div>
             <div>
-                <p onclick="calcRouteToRestaurant()" class="calc-route">Cómo llegar</p>
+                <p onclick="calcRouteToRestaurant()" class="calc-route--verRest">Cómo llegar</p>
             </div>
         </div>
         <div class="container--comentarios">
