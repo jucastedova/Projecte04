@@ -226,7 +226,7 @@ class RestauranteController extends Controller
         }
     }
 
-    public function getTags(Request $request) {
+    public function getRestaurantTags(Request $request) {
         $id = intval($request->input('idUsuario'));
 
         $query = 'SELECT `tbl_tag`.*, `tbl_tag_intermitja`.* FROM `tbl_tag` LEFT JOIN `tbl_tag_intermitja` ON `tbl_tag_intermitja`.`Id_tag` = `tbl_tag`.`Id_tag` WHERE Id_usuari = ' . $id;
@@ -234,33 +234,32 @@ class RestauranteController extends Controller
         return response()->json($tags, 200);
     }
 
+    public function getTags(Request $request) {
+        $idUsuario = intval($request->input('idUsuario'));
+        $id_restaurant = intval($request->input('id_restaurant'));
+        
+        $query = 'SELECT `tbl_tag`.*, `tbl_tag_intermitja`.* FROM `tbl_tag` LEFT JOIN `tbl_tag_intermitja` ON `tbl_tag_intermitja`.`Id_tag` = `tbl_tag`.`Id_tag` 
+        WHERE Id_usuari = ' . $idUsuario . ' AND Id_restaurant = ' . $id_restaurant;
+        $tags = DB::select($query);
+        return response()->json($tags, 200);
+    }
+
     public function addTag(Request $request) {
+        //Recogemos todos los datos
         $datos=$request->except('_token');
+        $tag = $datos['tag'];
+        $id_restaurant = $datos['id_restaurant'];
+        $id_usuari = $datos['id_usuari'];
 
-        $data = DB::table('tbl_restaurant')->insertGetId(['Nom_restaurant'=>$datos['nom_restaurant'],'Adreca_restaurant'=>$datos['adreca_restaurant'],'Preu_mitja_restaurant'=>$datos['preu_mitja'], 'Correu_gerent_restaurant'=>$datos['correu_gerent'], 'Descripcio_restaurant'=>$datos['descripcio_restaurant']]);
-        
-        $tipos_cocinas = $datos['tiposCocinas'];
-
-        foreach($tipos_cocinas as $tipoCocina){
-            $cocinas = DB::table('tbl_cuina')
-            ->where([['Nom_cuina','=',$tipoCocina]])->get();
-            foreach($cocinas as $cocina){
-                DB::table('tbl_tipus_cuina')->insertGetId(['Id_restaurant'=>$data, 'Id_cuina'=>$cocina->Id_cuina]);
-            }
+        try {
+            //Insertamos el tag en la tbl_tag
+            DB::table('tbl_tag')->insertGetId(['Nom_tag'=>$tag]);
+            //Recogemos la id del tag insertado
+            $id_tag = DB::getPdo()->lastInsertId();
+            //Insertamos el registro en la tabla intermedia
+            DB::table('tbl_tag_intermitja')->insertGetId(['Id_restaurant'=>$id_restaurant, 'Id_tag'=>$id_tag, 'Id_usuari'=>$id_usuari]);
+        } catch (\Throwable $th) {
         }
-
-        // Metodo antiguo de almacenamiento para que no pete
-        $img = $request->file('imatge')->getRealPath();
-        $bin = file_get_contents($img);
-
-        // 'uploads' es la carpeta que crea, donde se almacenan las fotos public>uploads.
-        $datos['imatge']=$request->file('imatge')->store('uploads','public');
-        
-        // El ID del user se debe colocar bindeando.
-        DB::table('tbl_imatge')->insertGetId(['Id_restaurant'=>$data, 'Id_usuari'=>$datos['userId'], 'Ruta_imatge'=>$bin, 'Ruta_Text_Imatge'=>$datos['imatge'],
-        'Titol'=>$datos['nom_restaurant']]);
-        
-        return redirect('/');
     }
 
     public function eliminarTag(Request $request) {

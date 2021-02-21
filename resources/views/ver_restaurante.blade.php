@@ -82,6 +82,7 @@
         <!-- TAGS -->
         @if (session()->has('estandard'))
         <div class="tags">
+            <div id="mostrarTags"></div>
             <input type="text" id="tag" onkeyup="añadirTag(event)">
             <p id="msgTag"></p>
         </div>
@@ -149,7 +150,7 @@
             <p>Cocina</p>
         </div>
     </footer>
-    <script src="{{asset('js/app3.js')}}"></script>
+    <script src="{{asset('js/infoRestTags.js')}}"></script>
     <script src="{{asset('js/app1.js')}}"></script>
     <script src="{{asset('js/route.js')}}"></script>
 
