@@ -232,15 +232,14 @@ class RestauranteController extends Controller
         $token = $request->input('_token');
         $id_restaurant = intval($request->input('id_restaurant'));
         $id_usuari = intval($request->input('id_usuari'));
-
         $userQuery = DB::table('tbl_valoracio')
             ->where([['Id_restaurant','=',$id_restaurant], ['Id_usuari','=',$id_usuari]])->count(); 
             if ($userQuery > 0) {
-            // Entonces el usuario ha valorado el restaurante actual
-            // Nos traemos la valoración 
-            $queryValoracion = DB::select("SELECT Valoracio FROM tbl_valoracio WHERE Id_restaurant = $id_restaurant AND Id_usuari = $id_usuari");
-            $valoracion = $queryValoracion[0]->Valoracio;
-            return response()->json($valoracion, 200);
+                // Entonces el usuario ha valorado el restaurante actual
+                // Nos traemos la valoración 
+                $queryValoracion = DB::select("SELECT Valoracio FROM tbl_valoracio WHERE Id_restaurant = $id_restaurant AND Id_usuari = $id_usuari");
+                $valoracion = $queryValoracion[0]->Valoracio;
+                return response()->json($valoracion, 200);
         }  
     }
 

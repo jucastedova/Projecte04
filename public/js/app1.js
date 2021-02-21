@@ -96,7 +96,7 @@ function getValoracion() {
         if (ajax.status == 200 && ajax.readyState == 4) {
             var respuesta = JSON.parse(ajax.responseText);
             let valoracion = parseFloat(respuesta);
-            console.log('valoracion usuario', valoracion);
+            // console.log('valoracion usuario', valoracion);
             // console.log('App::Response valoracion:', respuesta);
             for (let i = 0; i < forquilla.length; i++) {
                 if (i == valoracion) {

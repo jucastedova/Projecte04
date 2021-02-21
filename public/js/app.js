@@ -17,7 +17,19 @@ function openModal() {
 // REVIEW
 var restLat;
 var restLong;
+var restMarker;
 function openMapModal(address) {
+    // REVIEW 
+    console.log('marker:', restMarker);
+    if (restMarker) { // Si eixsteix...
+        map.removeControl(restMarker); // Treiem la ruta generada anteriorment
+        console.log('quitamos marker');
+    }
+    if (lastControl) { // Si eixsteix...
+        console.log('eliminem last contorl');
+		map.removeControl(lastControl); // Treiem la ruta generada anteriorment
+	}
+    // END REVIEW
     console.log('se abre modal mapa');
     modalMap.style.display = "block";
     var greenIcon = new L.Icon({
@@ -40,9 +52,9 @@ function openMapModal(address) {
             console.log('response', response);
             console.log('bounds', response.results[0].bounds);
             map.setZoom(18);
-            var marker = L.marker(response.results[0].latlng, {icon: greenIcon});
+            restMarker = L.marker(response.results[0].latlng, {icon: greenIcon});
             console.log('latlng', response.results[0].latlng);
-            marker.addTo(map)
+            restMarker.addTo(map)
                 .bindPopup(`<b>${address}</b>`)
                 .openPopup();
             restLat = response.results[0].latlng.lat;
@@ -69,6 +81,9 @@ function onPositionObtained(position) { // Funció que obté la posició actual 
 
 var lastControl;
 function calcRoute(myLat1, myLong1, restLat, restLong) {
+    // if (lastControl) { // Si eixsteix...
+	// 	map.removeControl(lastControl); // Treiem la ruta generada anteriorment
+	// }
     lastControl = L.Routing.control({
 		waypoints: [
 			L.latLng(myLat1, myLong1), // posició inicial

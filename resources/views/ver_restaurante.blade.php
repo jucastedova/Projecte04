@@ -80,6 +80,14 @@
         </div>
         @endif
         <!-- END REVIEW -->
+        <div class="wc--map">        
+            <div class="container--map">
+                <div id="map"></div>
+            </div>
+            <div>
+                
+            </div>
+        </div>
         <div class="container--comentarios">
             <h2>Opiniones</h2>
             @if (session()->has('estandard'))
@@ -113,6 +121,7 @@
         </div>
     </footer>
     <script src="{{asset('js/app1.js')}}"></script>
+    <script src="{{asset('js/route.js')}}"></script>
 </body>
 </html>
 
