@@ -1,5 +1,4 @@
 window.onload = function() {
-    getLocation();
     modal = document.getElementById('modal-filter');
     modalMap = document.getElementById('modal-map');
     filterAdmin = document.getElementById('filterAdmin');
@@ -12,6 +11,13 @@ window.onload = function() {
     modalTag = document.getElementById('modal-tag');
     renderTags();
 }
+
+// Tancar modal al donar click a "Aplicar"
+let btnAplicarFiltro = document.getElementById('btn--applicar-filtro');
+btnAplicarFiltro.addEventListener('click', function() {
+    closeModal();
+});
+// END REVIEW
 
 function openModal() {
     modal.style.display = "block";
@@ -29,8 +35,12 @@ function openMapModal(address) {
         console.log('quitamos marker');
     }
     if (lastControl) { // Si eixsteix...
-        console.log('eliminem last contorl');
+        console.log('eliminem last control');
         map.removeControl(lastControl); // Treiem la ruta generada anteriorment
+    }
+    if (miUbicacion) { // Si eixsteix...
+        console.log('eliminem la meva ubicació');
+        map.removeControl(miUbicacion); // Treiem la ruta generada anteriorment
     }
     console.log('se abre modal mapa');
     modalMap.style.display = "block";
@@ -65,6 +75,7 @@ function openMapModal(address) {
 }
 
 function getLocation() {
+    control = false;
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(onPositionObtained, showError);
     } else {
@@ -73,26 +84,58 @@ function getLocation() {
 }
 
 var myLat1, myLong1;
-
+var miUbicacion;
 function onPositionObtained(position) { // Funció que obté la posició actual (segons el navegador)
     myLat1 = position.coords.latitude; // Latitud
     myLong1 = position.coords.longitude; // Longitud
-    L.marker([myLat1, myLong1]).addTo(map).bindPopup("<b>La meva adreça!</b>").openPopup(); // Adreça segons navegador
+    miUbicacion = L.marker([myLat1, myLong1]).addTo(map).bindPopup("<b>La meva adreça!</b>").openPopup(); // Adreça segons navegador
     console.log('mi lat:', myLat1);
     console.log('mi long:', myLong1);
+    calcRoute(myLat1, myLong1, restLat, restLong);
 }
 
 var lastControl;
 
 function calcRoute(myLat1, myLong1, restLat, restLong) {
-    // if (lastControl) { // Si eixsteix...
-    // 	map.removeControl(lastControl); // Treiem la ruta generada anteriorment
-    // }
+    // REVIEW
+    var greenIcon = new L.Icon({
+        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+    var orangeIcon = new L.Icon({
+        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+    // END REVIEW
     lastControl = L.Routing.control({
         waypoints: [
             L.latLng(myLat1, myLong1), // posició inicial
             L.latLng(restLat, restLong) // posició final
         ],
+        // REVIEW
+        createMarker: function(i, wp, nWps) {
+            if (i === 0 || i === nWps - 1) {
+              // here change the starting and ending icons
+              return L.marker(wp.latLng, {
+                icon: orangeIcon // here pass the custom marker icon instance
+              });
+            } else {
+              // here change all the others
+              return L.marker(wp.latLng, {
+                icon: greenIcon
+              });
+            }
+        },
+        // END REVIEW
+        language: 'es',
         showAlternatives: true, // Veure alternatives de ruta
         lineOptions: { // color ruta
             styles: [{ color: 'red', opacity: 1, weight: 4 }]
@@ -104,8 +147,11 @@ function calcRoute(myLat1, myLong1, restLat, restLong) {
     lastControl.addTo(map);
 }
 
+var control = true;
 function calcRouteToRestaurant() {
-    calcRoute(myLat1, myLong1, restLat, restLong)
+    if (control) {
+		getLocation();
+	}
 }
 
 function showError(error) {

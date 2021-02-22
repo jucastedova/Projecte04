@@ -44,15 +44,16 @@
             </div>
         @endif
     </nav>
-    <h1>VER RESTAURANTE</h1>
+    <h1>{{$restaurant->Nom_restaurant}}</h1>
 
     <main>
         <input type="hidden" name="id_restaurant" id="id_restaurant" value="{{$restaurant->Id_restaurant}}">
         <input type="hidden" name="id_usuari" id="id_usuari" value="{{ session()->get('userId') }}">
         <div class="datos_restaurante">    
             <div class="container--infoRestaurante">
-                <h2>{{$restaurant->Nom_restaurant}}</h2>
+                <h2>Información</h2>
                 <p>
+                    <span class="bold">Tipo de comida:</span>
                     @foreach ($cocinas_seleccionadas as $cocina_seleccionada)
                         @if ($cocina_seleccionada === end($cocinas_seleccionadas))
                             <span>{{$cocina_seleccionada->Nom_cuina}}</span>
@@ -61,9 +62,9 @@
                         @endif
                     @endforeach
                 </p>
-                <p>{{$restaurant->Adreca_restaurant}}</p>
-                <p>Precio medio: {{$restaurant->Preu_mitja_restaurant}}€</p>
-                <p>Descripción:</p>
+                <p><span class="bold">Dirección: </span>{{$restaurant->Adreca_restaurant}}</p>
+                <p><span class="bold">Precio medio: </span>{{$restaurant->Preu_mitja_restaurant}}€</p>
+                <p><span class="bold">Descripción:</span></p>
                 <p>{{$restaurant->Descripcio_restaurant}}</p>
                 {{-- <div class="container--progress">
                     <div class="capa-progress"></div>
