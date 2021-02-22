@@ -505,11 +505,42 @@ i.fas.fa-star:after {
     justify-content: flex-end;
 }
 
-.calc-route {
-    width: 1000px;
+.content-marker--home {
+    display: flex;
     margin: auto;
     color: white;
+    margin-top: 7px;
+    cursor: pointer;
+    width: max-content;
+    transition: color 0.5s ease;
 }
+
+.calc-route:hover {
+    color: rgb(228, 228, 228);
+}
+
+.calc-route--verRest {
+    display: inline-block;
+    color: rgb(102, 102, 102);
+    transition: color 0.5s ease;
+    cursor: pointer;
+}
+.calc-route--verRest:hover {
+    color: black;
+}
+.fa-map-marker-alt {
+    color: rgb(102, 102, 102);
+}
+
+.fa-map-marker-alt.mk-home {
+    color: white;
+    margin-right: 5px;
+}
+
+.content-marker {
+    margin-top: 8px;
+}
+
 
 @media (max-width:1078px) and (min-width:768px) {
     .map--modal {
@@ -517,9 +548,6 @@ i.fas.fa-star:after {
         height: 400px;
     }
     .close--modal-map {
-        width: 700px;
-    }
-    .calc-route {
         width: 700px;
     }
 }
@@ -532,9 +560,6 @@ i.fas.fa-star:after {
     .close--modal-map {
         width: 500px;
     }
-    .calc-route {
-        width: 500px;
-    }
 }
 
 @media (max-width:539px) {
@@ -543,9 +568,6 @@ i.fas.fa-star:after {
         height: 500px;
     }
     .close--modal-map {
-        width: 300px;
-    }
-    .calc-route {
         width: 300px;
     }
 }

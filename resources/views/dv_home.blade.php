@@ -140,7 +140,8 @@
                 <span class="close--map" onclick="closeMapModal()">&times;</span>
             </div>
             <div id="map" class="map--modal"></div>
-            <div>
+            <div class="content-marker--home">
+                <p><i class="fas fa-map-marker-alt mk-home"></i></p>
                 <p onclick="calcRouteToRestaurant()" class="calc-route">Cómo llegar</p>
             </div>
         </div>
