@@ -229,7 +229,7 @@ class RestauranteController extends Controller
     public function getTags(Request $request) {
         $id = intval($request->input('idUsuario'));
 
-        $query = 'SELECT `tbl_tag`.*, `tbl_tag_intermitja`.* FROM `tbl_tag` LEFT JOIN `tbl_tag_intermitja` ON `tbl_tag_intermitja`.`Id_tag` = `tbl_tag`.`Id_tag` WHERE Id_usuari = ' . $id;
+        $query = 'SELECT `tbl_tag`.*, `tbl_tag_intermitja`.*, `tbl_restaurant`.* FROM `tbl_tag` LEFT JOIN `tbl_tag_intermitja` ON `tbl_tag_intermitja`.`Id_tag` = `tbl_tag`.`Id_tag` LEFT JOIN `tbl_restaurant` ON `tbl_tag_intermitja`.`Id_restaurant` = `tbl_restaurant`.`Id_restaurant` WHERE Id_usuari = ' . $id;
         $tags = DB::select($query);
         return response()->json($tags, 200);
     }
