@@ -113,7 +113,7 @@
                 <!-- END REVIEW -->
                 @if (session()->has('estandard'))
                 <div>
-                    <label for="favoritos">Favotios</label>
+                    <label for="favoritos">Favorito</label>
                     <input type="checkbox" id="filtrofav" name="filtrofav" value="1">
                 </div>
                 @endif
