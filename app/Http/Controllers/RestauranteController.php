@@ -158,6 +158,14 @@ class RestauranteController extends Controller
         //Devolver esos datos y mostrarlos
         return view('ver_restaurante', compact('restaurant', 'lista_cuines', 'cocinas_seleccionadas', 'primeraImatge'));
     }
+
+    public function buscarPorTag($filtro) {
+        $c = substr($filtro, 0, 1);
+        if($c == "#") {
+            return true;
+        }
+        return false;
+    }
     
     public function filter(Request $request) {
         $nombreRestaurante = $request->input('nombreRestaurante');
@@ -165,21 +173,37 @@ class RestauranteController extends Controller
         $valoracion = $request->input('valoracion');
         $tipoCocina = $request->input('tipoCocina');
         $userId = $request->input('userId');
+        $flagTag = $this->buscarPorTag($nombreRestaurante);
         if ($userId == '') { // Si no és un usuari estàndard, establim el valor de userId a -1
             $userId = -1;
         }
-        $query = 'SELECT r.Id_restaurant, f.Id_favorit, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant FROM tbl_restaurant r
+        $favorito="LEFT";
+        if ($request->input('favorito')) {
+            $favorito = "RIGHT";
+        }
+        $query = 'SELECT r.Id_restaurant, f.Id_favorit, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant, t.* FROM tbl_restaurant r
         LEFT JOIN (SELECT MIN(id_imatge) as id_imatge, id_restaurant FROM `tbl_imatge` GROUP BY Id_restaurant) i ON r.Id_restaurant = i.id_restaurant
         LEFT JOIN tbl_imatge i2 ON i2.Id_imatge = i.id_imatge and i.id_restaurant = i2.id_restaurant
-        LEFT JOIN tbl_favorit f ON r.Id_restaurant = f.Id_restaurant AND f.Id_usuari = ?';
+        '.$favorito.' JOIN tbl_favorit f ON r.Id_restaurant = f.Id_restaurant AND f.Id_usuari = ? 
+        LEFT JOIN tbl_tag_intermitja inter ON inter.Id_restaurant = r.Id_restaurant LEFT JOIN tbl_tag t ON inter.Id_tag = t.Id_tag';
+
         $queryConditions = '';
         $queryParams = [];
         array_push($queryParams, $userId);
         
-        if ($nombreRestaurante != '') {
-            $queryConditions .= ' WHERE Nom_restaurant LIKE ? ';
-            array_push($queryParams, '%'.$nombreRestaurante.'%');
+        if($flagTag) {
+            if ($nombreRestaurante != '') {
+                $tag = substr($nombreRestaurante, 1);
+                $queryConditions .= ' WHERE Nom_tag LIKE ? ';
+                array_push($queryParams, '%'.$tag.'%');
+            }
+        } else {
+            if ($nombreRestaurante != '') {
+                $queryConditions .= ' WHERE Nom_restaurant LIKE ? ';
+                array_push($queryParams, '%'.$nombreRestaurante.'%');
+            }
         }
+        
         if ($precioMedio != '') {
             // $queryConditions .= ' WHERE Preu_mitja_restaurant <= ? ';
             $queryConditions .= ($queryConditions != '' ?' AND ':' WHERE ') . ' Preu_mitja_restaurant <= ? ';
@@ -199,6 +223,7 @@ class RestauranteController extends Controller
                 AND c.Nom_cuina IN (' .$tipoCocina .')
             )';
         }
+        
         $restaurantes = DB::select($query. $queryConditions, $queryParams);
     
         foreach($restaurantes as $restaurante) {

@@ -198,7 +198,7 @@ function objetoAjax() {
     return xmlhttp;
 }
 
-function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina) {
+function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina, favorito) {
     let userId = document.getElementById('userId');
     var token = document.getElementById('token').getAttribute('content');
     var arrayTiposCocinasSeleccionados = [];
@@ -208,6 +208,7 @@ function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina
             console.log(`Array tipos cocina: ${arrayTiposCocinasSeleccionados}`);
         }
     }
+
     console.log(`Array: ${arrayTiposCocinasSeleccionados}`);
     var ajax = new objetoAjax();
     var datasend = new FormData();
@@ -215,6 +216,11 @@ function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina
     datasend.append('precioMedio', precioMedio);
     datasend.append('valoracion', valoracion);
     datasend.append('tipoCocina', arrayTiposCocinasSeleccionados);
+    if (favorito) {
+        if (favorito.checked) {
+            datasend.append('favorito', favorito);
+        }
+    }
     if (userId) {
         datasend.append('userId', userId.value);
     }
@@ -307,8 +313,9 @@ function searchRestaurants() {
     var precioMedio = document.getElementById('precio_medio').value;
     var valoracion = document.getElementById('valoracion').value;
     var tipoCocina = document.querySelectorAll('.filtro--tipo_cocina');
+    var favorito = document.getElementById('filtrofav');
 
-    filter(renderRestaurants, nombreRestaurante, precioMedio, valoracion, tipoCocina);
+    filter(renderRestaurants, nombreRestaurante, precioMedio, valoracion, tipoCocina, favorito);
 }
 
 function searchRestaurantsAdmin() {
