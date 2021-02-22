@@ -25,6 +25,10 @@ input[type='submit'] {
     cursor: pointer;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .btn-info {
     border: 1px solid #013f36;
     background-color: white;

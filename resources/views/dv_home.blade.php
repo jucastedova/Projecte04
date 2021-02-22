@@ -109,7 +109,7 @@
                         <input type="reset" value="Borrar todo">
                     </div>
                     <div>
-                        <input type="submit" value="Aplicar">
+                        <input type="submit" value="Aplicar" id="btn--applicar-filtro">
                     </div>
                 </div>
             </form>

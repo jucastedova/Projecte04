@@ -1,11 +1,8 @@
-// window.onload = function() {
-//     getLocation();
-// }
-
 var restLat;
 var restLong;
 var restMarker;
 function getLocation() {
+	control = false;
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(onPositionObtained, showError);
 	} else { 
@@ -31,6 +28,7 @@ function calcRoute(myLat1, myLong1, restLat, restLong) {
 			L.latLng(myLat1, myLong1), // posició inicial
 			L.latLng(restLat, restLong) // posició final
 		],
+		language: 'es', // Idioma indicador de ruta
 		showAlternatives: true, // Veure alternatives de ruta
 		lineOptions: { // color ruta
 			styles: [{color: 'red', opacity: 1, weight: 4}]
@@ -42,8 +40,11 @@ function calcRoute(myLat1, myLong1, restLat, restLong) {
     lastControl.addTo(map);
 }
 
+var control = true;
 function calcRouteToRestaurant() {
-    getLocation();
+	if (control) {
+		getLocation();
+	}
 }
 
 function showError(error) {
