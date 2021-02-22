@@ -9,7 +9,7 @@ function renderRestaurantTags() {
     idUsuario = document.getElementById('id_usuari').value;
     id_restaurant = document.getElementById('id_restaurant').value;
     renderedResults = '';
-
+    var cont = 0;
     //Ajax
     var ajax = new objetoAjax();
     ajax.open('POST', '../getRestaurantTags', true);
@@ -26,7 +26,14 @@ function renderRestaurantTags() {
             }
 
             for (let i = 0; i < respuesta.length; i++) {
-                renderedResults += '<p>' + respuesta[i].Nom_tag + '<i class="fa fa-times" aria-hidden="true" onclick="eliminarTag(' + respuesta[i].Id_tag + ')"></i></p>';
+                if (i % 3 == 0) {
+                    renderedResults += '<div class="rowTag">';
+                }
+                cont++;
+                renderedResults += '<span>' + respuesta[i].Nom_tag + '<i class="fa fa-times" aria-hidden="true" onclick="eliminarTag(' + respuesta[i].Id_tag + ')"></i></span>';
+                if (cont % 3 == 0) {
+                    renderedResults += '</div>';
+                }
             }
             section.innerHTML = renderedResults;
         } else {

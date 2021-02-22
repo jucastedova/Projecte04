@@ -8,6 +8,9 @@ window.onload = function() {
     } else {
         searchRestaurants();
     }
+    //Modal tag
+    modalTag = document.getElementById('modal-tag');
+    renderTags();
 }
 
 function openModal() {
@@ -313,5 +316,50 @@ function favorito(event, idRestaurant) {
         }
     }
     ajax.open('POST', 'favorito', true);
+    ajax.send(datasend);
+}
+
+//  Tags
+function openModalTags() {
+    modalTag.style.display = "block";
+}
+
+function closeModalTag() {
+    modalTag.style.display = "none";
+}
+
+function renderTags() {
+    //Recogemos variables de la pagina
+    var section = document.getElementById('tags');
+    var token = document.getElementById('token').getAttribute('content');
+    var idUsuario = document.getElementById('idUsuario').value;
+    var renderedResults = '';
+    var cont = 0;
+
+    //Ajax
+    var ajax = new objetoAjax();
+    ajax.open('POST', 'getTags', true);
+    var datasend = new FormData();
+    datasend.append('_token', token);
+    datasend.append('idUsuario', idUsuario);
+    ajax.onreadystatechange = function() {
+        if (ajax.status == 200 && ajax.readyState == 4) {
+            var respuesta = JSON.parse(ajax.responseText);
+
+            for (let i = 0; i < respuesta.length; i++) {
+                if (cont % 3 == 0) {
+                    renderedResults += '<div class="rowTag">';
+                }
+                cont++;
+                renderedResults += '<span class="tag"><span class="bold">' + respuesta[i].Nom_restaurant + ':</span> ' + respuesta[i].Nom_tag + '</span>';
+                if (cont % 3 == 0) {
+                    renderedResults += '</div>';
+                }
+            }
+            section.innerHTML = renderedResults;
+        } else {
+            console.log('App::Problems on comentarios request: ' + ajax.statusText);
+        }
+    }
     ajax.send(datasend);
 }

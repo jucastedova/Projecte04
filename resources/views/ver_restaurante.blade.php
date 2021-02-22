@@ -82,8 +82,8 @@
         <!-- TAGS -->
         @if (session()->has('estandard'))
         <div class="tags">
-            <div id="mostrarTags"></div>
             <input type="text" id="tag" placeholder="Escribe un tag..." onkeyup="añadirTag(event)">
+            <div id="mostrarTags"></div>
             <p id="msgTag"></p>
         </div>
         @endif
