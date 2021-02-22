@@ -158,6 +158,14 @@ class RestauranteController extends Controller
         //Devolver esos datos y mostrarlos
         return view('ver_restaurante', compact('restaurant', 'lista_cuines', 'cocinas_seleccionadas', 'primeraImatge'));
     }
+
+    public function buscarPorTag($filtro) {
+        $c = substr($filtro, 0, 1);
+        if($c == "#") {
+            return true;
+        }
+        return false;
+    }
     
     public function filter(Request $request) {
         $nombreRestaurante = $request->input('nombreRestaurante');
@@ -165,6 +173,7 @@ class RestauranteController extends Controller
         $valoracion = $request->input('valoracion');
         $tipoCocina = $request->input('tipoCocina');
         $userId = $request->input('userId');
+        $flagTag = $this->buscarPorTag($nombreRestaurante);
         if ($userId == '') { // Si no és un usuari estàndard, establim el valor de userId a -1
             $userId = -1;
         }
@@ -176,10 +185,18 @@ class RestauranteController extends Controller
         $queryParams = [];
         array_push($queryParams, $userId);
         
-        if ($nombreRestaurante != '') {
-            $queryConditions .= ' WHERE Nom_restaurant LIKE ? ';
-            array_push($queryParams, '%'.$nombreRestaurante.'%');
+        if($flagTag) {
+            if ($nombreRestaurante != '') {
+                $queryConditions .= ' WHERE Nom_tag LIKE ? ';
+                array_push($queryParams, '%'.$nombreRestaurante.'%');
+            }
+        } else {
+            if ($nombreRestaurante != '') {
+                $queryConditions .= ' WHERE Nom_restaurant LIKE ? ';
+                array_push($queryParams, '%'.$nombreRestaurante.'%');
+            }
         }
+        
         if ($precioMedio != '') {
             // $queryConditions .= ' WHERE Preu_mitja_restaurant <= ? ';
             $queryConditions .= ($queryConditions != '' ?' AND ':' WHERE ') . ' Preu_mitja_restaurant <= ? ';

@@ -63,11 +63,14 @@
             <h1>Buscar restaurante</h1>
             <div class="container--filter">
                 <div class="form-group">
-                    <input class="form-control" type="text" id="search--rest" name="search--rest" placeholder="Buscar por restaurante..." onkeyup="searchRestaurants()">
+                    <input class="form-control" type="text" id="search--rest" name="search--rest" placeholder="Buscar por restaurante o por #tags..." onkeyup="searchRestaurants()">
                 </div>
                 <div class="logo-filtro">
                     <i class="fas fa-filter" onclick="openModal()"></i>
+                    <!-- TAGS -->
+                    @if (session()->has('estandard'))
                     <button class="btn btn-info" onclick="openModalTags()">Ver tags</button>
+                    @endif
                 </div>
             </div>
         </div>
