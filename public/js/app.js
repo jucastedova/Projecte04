@@ -1,5 +1,4 @@
 window.onload = function() {
-    // getLocation();
     modal = document.getElementById('modal-filter');
     modalMap = document.getElementById('modal-map');
     filterAdmin = document.getElementById('filterAdmin');
@@ -76,6 +75,7 @@ function openMapModal(address) {
 }
 
 function getLocation() {
+    control = false;
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(onPositionObtained, showError);
     } else {
@@ -147,8 +147,11 @@ function calcRoute(myLat1, myLong1, restLat, restLong) {
     lastControl.addTo(map);
 }
 
+var control = true;
 function calcRouteToRestaurant() {
-    getLocation();
+    if (control) {
+		getLocation();
+	}
 }
 
 function showError(error) {
