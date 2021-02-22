@@ -185,7 +185,8 @@ class RestauranteController extends Controller
         LEFT JOIN (SELECT MIN(id_imatge) as id_imatge, id_restaurant FROM `tbl_imatge` GROUP BY Id_restaurant) i ON r.Id_restaurant = i.id_restaurant
         LEFT JOIN tbl_imatge i2 ON i2.Id_imatge = i.id_imatge and i.id_restaurant = i2.id_restaurant
         '.$favorito.' JOIN tbl_favorit f ON r.Id_restaurant = f.Id_restaurant AND f.Id_usuari = ? 
-        LEFT JOIN tbl_tag_intermitja inter ON inter.Id_restaurant = r.Id_restaurant LEFT JOIN tbl_tag t ON inter.Id_tag = t.Id_tag';
+        LEFT JOIN tbl_tag_intermitja inter ON inter.Id_restaurant = r.Id_restaurant 
+        LEFT JOIN tbl_tag t ON inter.Id_tag = t.Id_tag';
 
         $queryConditions = '';
         $queryParams = [];
