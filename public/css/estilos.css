@@ -587,6 +587,20 @@ i.fas.fa-star:after {
     height: 500px;
 }
 
+.display-none {
+    display: none;
+}
+.map--create-modify {
+    max-width: -webkit-fill-available;
+    max-width: -moz-available;
+    max-width: fill-available;
+    height: 500px; 
+}
+
+.container--map {
+    margin-bottom: 18px;
+}
+
 .modal-map {
     display: none;
     position: fixed;
