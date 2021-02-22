@@ -177,18 +177,20 @@ class RestauranteController extends Controller
         if ($userId == '') { // Si no és un usuari estàndard, establim el valor de userId a -1
             $userId = -1;
         }
-        $query = 'SELECT r.Id_restaurant, f.Id_favorit, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant FROM tbl_restaurant r
+        $query = 'SELECT r.Id_restaurant, f.Id_favorit, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant, t.* FROM tbl_restaurant r
         LEFT JOIN (SELECT MIN(id_imatge) as id_imatge, id_restaurant FROM `tbl_imatge` GROUP BY Id_restaurant) i ON r.Id_restaurant = i.id_restaurant
         LEFT JOIN tbl_imatge i2 ON i2.Id_imatge = i.id_imatge and i.id_restaurant = i2.id_restaurant
-        LEFT JOIN tbl_favorit f ON r.Id_restaurant = f.Id_restaurant AND f.Id_usuari = ?';
+        LEFT JOIN tbl_favorit f ON r.Id_restaurant = f.Id_restaurant AND f.Id_usuari = ?
+        LEFT JOIN tbl_tag_intermitja inter ON inter.Id_restaurant = r.Id_restaurant LEFT JOIN tbl_tag t ON inter.Id_tag = t.Id_tag';
         $queryConditions = '';
         $queryParams = [];
         array_push($queryParams, $userId);
         
         if($flagTag) {
             if ($nombreRestaurante != '') {
+                $tag = substr($nombreRestaurante, 1);
                 $queryConditions .= ' WHERE Nom_tag LIKE ? ';
-                array_push($queryParams, '%'.$nombreRestaurante.'%');
+                array_push($queryParams, '%'.$tag.'%');
             }
         } else {
             if ($nombreRestaurante != '') {
