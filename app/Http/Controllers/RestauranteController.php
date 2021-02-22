@@ -147,10 +147,14 @@ class RestauranteController extends Controller
         if ($userId == '') { // Si no és un usuari estàndard, establim el valor de userId a -1
             $userId = -1;
         }
+        $favorito="LEFT";
+        if ($request->input('favorito')) {
+            $favorito = "RIGHT";
+        }
         $query = 'SELECT r.Id_restaurant, f.Id_favorit, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant FROM tbl_restaurant r
         LEFT JOIN (SELECT MIN(id_imatge) as id_imatge, id_restaurant FROM `tbl_imatge` GROUP BY Id_restaurant) i ON r.Id_restaurant = i.id_restaurant
         LEFT JOIN tbl_imatge i2 ON i2.Id_imatge = i.id_imatge and i.id_restaurant = i2.id_restaurant
-        LEFT JOIN tbl_favorit f ON r.Id_restaurant = f.Id_restaurant AND f.Id_usuari = ?';
+        '.$favorito.' JOIN tbl_favorit f ON r.Id_restaurant = f.Id_restaurant AND f.Id_usuari = ?';
         $queryConditions = '';
         $queryParams = [];
         array_push($queryParams, $userId);
@@ -178,6 +182,7 @@ class RestauranteController extends Controller
                 AND c.Nom_cuina IN (' .$tipoCocina .')
             )';
         }
+        
         $restaurantes = DB::select($query. $queryConditions, $queryParams);
     
         foreach($restaurantes as $restaurante) {

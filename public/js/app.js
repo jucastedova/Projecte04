@@ -18,6 +18,7 @@ function openModal() {
 var restLat;
 var restLong;
 var restMarker;
+
 function openMapModal(address) {
     console.log('marker:', restMarker);
     if (restMarker) { // Si eixsteix...
@@ -26,8 +27,8 @@ function openMapModal(address) {
     }
     if (lastControl) { // Si eixsteix...
         console.log('eliminem last contorl');
-		map.removeControl(lastControl); // Treiem la ruta generada anteriorment
-	}
+        map.removeControl(lastControl); // Treiem la ruta generada anteriorment
+    }
     console.log('se abre modal mapa');
     modalMap.style.display = "block";
     var greenIcon = new L.Icon({
@@ -42,7 +43,7 @@ function openMapModal(address) {
         .address(address)
         .city(`L'Hospitalet de Llobregat`)
         .region('ES')
-        .run(function (error, response) {
+        .run(function(error, response) {
             if (error) {
                 return;
             }
@@ -50,7 +51,7 @@ function openMapModal(address) {
             console.log('response', response);
             console.log('bounds', response.results[0].bounds);
             map.setZoom(18);
-            restMarker = L.marker(response.results[0].latlng, {icon: greenIcon});
+            restMarker = L.marker(response.results[0].latlng, { icon: greenIcon });
             console.log('latlng', response.results[0].latlng);
             restMarker.addTo(map)
                 .bindPopup(`<b>${address}</b>`)
@@ -61,39 +62,41 @@ function openMapModal(address) {
 }
 
 function getLocation() {
-	if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(onPositionObtained, showError);
-	} else { 
-		alert("Geolocation is not supported by this browser.");
-	}
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(onPositionObtained, showError);
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
 }
 
 var myLat1, myLong1;
+
 function onPositionObtained(position) { // Funció que obté la posició actual (segons el navegador)
-	myLat1 = position.coords.latitude; // Latitud
-	myLong1 = position.coords.longitude; // Longitud
-	L.marker([myLat1,myLong1]).addTo(map).bindPopup("<b>La meva adreça!</b>").openPopup(); // Adreça segons navegador
+    myLat1 = position.coords.latitude; // Latitud
+    myLong1 = position.coords.longitude; // Longitud
+    L.marker([myLat1, myLong1]).addTo(map).bindPopup("<b>La meva adreça!</b>").openPopup(); // Adreça segons navegador
     console.log('mi lat:', myLat1);
     console.log('mi long:', myLong1);
 }
 
 var lastControl;
+
 function calcRoute(myLat1, myLong1, restLat, restLong) {
     // if (lastControl) { // Si eixsteix...
-	// 	map.removeControl(lastControl); // Treiem la ruta generada anteriorment
-	// }
+    // 	map.removeControl(lastControl); // Treiem la ruta generada anteriorment
+    // }
     lastControl = L.Routing.control({
-		waypoints: [
-			L.latLng(myLat1, myLong1), // posició inicial
-			L.latLng(restLat, restLong) // posició final
-		],
-		showAlternatives: true, // Veure alternatives de ruta
-		lineOptions: { // color ruta
-			styles: [{color: 'red', opacity: 1, weight: 4}]
-		},
-		altLineOptions: { // color ruta alternativa
-			styles: [{color: 'black', opacity: 1, weight: 4}]
-		}
+        waypoints: [
+            L.latLng(myLat1, myLong1), // posició inicial
+            L.latLng(restLat, restLong) // posició final
+        ],
+        showAlternatives: true, // Veure alternatives de ruta
+        lineOptions: { // color ruta
+            styles: [{ color: 'red', opacity: 1, weight: 4 }]
+        },
+        altLineOptions: { // color ruta alternativa
+            styles: [{ color: 'black', opacity: 1, weight: 4 }]
+        }
     });
     lastControl.addTo(map);
 }
@@ -103,20 +106,20 @@ function calcRouteToRestaurant() {
 }
 
 function showError(error) {
-	switch(error.code) {
-		case error.PERMISSION_DENIED:
-		x.innerHTML = "User denied the request for Geolocation."
-		break;
-		case error.POSITION_UNAVAILABLE:
-		x.innerHTML = "Location information is unavailable."
-		break;
-		case error.TIMEOUT:
-		x.innerHTML = "The request to get user location timed out."
-		break;
-		case error.UNKNOWN_ERROR:
-		x.innerHTML = "An unknown error occurred."
-		break;
-	}
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            x.innerHTML = "User denied the request for Geolocation."
+            break;
+        case error.POSITION_UNAVAILABLE:
+            x.innerHTML = "Location information is unavailable."
+            break;
+        case error.TIMEOUT:
+            x.innerHTML = "The request to get user location timed out."
+            break;
+        case error.UNKNOWN_ERROR:
+            x.innerHTML = "An unknown error occurred."
+            break;
+    }
 }
 
 // END REVIEW
@@ -146,7 +149,7 @@ function objetoAjax() {
     return xmlhttp;
 }
 
-function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina) {
+function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina, favorito) {
     let userId = document.getElementById('userId');
     var token = document.getElementById('token').getAttribute('content');
     var arrayTiposCocinasSeleccionados = [];
@@ -156,6 +159,7 @@ function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina
             console.log(`Array tipos cocina: ${arrayTiposCocinasSeleccionados}`);
         }
     }
+
     console.log(`Array: ${arrayTiposCocinasSeleccionados}`);
     var ajax = new objetoAjax();
     var datasend = new FormData();
@@ -163,6 +167,11 @@ function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina
     datasend.append('precioMedio', precioMedio);
     datasend.append('valoracion', valoracion);
     datasend.append('tipoCocina', arrayTiposCocinasSeleccionados);
+    if (favorito) {
+        if (favorito.checked) {
+            datasend.append('favorito', favorito);
+        }
+    }
     if (userId) {
         datasend.append('userId', userId.value);
     }
@@ -255,8 +264,9 @@ function searchRestaurants() {
     var precioMedio = document.getElementById('precio_medio').value;
     var valoracion = document.getElementById('valoracion').value;
     var tipoCocina = document.querySelectorAll('.filtro--tipo_cocina');
+    var favorito = document.getElementById('filtrofav');
 
-    filter(renderRestaurants, nombreRestaurante, precioMedio, valoracion, tipoCocina);
+    filter(renderRestaurants, nombreRestaurante, precioMedio, valoracion, tipoCocina, favorito);
 }
 
 function searchRestaurantsAdmin() {
