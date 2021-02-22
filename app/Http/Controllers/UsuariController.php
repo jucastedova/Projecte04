@@ -89,9 +89,10 @@ class UsuariController extends Controller {
         }
     }
 
-    public function signup(UsuariSignUpRequest $request) {
+    public function signup(UsuariSignUpRequest $request) { // Registre d'un usuari
         $data = $request->except('_token');
         try {
+            DB::beginTransaction();
             DB::table('tbl_usuari')->insertGetId([
                 'Pwd_usuari' => $data['password'],
                 'Nom_usuari'=>$data['nombre'], 
@@ -99,34 +100,39 @@ class UsuariController extends Controller {
                 'Id_rol' => 2, 
                  'Correu_usuari'=>$data['email']]);
             
-            $userQuery = DB::table('tbl_usuari')
-                 ->select(['Id_usuari'])
-                 ->where('Correu_usuari','=',$data['email'])
-                 ->get();
-            $userId = $userQuery[0]->Id_usuari;
+            // $userQuery = DB::table('tbl_usuari')
+            //      ->select(['Id_usuari'])
+            //      ->where('Correu_usuari','=',$data['email'])
+            //      ->get();
+            $userId = DB::getPdo()->lastInsertId();
+            // $userId = $userQuery[0]->Id_usuari;
             $request->session()->put(['estandard'=>$data['email']]);
             $request->session()->put(['userName'=>$data['nombre']]);
             $request->session()->put(['userId'=>$userId]);
             $request->session()->regenerate();
+            DB::commit();
             return redirect('dv_home');
         } catch (\Throwable $th) {
-            echo 'Error';
+            DB::rollBack();
+            echo $th;
         }
     }
 
-    public function signupAdmin(UsuariSignUpRequest $request) {
+    public function signupAdmin(UsuariSignUpRequest $request) { // Registre d'un administrador
         $data = $request->except('_token');
         try {
+            DB::beginTransaction();
             DB::table('tbl_usuari')->insertGetId([
                 'Pwd_usuari' => $data['password'],
                 'Nom_usuari'=>$data['nombre'], 
                 'Cognom_usuari'=>$data['apellido'],
                 'Id_rol' => 1, 
                  'Correu_usuari'=>$data['email']]);
-
+            DB::commit();
             return redirect('dv_admin');
         } catch (\Throwable $th) {
-            echo 'Error';
+            DB::rollBack();
+            echo $th;
         }
     }
 

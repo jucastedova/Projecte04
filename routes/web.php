@@ -31,6 +31,10 @@ Route::post('addComentario', [RestauranteController::class, 'addComentario']);
 Route::post('puntuar', [RestauranteController::class, 'puntuar']);
 Route::post('getValoracion', [RestauranteController::class, 'getValoracion']);
 Route::post('favorito', [RestauranteController::class, 'favorito']);
+Route::post('getTags', [RestauranteController::class, 'getTags']);
+Route::post('eliminarTag', [RestauranteController::class, 'eliminarTag']);
+Route::post('addTag', [RestauranteController::class, 'addTag']);
+Route::post('getRestaurantTags', [RestauranteController::class, 'getRestaurantTags']);
 
 /////////////////////////////////////////////
 /////////////////UsuariController////////////

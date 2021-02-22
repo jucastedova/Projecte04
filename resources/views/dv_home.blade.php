@@ -61,7 +61,7 @@
                 </div>
                 <div class="logo-filtro">
                     <i class="fas fa-filter" onclick="openModal()"></i>
-                    <a href="dv_tags" class="btn btn-info">Ver tags</a>
+                    <button class="btn btn-info" onclick="openModalTags()">Ver tags</button>
                 </div>
             </div>
         </div>
@@ -71,8 +71,21 @@
     <div class="row" id="section-3">
     </div>
 
-    <div class="modal" id="modal-filter">
-        <!-- Modal filtre -->
+    <div class="modal-tag" id="modal-tag"> <!-- Modal tag -->    
+        <div class="modal-content-tag">
+            <input type="hidden" value="{{ session()->get('userId') }}" id="idUsuario">
+            <div class="close-modal-tag">
+                <span class="title-tag">TAGS</span>
+                <span class="close-tag" onclick="closeModalTag()">&times;</span>
+            </div>
+            <div class="ventanaTags">
+                <div id="tags">
+                </div>
+            </div>
+        </div>
+    </div> <!-- END Modal tag --> 
+    
+    <div class="modal" id="modal-filter"> <!-- Modal filtre -->    
         <div class="modal-content">
             <div class="close--modal">
                 <span class="close" onclick="closeModal()">&times;</span>

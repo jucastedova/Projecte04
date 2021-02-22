@@ -78,6 +78,17 @@
                 </div>
             </div>
         </div>
+
+        <!-- TAGS -->
+        @if (session()->has('estandard'))
+        <div class="tags">
+            <input type="text" id="tag" placeholder="Escribe un tag..." onkeyup="añadirTag(event)">
+            <div id="mostrarTags"></div>
+            <p id="msgTag"></p>
+        </div>
+        @endif
+
+
         <!-- REVIEW -->
         @if (session()->has('estandard'))
         <h2>Tu puntuación...</h2>
@@ -141,6 +152,8 @@
     </footer>
     <script src="{{asset('js/app1.js')}}"></script>
     <script src="{{asset('js/route.js')}}"></script>
+    <script src="{{asset('js/infoRestTags.js')}}"></script>
+
     <script>
         var geocoder = L.esri.Geocoding.geocodeService();
         
@@ -167,11 +180,11 @@
                 return;
             }
             map.fitBounds(response.results[0].bounds);
-            console.log('response', response);
-            console.log('bounds', response.results[0].bounds);
+            // console.log('response', response);
+            // console.log('bounds', response.results[0].bounds);
             map.setZoom(18);
             restMarker = L.marker(response.results[0].latlng, {icon: greenIcon});
-            console.log('latlng', response.results[0].latlng);
+            // console.log('latlng', response.results[0].latlng);
             restMarker.addTo(map)
                 .bindPopup(`<b>{{$restaurant->Adreca_restaurant}}</b>`)
                 .openPopup();
