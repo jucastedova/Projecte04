@@ -36,6 +36,7 @@ input[type='submit'] {
     border-radius: 3px;
     padding: 6px 23px;
     cursor: pointer;
+    margin: 5px;
 }
 
 .adress {
@@ -988,9 +989,51 @@ footer div {
     top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(0, 255, 0, 0.561);
+    background-color: rgba(0, 255, 0, 0.8);
     padding: 15px 50px;
     font-size: 25px;
-    border: 1px solid black;
+    border: 1px solid rgba(0, 182, 0);
     border-radius: 15px;
+}
+
+
+/* modal categoria */
+
+.modal-cat {
+    display: none;
+    position: fixed;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #cccccc;
+    background-color: #fdfdfd;
+    z-index: 5;
+    padding: 10px 30px;
+    border-radius: 5px;
+    width: 350px;
+}
+
+.modal-content-cat {
+    display: flex;
+    flex-direction: column;
+}
+
+.close-modal-cat {
+    background-color: rgba(0, 0, 0, 0.287);
+    display: flex;
+    width: 100%;
+}
+
+.labelCat {
+    padding: 15px;
+    margin-top: 5px;
+}
+
+.containerFlex {
+    padding: 5px;
+    display: flex;
+}
+
+.btn-margin {
+    margin: auto;
 }
