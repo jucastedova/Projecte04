@@ -43,6 +43,13 @@ class UsuariController extends Controller {
         return view('dv_signup_admin');
     }
 
+    public function gestionarTagsAdmin() { 
+        if(!session()->has('admin')) {
+            return redirect('login');
+        }
+        return view('dv_gestionar_tags');
+    }
+
     public function registerRestaurantView() { 
         $listCategories = DB::table('tbl_cuina')->get();
         if(!session()->has('admin')) {

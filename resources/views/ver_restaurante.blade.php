@@ -115,8 +115,9 @@
             <div class="container--map">
                 <div id="map" class="map--ver-restaurant"></div>
             </div>
-            <div>
-                <p onclick="calcRouteToRestaurant()" class="calc-route--verRest">Cómo llegar</p>
+            <div class="content-marker">
+                <i class="fas fa-map-marker-alt"></i>
+                <span onclick="calcRouteToRestaurant()" class="calc-route--verRest">Cómo llegar</span>
             </div>
         </div>
         <div class="container--comentarios">

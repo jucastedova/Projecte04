@@ -52,6 +52,7 @@
             <div class="registros">
                 <a href="{{url('registerRestaurantView')}}">Registrar restaurante</a>
                 <a href="{{url('signupAdminView')}}">Registrar administrador</a>
+                <a href="{{url('gestionarTagsAdmin')}}">Gestionar tags</a>
             </div>
             <!-- END REVIEW -->
         </div>

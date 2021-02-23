@@ -8,23 +8,17 @@
     <script src="https://kit.fontawesome.com/b2a65126dc.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
     <!-- Load Leaflet from CDN -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
-    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-    crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
-    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
-    crossorigin=""></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>
     <!-- Load Esri Leaflet from CDN -->
-    <script src="https://unpkg.com/esri-leaflet@2.3.2/dist/esri-leaflet.js"
-    integrity="sha512-6LVib9wGnqVKIClCduEwsCub7iauLXpwrd5njR2J507m3A2a4HXJDLMiSZzjcksag3UluIfuW1KzuWVI5n/cuQ=="
-    crossorigin=""></script>
+    <script src="https://unpkg.com/esri-leaflet@2.3.2/dist/esri-leaflet.js" integrity="sha512-6LVib9wGnqVKIClCduEwsCub7iauLXpwrd5njR2J507m3A2a4HXJDLMiSZzjcksag3UluIfuW1KzuWVI5n/cuQ==" crossorigin=""></script>
     <!-- GEOCODER -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/leaflet.esri.geocoder/2.1.0/esri-leaflet-geocoder.css">
     <script src="https://cdn.jsdelivr.net/leaflet.esri.geocoder/2.1.0/esri-leaflet-geocoder.js"></script>
     <!-- END GEOCODER -->
     <!-- ROUTING -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
-	<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
     <!-- END ROUTING -->
     <meta name="csrf-token" id="token" content="{{ csrf_token() }}">
     <title>Home | dv</title>
@@ -33,10 +27,10 @@
 <body>
     <!-- <div id="map"></div> -->
     @if (session()->has('estandard'))
-        <input type="hidden" value="1" id="filterEstandard" name="filterEstandard"> 
-        <input type="hidden" value="{{ session()->get('userId') }}" id="userId" name="userId">
+    <input type="hidden" value="1" id="filterEstandard" name="filterEstandard">
+    <input type="hidden" value="{{ session()->get('userId') }}" id="userId" name="userId">
     @endif
-    
+
     <!-- <form action="{{url('cerrarSesion')}}" method="GET">
         <button type="submit" class="btn btn-info">Cerrar sesión</button>
     </form> -->
@@ -46,16 +40,16 @@
     <nav class="menu_nav">
         <div class="logo_nav"><a href="{{url('/')}}"><img src="{{asset('img/LogoProjecte04.png')}}" alt="logo geoeat"></a></div>
         @if (session()->has('admin') || session()->has('estandard'))
-            <!-- Si inicia sessió -->
+        <!-- Si inicia sessió -->
         <h2>{{ session()->get('userName') }}</h2>
-        <form action="{{url('cerrarSesion')}}" method="GET">    
+        <form action="{{url('cerrarSesion')}}" method="GET">
             <button type="submit" class="btn btn-info">Cerrar sesión</button>
         </form>
         @else
-            <!-- Si no hi ha sessió iniciada -->
-            <div class="registro_nav">
-                <a href="{{url('login')}}"><i class="fas fa-home"></i>Iniciar sesión / Registro</a>
-            </div>
+        <!-- Si no hi ha sessió iniciada -->
+        <div class="registro_nav">
+            <a href="{{url('login')}}"><i class="fas fa-home"></i>Iniciar sesión / Registro</a>
+        </div>
         @endif
     </nav>
     <div class="row">
@@ -108,20 +102,24 @@
                     <label for="valoracion">Valoración</label>
                     <input type="number" id="valoracion" name="valoracion" min="1" max="5">
                 </div>
-                    <!-- REVIEW -->
-                    <!-- S'AGAFEN ELS VALORS DE LA BBDD -->
-                    @foreach ($listCategories as $category)
-                        <div class="container-tipo-cocina">
-                            <label for="{{$category->Id_cuina}}">{{$category->Nom_cuina}}</label>
-                            <input class="filtro--tipo_cocina" type="checkbox" id="{{$category->Id_cuina}}" name="{{$category->Id_cuina}}" value="{{$category->Nom_cuina}}">
-                        </div>
-                    @endforeach
-                    <!-- END REVIEW -->
-                <div>
-
+                <!-- REVIEW -->
+                <!-- S'AGAFEN ELS VALORS DE LA BBDD -->
+                @foreach ($listCategories as $category)
+                <div class="container-tipo-cocina">
+                    <label for="{{$category->Id_cuina}}">{{$category->Nom_cuina}}</label>
+                    <input class="filtro--tipo_cocina" type="checkbox" id="{{$category->Id_cuina}}" name="{{$category->Id_cuina}}" value="{{$category->Nom_cuina}}">
                 </div>
-   
-                <div class="form-btn">            
+                @endforeach
+                <!-- END REVIEW -->
+                @if (session()->has('estandard'))
+                <div>
+                    <label for="favoritos">Favotios</label>
+                    <input type="checkbox" id="filtrofav" name="filtrofav" value="1">
+                </div>
+                @endif
+
+
+                <div class="form-btn">
                     <div>
                         <input type="reset" value="Borrar todo">
                     </div>
@@ -131,9 +129,9 @@
                 </div>
             </form>
         </div>
-    </div> <!-- END Modal filtre -->   
+    </div> <!-- END Modal filtre -->
 
-    <!-- Modal Map -->   
+    <!-- Modal Map -->
     <div id="modal-map" class="modal-map">
         <!-- <div class="close--modal-map">
             <span class="close--map" onclick="closeMapModal()">&times;</span>
@@ -143,12 +141,13 @@
                 <span class="close--map" onclick="closeMapModal()">&times;</span>
             </div>
             <div id="map" class="map--modal"></div>
-            <div>
+            <div class="content-marker--home">
+                <p><i class="fas fa-map-marker-alt mk-home"></i></p>
                 <p onclick="calcRouteToRestaurant()" class="calc-route">Cómo llegar</p>
             </div>
         </div>
     </div>
-    <!-- END Modal Map -->   
+    <!-- END Modal Map -->
     <footer>
         <div>
             <h3>Descubre Deliveroo</h3>
@@ -173,13 +172,13 @@
 
     <script>
         var geocoder = L.esri.Geocoding.geocodeService();
-        
+
         var map = L.map('map');
-        
+
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
-
     </script>
 </body>
+
 </html>

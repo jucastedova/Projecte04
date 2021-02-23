@@ -72,7 +72,7 @@ class RestauranteController extends Controller
             //Método para actualizar restaurantes
             $restaurant=DB::table('tbl_restaurant')->WHERE('Id_restaurant','=', $id)->first(); 
             $lista_cuines = DB::table('tbl_cuina')->get();
-            $cocinas_seleccionadas = DB::select("SELECT t.id_tipus_cuina, t.id_restaurant, t.id_cuina, c.Nom_cuina FROM      tbl_tipus_cuina AS t INNER JOIN tbl_cuina AS c ON t.Id_cuina = c.Id_cuina WHERE t.Id_restaurant = $id");
+            $cocinas_seleccionadas = DB::select("SELECT t.id_tipus_cuina, t.id_restaurant, t.id_cuina, c.Nom_cuina FROM tbl_tipus_cuina AS t INNER JOIN tbl_cuina AS c ON t.Id_cuina = c.Id_cuina WHERE t.Id_restaurant = $id");
             $primeraImatge = DB::select("SELECT r.Id_restaurant, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant FROM tbl_restaurant r
             LEFT JOIN (SELECT MIN(id_imatge) as id_imatge, id_restaurant FROM `tbl_imatge` GROUP BY Id_restaurant) i ON r.Id_restaurant = i.id_restaurant
             LEFT JOIN tbl_imatge i2 ON i2.Id_imatge = i.id_imatge and i.id_restaurant = i2.id_restaurant WHERE r.Id_restaurant = $id");
@@ -177,10 +177,16 @@ class RestauranteController extends Controller
         if ($userId == '') { // Si no és un usuari estàndard, establim el valor de userId a -1
             $userId = -1;
         }
+        $favorito="LEFT";
+        if ($request->input('favorito')) {
+            $favorito = "RIGHT";
+        }
+        
         $query = 'SELECT r.Id_restaurant, f.Id_favorit, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant FROM tbl_restaurant r
         LEFT JOIN (SELECT MIN(id_imatge) as id_imatge, id_restaurant FROM `tbl_imatge` GROUP BY Id_restaurant) i ON r.Id_restaurant = i.id_restaurant
         LEFT JOIN tbl_imatge i2 ON i2.Id_imatge = i.id_imatge and i.id_restaurant = i2.id_restaurant
-        LEFT JOIN tbl_favorit f ON r.Id_restaurant = f.Id_restaurant AND f.Id_usuari = ?';
+        '.$favorito.' JOIN tbl_favorit f ON r.Id_restaurant = f.Id_restaurant AND f.Id_usuari = ?';
+
         $queryConditions = '';
         $queryParams = [];
         array_push($queryParams, $userId);
@@ -223,6 +229,7 @@ class RestauranteController extends Controller
                 AND c.Nom_cuina IN (' .$tipoCocina .')
             )';
         }
+        
         $restaurantes = DB::select($query. $queryConditions, $queryParams);
     
         foreach($restaurantes as $restaurante) {
@@ -264,6 +271,12 @@ class RestauranteController extends Controller
         
         $query = 'SELECT `tbl_tag`.*, `tbl_tag_intermitja`.* FROM `tbl_tag` LEFT JOIN `tbl_tag_intermitja` ON `tbl_tag_intermitja`.`Id_tag` = `tbl_tag`.`Id_tag` 
         WHERE Id_usuari = ' . $idUsuario . ' AND Id_restaurant = ' . $id_restaurant;
+        $tags = DB::select($query);
+        return response()->json($tags, 200);
+    }
+
+    public function getCategorias() {        
+        $query = 'SELECT `tbl_categoria`.*, `tbl_tipus_categoria`.* FROM `tbl_categoria` LEFT JOIN `tbl_tipus_categoria` ON `tbl_tipus_categoria`.`Id_categoria` = `tbl_categoria`.`Id_categoria`';
         $tags = DB::select($query);
         return response()->json($tags, 200);
     }

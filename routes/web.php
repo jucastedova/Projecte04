@@ -35,6 +35,7 @@ Route::post('getTags', [RestauranteController::class, 'getTags']);
 Route::post('eliminarTag', [RestauranteController::class, 'eliminarTag']);
 Route::post('addTag', [RestauranteController::class, 'addTag']);
 Route::post('getRestaurantTags', [RestauranteController::class, 'getRestaurantTags']);
+Route::post('getCategorias', [RestauranteController::class, 'getCategorias']);
 
 /////////////////////////////////////////////
 /////////////////UsuariController////////////
@@ -51,3 +52,4 @@ Route::get('cerrarSesion', [UsuariController::class, 'cerrarSesion']);
 Route::get('dv_admin', [UsuariController::class, 'viewDv_admin']);
 Route::get('dv_home', [UsuariController::class, 'viewDv_home']);
 Route::get('dv_tags', [UsuariController::class, 'viewDv_tags']);
+Route::get('gestionarTagsAdmin', [UsuariController::class, 'gestionarTagsAdmin']); 
