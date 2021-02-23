@@ -192,15 +192,8 @@ class RestauranteController extends Controller
         }
         if($flagTag) {
             if ($nombreRestaurante != '') {
-                $query = 'SELECT r.Id_restaurant, f.Id_favorit, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant, t.* FROM tbl_restaurant r
-                LEFT JOIN (SELECT MIN(id_imatge) as id_imatge, id_restaurant FROM `tbl_imatge` GROUP BY Id_restaurant) i ON r.Id_restaurant = i.id_restaurant
-                LEFT JOIN tbl_imatge i2 ON i2.Id_imatge = i.id_imatge and i.id_restaurant = i2.id_restaurant
-                LEFT JOIN tbl_favorit f ON r.Id_restaurant = f.Id_restaurant AND f.Id_usuari = ?
-                LEFT JOIN tbl_tag_intermitja inter ON inter.Id_restaurant = r.Id_restaurant 
-                LEFT JOIN tbl_tag t ON inter.Id_tag = t.Id_tag';
                 $tag = substr($nombreRestaurante, 1);
                 $queryConditions .= ($queryConditions != '' ?' AND ':' WHERE ') .' EXISTS (SELECT inter.Id_restaurant FROM tbl_tag_intermitja inter INNER JOIN tbl_tag t ON inter.Id_tag = t.Id_tag WHERE inter.Id_restaurant = r.Id_restaurant AND Nom_tag IN (\''.$tag.'\'))';
-                // array_push($queryParams, '%'.$tag.'%');
             }
         } else {
             if ($nombreRestaurante != '') {
