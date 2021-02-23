@@ -46,7 +46,7 @@ function renderCategorias() {
     renderedResults = '';
     //Ajax
     var ajax = new objetoAjax();
-    ajax.open('POST', '../getCategorias', true);
+    ajax.open('POST', 'getCategorias', true);
     var datasend = new FormData();
     datasend.append('_token', token);
     ajax.onreadystatechange = function() {
@@ -110,7 +110,7 @@ function actualizarCategoria(id) {
     datasend.append('Nombre_categoria', Nombre_categoria);
     datasend.append('Id_categoria', id);
     datasend.append('_token', token);
-    ajax.open('POST', '../updateCategoria', true);
+    ajax.open('POST', 'updateCategoria', true);
 
     ajax.onreadystatechange = function() {
         if (ajax.status == 200 && ajax.readyState == 4) {
@@ -152,7 +152,7 @@ function añadirCategoria(e) {
         var datasend = new FormData();
         datasend.append('cat', tagValue);
         datasend.append('_token', token);
-        ajax.open('POST', '../addCategoria', true);
+        ajax.open('POST', 'addCategoria', true);
 
         ajax.onreadystatechange = function() {
             if (ajax.status == 200 && ajax.readyState == 4) {
@@ -194,7 +194,7 @@ function eliminarCategorias(id_cat) {
         var datasend = new FormData();
         datasend.append('_token', token);
         datasend.append('id_cat', id_cat);
-        ajax.open('POST', '../eliminarCategoria', true);
+        ajax.open('POST', 'eliminarCategoria', true);
 
         ajax.send(datasend);
 
