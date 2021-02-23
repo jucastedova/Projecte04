@@ -84,6 +84,7 @@
 
             @php
                 $trobat = false;
+                $trobatCat = false;
             @endphp
                 @foreach ($lista_cuines as $cuina)
                         @php
@@ -105,6 +106,30 @@
                         <div class="container-tipo-cocina">
                             <label for="{{$cuina->Id_cuina}}">{{$cuina->Nom_cuina}}</label>
                             <input class="filtro--tipo_cocina" type="checkbox" id="tiposCocinas[]" name="tiposCocinas[]" value="{{$cuina->Nom_cuina}}">
+                        </div> 
+                    @endif
+                @endforeach
+
+                @foreach ($lista_categories as $cat)
+                        @php
+                            $trobatCat = false;
+                        @endphp
+                    @foreach ($categorias_seleccionadas as $categoria_seleccionada)
+                        @if ($categoria_seleccionada->Id_categoria == $cat->Id_categoria)
+                            @php
+                                $trobatCat = true;
+                            @endphp
+                        @endif
+                    @endforeach 
+                    @if ($trobatCat)
+                        <div class="container-tipo-categoria">
+                            <label for="{{$cat->Id_categoria}}">{{$cat->Nom_categoria}}</label>
+                            <input class="filtro--tipo_categoria" type="checkbox" id="tiposCategorias[]" name="tiposCategorias[]" value="{{$cat->Nom_categoria}}" checked>
+                        </div>
+                    @else
+                        <div class="container-tipo-categoria">
+                            <label for="{{$cat->Id_categoria}}">{{$cat->Nom_categoria}}</label>
+                            <input class="filtro--tipo_categoria" type="checkbox" id="tiposCategorias[]" name="tiposCategorias[]" value="{{$cat->Nom_categoria}}">
                         </div> 
                     @endif
                 @endforeach 

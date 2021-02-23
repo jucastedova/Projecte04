@@ -82,13 +82,15 @@ class RestauranteController extends Controller
             //Método para actualizar restaurantes
             $restaurant=DB::table('tbl_restaurant')->WHERE('Id_restaurant','=', $id)->first(); 
             $lista_cuines = DB::table('tbl_cuina')->get();
+            $lista_categories = DB::table('tbl_categoria')->get();
             $cocinas_seleccionadas = DB::select("SELECT t.id_tipus_cuina, t.id_restaurant, t.id_cuina, c.Nom_cuina FROM tbl_tipus_cuina AS t INNER JOIN tbl_cuina AS c ON t.Id_cuina = c.Id_cuina WHERE t.Id_restaurant = $id");
+            $categorias_seleccionadas = DB::select("SELECT tc.*, c.* FROM tbl_tipus_categoria AS tc INNER JOIN tbl_categoria AS c ON tc.Id_categoria = c.Id_categoria WHERE tc.Id_restaurant = $id");
             $primeraImatge = DB::select("SELECT r.Id_restaurant, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant FROM tbl_restaurant r
             LEFT JOIN (SELECT MIN(id_imatge) as id_imatge, id_restaurant FROM `tbl_imatge` GROUP BY Id_restaurant) i ON r.Id_restaurant = i.id_restaurant
             LEFT JOIN tbl_imatge i2 ON i2.Id_imatge = i.id_imatge and i.id_restaurant = i2.id_restaurant WHERE r.Id_restaurant = $id");
             //Devolver esos datos y mostrarlos
             DB::commit();
-            return view('dv_modificar', compact('restaurant', 'lista_cuines', 'cocinas_seleccionadas', 'primeraImatge')); 
+            return view('dv_modificar', compact('restaurant', 'lista_cuines', 'cocinas_seleccionadas', 'primeraImatge', 'categorias_seleccionadas', 'lista_categories')); 
         } catch (\Throwable $th) {
             DB::rollBack();
             echo $th;
@@ -99,10 +101,13 @@ class RestauranteController extends Controller
         try {
             DB::beginTransaction();
             //Recoge datos restaurante
-            $datos_restaurante=request()->except('_token', 'continuar', '_method', 'tiposCocinas', 'imatge', 'userId', 'destinatario', 'nom_gerent');
+            $datos_restaurante=request()->except('_token', 'continuar', '_method', 'tiposCocinas', 'tiposCategorias', 'imatge', 'userId', 'destinatario', 'nom_gerent');
             $id = $datos_restaurante['Id_restaurant'];
             //Recoge datos cocina
             $datos_cocinas=request()->except('_token', 'continuar', '_method', 'Nom_restaurant', 'Adreca_restaurant', 'Preu_mitja_restaurant', 'Correu_gerent_restaurant', 'Descripcio_restaurant');
+            //Recoge datos categorias
+            $datos_categorias=request()->except('_token', 'continuar', '_method', 'Nom_restaurant', 'Adreca_restaurant', 'Preu_mitja_restaurant', 'Correu_gerent_restaurant', 'Descripcio_restaurant', 'tiposCocinas', 'imatge');
+            
             //Recoge datos imagen
             $datos_imagen = request()->except('_token', 'continuar', '_method');
             
@@ -111,6 +116,8 @@ class RestauranteController extends Controller
             
             //Eliminamos el tipo de cocina del restaurante modificado
             DB::table('tbl_tipus_cuina')->where('Id_restaurant', '=', $id)->delete();
+            //Eliminamos el tipo de categorias del restaurante modificado
+            DB::table('tbl_tipus_categoria')->where('Id_restaurant', '=', $id)->delete();
             
             //Comprobamos si esta inicializada la llave 'tiposCocinas'
             if(isset($datos_cocinas['tiposCocinas'])){
@@ -119,9 +126,19 @@ class RestauranteController extends Controller
                     $cocinas = DB::table('tbl_cuina')
                     ->where([['Nom_cuina','=',$tipoCocina]])->get();
                     foreach($cocinas as $cocina){
-                        echo $cocina->Id_cuina;
-                        echo $id;
                         DB::table('tbl_tipus_cuina')->insert(['Id_restaurant'=>$id, 'Id_cuina'=>$cocina->Id_cuina]);
+                    }
+                }
+            }
+
+            //Comprobamos si esta inicializada la llave 'tiposCategorias'
+            if(isset($datos_categorias['tiposCategorias'])){
+                $tipos_categorias = $datos_categorias['tiposCategorias'];
+                foreach($tipos_categorias as $tipoCategoria){
+                    $categorias = DB::table('tbl_categoria')
+                    ->where([['Nom_categoria','=',$tipoCategoria]])->get();
+                    foreach($categorias as $cat){
+                        DB::table('tbl_tipus_categoria')->insert(['Id_restaurant'=>$id, 'Id_categoria'=>$cat->Id_categoria]);
                     }
                 }
             }
@@ -337,7 +354,9 @@ class RestauranteController extends Controller
         try {
             DB::table('tbl_categoria')->where('Id_categoria', '=', $id_cat)->delete();
             DB::table('tbl_tipus_categoria')->where('Id_categoria', '=', $id_cat)->delete();
+            return response()->json("OK");
         } catch (\Throwable $th) {
+            return response()->json("KO");
         }
     }
 
@@ -345,17 +364,13 @@ class RestauranteController extends Controller
         //Recogemos todos los datos
         $datos=$request->except('_token');
         $cat = $datos['cat'];
-        // $id_restaurant = $datos['id_restaurant'];
-        // $id_usuari = $datos['id_usuari'];
 
         try {
             //Insertamos el tag en la tbl_tag
             DB::table('tbl_categoria')->insertGetId(['Nom_categoria'=>$cat]);
-            //Recogemos la id del tag insertado
-            // $id_tag = DB::getPdo()->lastInsertId();
-            //Insertamos el registro en la tabla intermedia
-            // DB::table('tbl_tag_intermitja')->insertGetId(['Id_restaurant'=>$id_restaurant, 'Id_tag'=>$id_tag, 'Id_usuari'=>$id_usuari]);
+            return response()->json("OK");
         } catch (\Throwable $th) {
+            return response()->json("KO");
         }
     }
 
@@ -366,8 +381,10 @@ class RestauranteController extends Controller
         $id = $datos['Id_categoria'];
 
         try {
-            DB::table('tbl_categoria')->where('Id_categoria', "=", $id)->update(['Nom_categoria'=>$nombre]);            
+            DB::table('tbl_categoria')->where('Id_categoria', "=", $id)->update(['Nom_categoria'=>$nombre]);
+            return response()->json("OK");
         } catch (\Throwable $th) {
+            return response()->json("KO");
         }
     }
 

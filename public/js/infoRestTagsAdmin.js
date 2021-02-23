@@ -29,6 +29,16 @@ function closeModalCat(id) {
     modalCategoria.style.display = "none";
 }
 
+function displayMsg() {
+    msgTag.classList.remove('display-none');
+    msgTag.classList.add('msgTagDisplay');
+}
+
+function removeMsg() {
+    msgTag.classList.remove('msgTagDisplay');
+    msgTag.classList.add('display-none');
+}
+
 function renderCategorias() {
     //Recogemos variables de la pagina
     section = document.getElementById('tbodyGestorAdmin');
@@ -94,14 +104,24 @@ function actualizarCategoria(id) {
 
     ajax.onreadystatechange = function() {
         if (ajax.status == 200 && ajax.readyState == 4) {
-            msgTag.innerHTML = "Categoria actualizada!";
-            closeModalCat(id);
-            renderCategorias();
+            var respuesta = JSON.parse(ajax.responseText);
+            if (respuesta == "OK") {
+                closeModalCat(id);
+                renderCategorias();
+                msgTag.innerHTML = "Categoria actualizada!";
+            } else {
+                closeModalCat(id);
+                msgTag.innerHTML = "Error: Ésta categoria ya existe!";
+                console.log('App::Problems on comentarios request: ' + ajax.statusText);
+            }
+
         } else {
-            msgTag.innerHTML = "Categoria no actualizada!";
-            console.log('App::Problems on comentarios request: ' + ajax.statusText);
+            msg.innerHTML = "Algo ha fallado!";
         }
+
         setTimeout(function() {
+            msgTag.classList.remove('msgTagDisplay');
+            msgTag.classList.add('display-none');
             msgTag.innerHTML = "";
         }, 3000);
     }
@@ -124,15 +144,26 @@ function añadirCategoria(e) {
         ajax.open('POST', '../addCategoria', true);
 
         ajax.onreadystatechange = function() {
+            console.log(ajax.status + " " + ajax.readyState);
             if (ajax.status == 200 && ajax.readyState == 4) {
-                msgTag.innerHTML = "Categoria añadida!";
-                tag.value = "";
-                renderCategorias();
+                var respuesta = JSON.parse(ajax.responseText);
+                if (respuesta == "OK") {
+                    displayMsg();
+                    msgTag.innerHTML = "Categoria añadida!";
+                    renderCategorias();
+                } else {
+                    displayMsg();
+                    msgTag.innerHTML = "Error: Ésta categoria ya existe!";
+                }
             } else {
-                msgTag.innerHTML = "Categoria no añadida!";
-                console.log('App::Problems on comentarios request: ' + ajax.statusText);
+                msgTag.innerHTML = "Algo ha fallado!";
             }
+
+            tag.value = "";
+
             setTimeout(function() {
+                msgTag.classList.remove('msgTagDisplay');
+                msgTag.classList.add('display-none');
                 msgTag.innerHTML = "";
             }, 3000);
         }
@@ -159,15 +190,26 @@ function eliminarCategorias(id_cat) {
 
         ajax.onreadystatechange = function() {
             if (ajax.readyState == 4 && ajax.status == 200) {
-                // Imprimimos en pantalla un mensaje para el usuario
-                msg.innerHTML = "Categoria borrada correctamente!";
+                var respuesta = JSON.parse(ajax.responseText);
 
-                //Refrescamos los datos
-                renderCategorias();
+                if (respuesta == "OK") {
+                    // Imprimimos en pantalla un mensaje para el usuario
+                    msg.innerHTML = "Categoria borrada correctamente!";
+                    //Refrescamos los datos
+                    renderCategorias();
+                } else {
+                    // Imprimimos en pantalla un mensaje para el usuario
+                    msg.innerHTML = "Error: No se puede borrar una categoria en uso!";
+                    //Refrescamos los datos
+                    renderCategorias();
+                }
+
             } else {
                 msg.innerHTML = "Algo ha fallado!";
             }
             setTimeout(function() {
+                msgTag.classList.remove('msgTagDisplay');
+                msgTag.classList.add('display-none');
                 msg.innerHTML = "";
             }, 3000);
         }

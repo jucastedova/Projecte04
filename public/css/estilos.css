@@ -981,3 +981,16 @@ footer div {
     background-color: #00CCBC;
     color: white;
 }
+
+.msgTagDisplay {
+    display: block;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 255, 0, 0.561);
+    padding: 15px 50px;
+    font-size: 25px;
+    border: 1px solid black;
+    border-radius: 15px;
+}

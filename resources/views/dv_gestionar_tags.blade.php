@@ -50,7 +50,7 @@
         <table id="gestorTable">
             <tr>
                 <th>ID</th>
-                <th>Tag</th>
+                <th>Categoria</th>
                 <th>Opciones</th>
             </tr>
             <tbody id="tbodyGestorAdmin">
@@ -60,7 +60,7 @@
         <div class="input">
             <input type="text" id="cat" placeholder="Añade una categoria..." onkeyup="añadirCategoria(event)">
         </div>
-        <p id="msgTag"></p>
+        <p id="msgTag" class="display-none"></p>
     </div>
 
     <footer>
