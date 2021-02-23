@@ -55,11 +55,11 @@
                 <input type="hidden" id="destinatario" name="nom_gerent" value="{{$restaurant->Nom_gerent_restaurant}}">
         </div>
         <div class="row">
-            <div class="col-sm justify-content-center">
+            <div class="col-sm">
                 <label>Nombre del restaurante</label><br>
                 <input type="text" id="Nom_restaurant" name="Nom_restaurant" value="{{$restaurant->Nom_restaurant}}"><br><br>
             </div>
-            <div class="col-sm justify-content-center">
+            <div class="col-sm">
                 <label>Precio</label><br>
                 <input type="text" id="Preu_mitja_restaurant" name="Preu_mitja_restaurant" value="{{$restaurant->Preu_mitja_restaurant}}" required><br><br>
             </div>
@@ -92,6 +92,7 @@
             <div class="col-sm">
                 @php
                 $trobat = false;
+                $trobatCat = false;
                 @endphp
                 @foreach ($lista_cuines as $cuina)
                 @php
@@ -118,55 +119,57 @@
                 @endforeach
             </div>
             <div class="col-sm">
+                @foreach ($lista_categories as $cat)
                 @php
-                $trobat = false;
+                $trobatCat = false;
                 @endphp
-                @foreach ($lista_cuines as $cuina)
+                @foreach ($categorias_seleccionadas as $categoria_seleccionada)
+                @if ($categoria_seleccionada->Id_categoria == $cat->Id_categoria)
                 @php
-                $trobat = false;
-                @endphp
-                @foreach ($cocinas_seleccionadas as $cocina_seleccionada)
-                @if ($cocina_seleccionada->id_cuina == $cuina->Id_cuina)
-                @php
-                $trobat = true;
+                $trobatCat = true;
                 @endphp
                 @endif
                 @endforeach
-                @if ($trobat)
-                <div class="container-tipo-cocina">
-                    <label for="{{$cuina->Id_cuina}}">{{$cuina->Nom_cuina}}</label>
-                    <input class="filtro--tipo_cocina" type="checkbox" id="tiposCocinas[]" name="tiposCocinas[]" value="{{$cuina->Nom_cuina}}" checked>
+                @if ($trobatCat)
+                <div class="container-tipo-categoria">
+                    <label for="{{$cat->Id_categoria}}">{{$cat->Nom_categoria}}</label>
+                    <input class="filtro--tipo_categoria" type="checkbox" id="tiposCategorias[]" name="tiposCategorias[]" value="{{$cat->Nom_categoria}}" checked>
                 </div>
                 @else
-                <div class="container-tipo-cocina">
-                    <label for="{{$cuina->Id_cuina}}">{{$cuina->Nom_cuina}}</label>
-                    <input class="filtro--tipo_cocina" type="checkbox" id="tiposCocinas[]" name="tiposCocinas[]" value="{{$cuina->Nom_cuina}}">
+                <div class="container-tipo-categoria">
+                    <label for="{{$cat->Id_categoria}}">{{$cat->Nom_categoria}}</label>
+                    <input class="filtro--tipo_categoria" type="checkbox" id="tiposCategorias[]" name="tiposCategorias[]" value="{{$cat->Nom_categoria}}">
                 </div>
                 @endif
                 @endforeach
             </div>
         </div>
-
-
-        @foreach ($primeraImatge as $imatge)
-        <div>
-            <img src="data:image/png;base64,{{ chunk_split(base64_encode($imatge->Ruta_Imatge)) }}" style="width:80%" name="{{$imatge->id_imatge}}" id="{{$imatge->id_imatge}}">
+        <div class="row">
+            @foreach ($primeraImatge as $imatge)
+            <div>
+                <img class="img-fluid" src="data:image/png;base64,{{ chunk_split(base64_encode($imatge->Ruta_Imatge)) }}" style="height:400px" name="{{$imatge->id_imatge}}" id="{{$imatge->id_imatge}}"><br><br>
+            </div>
+            @endforeach
         </div>
-        @endforeach
-        <input type="file" name="imatge" id="imatge" accept="image/png"><br><br>
-        <input type="submit" class="btn btn-outline-dark" value="continuar" name="continuar" id="submit--control">
-        <div id="error--checked"></div>
-        </form>
-
-        @if ($errors->any())
-        <div class="errores">
-            <ul class="error">
-                @foreach ($errors->all() as $error)
-                <li>{{$error}}</li>
-                @endforeach
-            </ul>
+        <div class="row">
+            <input type="file" name="imatge" id="imatge" accept="image/png"><br><br>
         </div>
-        @endif
+        <div class="row">
+            <input type="submit" class="btn btn-succes" value="continuar" name="continuar" id="submit--control">
+            <div id="error--checked"></div>
+            </form>
+        </div>
+        <div class="row">
+            @if ($errors->any())
+            <div class="errores">
+                <ul class="error">
+                    @foreach ($errors->all() as $error)
+                    <li>{{$error}}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+        </div>
     </div>
     <footer>
         <div>
