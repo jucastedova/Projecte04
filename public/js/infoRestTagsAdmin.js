@@ -155,7 +155,6 @@ function añadirCategoria(e) {
         ajax.open('POST', '../addCategoria', true);
 
         ajax.onreadystatechange = function() {
-            console.log(ajax.status + " " + ajax.readyState);
             if (ajax.status == 200 && ajax.readyState == 4) {
                 var respuesta = JSON.parse(ajax.responseText);
                 if (respuesta == "OK") {
