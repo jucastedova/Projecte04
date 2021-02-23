@@ -207,9 +207,7 @@ class RestauranteController extends Controller
         }
 
         $query = 'SELECT r.Id_restaurant, f.Id_favorit, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant FROM tbl_restaurant r
-        LEFT JOIN (SELECT MIN(id_imatge) as id_imatge, id_restaurant FROM tbl_imatge GROUP BY Id_restaurant) i 
-            ON r.Id_restaurant = i.id_restaurant
-        LEFT JOIN tbl_imatge i2 ON i2.Id_imatge = i.id_imatge and i.id_restaurant = i2.id_restaurant
+        LEFT JOIN tbl_imatge i2 ON i2.Id_restaurant = r.Id_restaurant
         LEFT JOIN tbl_favorit f ON f.Id_usuari = ? AND r.Id_restaurant = f.Id_restaurant';
 
         $queryConditions = '';
