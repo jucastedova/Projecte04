@@ -356,24 +356,15 @@ input{
     }
 }
 
-
-/* REVIEW */
-
 #section-3 .container-img {
     position: relative;
 }
-
-
-/* END REVIEW */
 
 #section-3 .container-img img {
     width: 100%;
     height: 200px;
     object-fit: cover;
 }
-
-
-/* REVIEW */
 
 .fa-star {
     position: absolute;
@@ -408,9 +399,6 @@ i.fas.fa-star:after {
     color: rgba(8, 8, 8, 0.25);
 }
 
-
-/* END REVIEW */
-
 #section-3 .container-details {
     padding: 0 20px;
 }
@@ -431,11 +419,20 @@ i.fas.fa-star:after {
     cursor: pointer;
 }
 
-@media (max-width: 412px) and (min-width:320px) {
+.container--filter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+@media (max-width: 675px) and (min-width:320px) {
     .container--filter {
         max-width: 80%;
         margin: 40px auto;
         margin-left: 20px;
+        margin-bottom: 10px;
     }
 }
 
@@ -445,13 +442,7 @@ i.fas.fa-star:after {
     }
 }
 
-.container--filter {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 40px;
-}
+
 
 .container--filter .form-control {
     width: 313px;
@@ -482,7 +473,7 @@ i.fas.fa-star:after {
     z-index: 5;
     padding: 10px 30px;
     border-radius: 5px;
-    width: 229px;
+    min-width: 229px;
 }
 
 .close--modal {
@@ -612,7 +603,8 @@ i.fas.fa-star:after {
     /* Stay in place */
     z-index: 100;
     /* Sit on top */
-    padding-top: 100px;
+    /* padding-top: 100px; */
+    padding-top: 0;
     /* Location of the box */
     top: 50%;
     left: 50%;
@@ -627,8 +619,6 @@ i.fas.fa-star:after {
     /* Fallback color */
     background-color: rgba(0, 0, 0, 0.4);
     /* Black w/ opacity */
-    /* REVIEW */
-    /* END REVIEW */
 }
 
 
@@ -655,6 +645,12 @@ i.fas.fa-star:after {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     align-items: center;
+}
+
+#modal-filter form .container-tipo-cocina label {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;  
 }
 
 #modal-filter form div.container--tag-categorias p {
@@ -733,10 +729,11 @@ i.fas.fa-star:after {
     margin-bottom: 28px;
 }
 
-@media (max-width:488px) and (min-width:320px) {
+@media (max-width:675px) and (min-width:320px) {
     .dv_admin .registros {
         display: flex;
         flex-direction: column;
+        justify-content: center;
     }
     .dv_admin .registros a {
         margin-top: 20px;
