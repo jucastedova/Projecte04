@@ -29,6 +29,16 @@ function closeModalCat(id) {
     modalCategoria.style.display = "none";
 }
 
+function displayMsg() {
+    msgTag.classList.remove('display-none');
+    msgTag.classList.add('msgTagDisplay');
+}
+
+function removeMsg() {
+    msgTag.classList.remove('msgTagDisplay');
+    msgTag.classList.add('display-none');
+}
+
 function renderCategorias() {
     //Recogemos variables de la pagina
     section = document.getElementById('tbodyGestorAdmin');
@@ -57,16 +67,26 @@ function renderCategorias() {
                 renderedResults += '<button class="btn btn-info" onclick="openModalCat(' + respuesta[i].Id_categoria + ')">Modificar</button>';
                 renderedResults += '</td>';
                 renderedResults += '</tr>';
-                renderedResults += '<div class="modal-tag" id="modal-cat' + respuesta[i].Id_categoria + '">';
-                renderedResults += '<div class="modal-content-tag">';
-                renderedResults += '<div class="close-modal-tag">';
-                renderedResults += '<span class="title-tag">Modificar categoria</span>';
-                renderedResults += '<span class="close-tag" onclick="closeModalCat(' + respuesta[i].Id_categoria + ')">&times;</span>';
+                renderedResults += '<div class="modal-cat" id="modal-cat' + respuesta[i].Id_categoria + '">';
+                renderedResults += '<div class="modal-content-cat">';
+                renderedResults += '<div class="close-modal-cat">';
+                renderedResults += '<span class="title-cat">Modificar categoria</span>';
+                renderedResults += '<span class="close-cat" onclick="closeModalCat(' + respuesta[i].Id_categoria + ')">&times;</span>';
                 renderedResults += '</div>';
-                renderedResults += '<div class="form-modal-tag">';
-                renderedResults += '<input type="text" id="Id_categoria' + respuesta[i].Id_categoria + '" value="' + respuesta[i].Id_categoria + '" readonly>';
-                renderedResults += '<input type="text" id="Nombre_categoria' + respuesta[i].Id_categoria + '" value="' + respuesta[i].Nom_categoria + '">';
-                renderedResults += '<button class="btn btn-info" onclick="actualizarCategoria(' + respuesta[i].Id_categoria + ')">Actualizar</button>';
+                renderedResults += '<div class="form-modal-cat">';
+                renderedResults += '<div class="containerFlex">';
+                renderedResults += '<div class="labelCat">';
+                renderedResults += '<label for="Id_categoria">ID</label><br>';
+                renderedResults += '<input type="text" class="inputCat" id="Id_categoria' + respuesta[i].Id_categoria + '" value="' + respuesta[i].Id_categoria + '" readonly><br>';
+                renderedResults += '</div>';
+                renderedResults += '<div class="labelCat">';
+                renderedResults += '<label for="Nombre_categoria">Categoria</label><br>';
+                renderedResults += '<input type="text" class="inputCat" id="Nombre_categoria' + respuesta[i].Id_categoria + '" value="' + respuesta[i].Nom_categoria + '">';
+                renderedResults += '</div>';
+                renderedResults += '</div>';
+                renderedResults += '<div class="containerFlex">';
+                renderedResults += '<button class="btn btn-info btn-margin" onclick="actualizarCategoria(' + respuesta[i].Id_categoria + ')">Actualizar</button>';
+                renderedResults += '</div>';
                 renderedResults += '</div>';
                 renderedResults += '</div>';
                 renderedResults += '</div>';
@@ -94,14 +114,25 @@ function actualizarCategoria(id) {
 
     ajax.onreadystatechange = function() {
         if (ajax.status == 200 && ajax.readyState == 4) {
-            msgTag.innerHTML = "Categoria actualizada!";
-            closeModalCat(id);
-            renderCategorias();
+            var respuesta = JSON.parse(ajax.responseText);
+            if (respuesta == "OK") {
+                closeModalCat(id);
+                displayMsg();
+                renderCategorias();
+                msgTag.innerHTML = "Categoria actualizada!";
+            } else {
+                closeModalCat(id);
+                displayMsg();
+                msgTag.innerHTML = "Error: Categoria existente!";
+            }
+
         } else {
-            msgTag.innerHTML = "Categoria no actualizada!";
-            console.log('App::Problems on comentarios request: ' + ajax.statusText);
+            displayMsg();
+            msgTag.innerHTML = "Error!";
         }
+
         setTimeout(function() {
+            removeMsg();
             msgTag.innerHTML = "";
         }, 3000);
     }
@@ -124,15 +155,26 @@ function añadirCategoria(e) {
         ajax.open('POST', '../addCategoria', true);
 
         ajax.onreadystatechange = function() {
+            console.log(ajax.status + " " + ajax.readyState);
             if (ajax.status == 200 && ajax.readyState == 4) {
-                msgTag.innerHTML = "Categoria añadida!";
-                tag.value = "";
-                renderCategorias();
+                var respuesta = JSON.parse(ajax.responseText);
+                if (respuesta == "OK") {
+                    displayMsg();
+                    msgTag.innerHTML = "Categoria añadida!";
+                    renderCategorias();
+                } else {
+                    displayMsg();
+                    msgTag.innerHTML = "Error: Categoria existente!";
+                }
             } else {
-                msgTag.innerHTML = "Categoria no añadida!";
-                console.log('App::Problems on comentarios request: ' + ajax.statusText);
+                displayMsg();
+                msgTag.innerHTML = "Error!";
             }
+
+            tag.value = "";
+
             setTimeout(function() {
+                removeMsg()
                 msgTag.innerHTML = "";
             }, 3000);
         }
@@ -159,15 +201,27 @@ function eliminarCategorias(id_cat) {
 
         ajax.onreadystatechange = function() {
             if (ajax.readyState == 4 && ajax.status == 200) {
-                // Imprimimos en pantalla un mensaje para el usuario
-                msg.innerHTML = "Categoria borrada correctamente!";
+                var respuesta = JSON.parse(ajax.responseText);
 
-                //Refrescamos los datos
-                renderCategorias();
+                if (respuesta == "OK") {
+                    displayMsg();
+                    // Imprimimos en pantalla un mensaje para el usuario
+                    msg.innerHTML = "Categoria borrada!";
+                    //Refrescamos los datos
+                    renderCategorias();
+                } else {
+                    displayMsg()
+                        // Imprimimos en pantalla un mensaje para el usuario
+                    msg.innerHTML = "Error: Categoria en uso!";
+                    //Refrescamos los datos
+                    renderCategorias();
+                }
             } else {
+                displayMsg();
                 msg.innerHTML = "Algo ha fallado!";
             }
             setTimeout(function() {
+                removeMsg();
                 msg.innerHTML = "";
             }, 3000);
         }
