@@ -52,6 +52,7 @@ input[type='submit'] {
     padding: 0;
     color: #b70000;
 }
+/* FIN ERRORES */
 
 .correcto {
     list-style: none;
@@ -59,8 +60,20 @@ input[type='submit'] {
     color: #126d02;
 }
 
+@media (min-width: 675px) {
+    .container-top {
+        display: flex;
+        justify-content: center;
+    }
+}
 
-/* FIN ERRORES */
+@media (max-width: 674px) {
+    .container-btn-tags {
+        width: 94%;
+        margin: 0 auto;
+        margin-bottom: 18px;
+    }
+}
 
 
 /* h3 {
@@ -279,6 +292,12 @@ input{
     padding: 10px 30px;
     border-radius: 5px;
     width: 350px;
+}
+
+@media(max-width: 429px) {
+    .modal-tag {
+        width: 233px;
+    }
 }
 
 .close-modal-tag {
@@ -595,6 +614,26 @@ i.fas.fa-star:after {
 .container--map {
     margin-bottom: 18px;
     margin-top: 30px;
+}
+
+.icon-map {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* REVIEW */
+#section-3 .container-details .icon-map h4,
+.fa-map-marked-alt {
+    color: #00988c;
+    transition: color 0.5s ease;
+}
+#section-3 .container-details .icon-map h4:hover {
+    color: #02443f;
+}
+
+.fa-map-marked-alt:hover {
+    color: #02443f;
 }
 
 .modal-map {
