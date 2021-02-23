@@ -46,9 +46,8 @@
         @endif
     </nav>
     
-    <div class="gestorTags">
-        <button>Añadir</button>
-        <table>
+    <div class="gestorCategorias">
+        <table id="gestorTable">
             <tr>
                 <th>ID</th>
                 <th>Tag</th>
@@ -57,11 +56,13 @@
             <tbody id="tbodyGestorAdmin">
 
             </tbody>
-            <p id="msgTag"></p>
         </table>
+        <div class="input">
+            <input type="text" id="cat" placeholder="Añade una categoria..." onkeyup="añadirCategoria(event)">
+        </div>
+        <p id="msgTag"></p>
     </div>
 
-    <!-- END Modal Map -->
     <footer>
         <div>
             <h3>Descubre Deliveroo</h3>

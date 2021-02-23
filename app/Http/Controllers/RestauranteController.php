@@ -40,6 +40,16 @@ class RestauranteController extends Controller
                     DB::table('tbl_tipus_cuina')->insertGetId(['Id_restaurant'=>$data, 'Id_cuina'=>$cocina->Id_cuina]);
                 }
             }
+
+            $tipos_categorias = $datos['tiposCategoria'];
+    
+            foreach($tipos_categorias as $tipoCat){
+                $categorias = DB::table('tbl_categoria')
+                ->where([['Nom_categoria','=',$tipoCat]])->get();
+                foreach($categorias as $cat){
+                    DB::table('tbl_tipus_categoria')->insertGetId(['Id_restaurant'=>$data, 'Id_categoria'=>$cat->Id_categoria]);
+                }
+            }
     
             // Metodo antiguo de almacenamiento para que no pete
             $img = $request->file('imatge')->getRealPath();
@@ -172,6 +182,7 @@ class RestauranteController extends Controller
         $precioMedio = $request->input('precioMedio');
         $valoracion = $request->input('valoracion');
         $tipoCocina = $request->input('tipoCocina');
+        $tipoCat = $request->input('tipoCat');
         $userId = $request->input('userId');
         $flagTag = $this->buscarPorTag($nombreRestaurante);
         if ($userId == '') { // Si no és un usuari estàndard, establim el valor de userId a -1
@@ -220,6 +231,16 @@ class RestauranteController extends Controller
                 AND c.Nom_cuina IN (' .$tipoCocina .')
             )';
         }
+        if ($tipoCat != '') {
+            $queryConditions .= ($queryConditions != '' ?' AND ':' WHERE ') . ' EXISTS (
+                SELECT Id_tipus_categoria 
+                FROM tbl_tipus_categoria tcat
+                INNER JOIN tbl_categoria cat 
+                ON tcat.Id_categoria = cat.Id_categoria 
+                WHERE tcat.Id_restaurant = r.Id_restaurant 
+                AND cat.Nom_categoria IN (' .$tipoCat .')
+            )';
+        }
         
         $restaurantes = DB::select($query. $queryConditions, $queryParams);
     
@@ -243,6 +264,7 @@ class RestauranteController extends Controller
             DB::table('tbl_imatge')->where('Id_restaurant', '=', $id)->delete();
             DB::table('tbl_tipus_cuina')->where('Id_restaurant', '=', $id)->delete();
             DB::table('tbl_valoracio')->where('Id_restaurant', '=', $id)->delete();
+            DB::table('tbl_tipus_categoria')->where('Id_restaurant', '=', $id)->delete();
             DB::table('tbl_restaurant')->where('Id_restaurant', '=', $id)->delete();
             DB::commit();
             return redirect('dv_admin');
@@ -270,12 +292,6 @@ class RestauranteController extends Controller
         return response()->json($tags, 200);
     }
 
-    public function getCategorias() {        
-        $query = 'SELECT `tbl_categoria`.*, `tbl_tipus_categoria`.* FROM `tbl_categoria` LEFT JOIN `tbl_tipus_categoria` ON `tbl_tipus_categoria`.`Id_categoria` = `tbl_categoria`.`Id_categoria`';
-        $tags = DB::select($query);
-        return response()->json($tags, 200);
-    }
-
     public function addTag(Request $request) {
         //Recogemos todos los datos
         $datos=$request->except('_token');
@@ -299,6 +315,51 @@ class RestauranteController extends Controller
         try {
             DB::table('tbl_tag')->where('Id_Tag', '=', $id_tag)->delete();
             DB::table('tbl_tag_intermitja')->where('Id_Tag', '=', $id_tag)->delete();
+        } catch (\Throwable $th) {
+        }
+    }
+
+    public function getCategorias() {        
+        $query = 'SELECT `tbl_categoria`.* FROM `tbl_categoria`';
+        $categorias = DB::select($query);
+        return response()->json($categorias, 200);
+    }
+
+    public function eliminarCategoria(Request $request) {
+        $id_cat = $request->input('id_cat');
+        try {
+            DB::table('tbl_categoria')->where('Id_categoria', '=', $id_cat)->delete();
+            DB::table('tbl_tipus_categoria')->where('Id_categoria', '=', $id_cat)->delete();
+        } catch (\Throwable $th) {
+        }
+    }
+
+    public function addCategoria(Request $request) {
+        //Recogemos todos los datos
+        $datos=$request->except('_token');
+        $cat = $datos['cat'];
+        // $id_restaurant = $datos['id_restaurant'];
+        // $id_usuari = $datos['id_usuari'];
+
+        try {
+            //Insertamos el tag en la tbl_tag
+            DB::table('tbl_categoria')->insertGetId(['Nom_categoria'=>$cat]);
+            //Recogemos la id del tag insertado
+            // $id_tag = DB::getPdo()->lastInsertId();
+            //Insertamos el registro en la tabla intermedia
+            // DB::table('tbl_tag_intermitja')->insertGetId(['Id_restaurant'=>$id_restaurant, 'Id_tag'=>$id_tag, 'Id_usuari'=>$id_usuari]);
+        } catch (\Throwable $th) {
+        }
+    }
+
+    public function updateCategoria(Request $request) {
+        //Recogemos todos los datos
+        $datos=$request->except('_token');
+        $nombre = $datos['Nombre_categoria'];
+        $id = $datos['Id_categoria'];
+
+        try {
+            DB::table('tbl_categoria')->where('Id_categoria', "=", $id)->update(['Nom_categoria'=>$nombre]);            
         } catch (\Throwable $th) {
         }
     }

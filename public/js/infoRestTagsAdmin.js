@@ -1,5 +1,5 @@
 window.onload = function() {
-    renderRestaurantTagsAdmin();
+    renderCategorias();
 }
 
 function objetoAjax() {
@@ -17,6 +17,16 @@ function objetoAjax() {
         xmlhttp = new XMLHttpRequest();
     }
     return xmlhttp;
+}
+
+function openModalCat(id) {
+    modalCategoria = document.getElementById('modal-cat' + id);
+    modalCategoria.style.display = "block";
+}
+
+function closeModalCat(id) {
+    modalCategoria = document.getElementById('modal-cat' + id);
+    modalCategoria.style.display = "none";
 }
 
 function renderCategorias() {
@@ -37,14 +47,29 @@ function renderCategorias() {
                 renderedResults = "No hay tags.";
             }
 
+            console.info(respuesta)
+
             for (let i = 0; i < respuesta.length; i++) {
-                renderedResults += '<tr>'
-                renderedResults += '<td>' + respuesta[i].Id_tag + '</td>' + '<td>' + respuesta[i].Nom_tag + '</td>';
+                renderedResults += '<tr>';
+                renderedResults += '<td>' + respuesta[i].Id_categoria + '</td>' + '<td>' + respuesta[i].Nom_categoria + '</td>';
                 renderedResults += '<td>';
-                renderedResults += '<button onclick="eliminarCategorias(' + respuesta[i].Id_tag + ')">Eliminar</button>';
-                renderedResults += '<button onclick="modificarTag(' + respuesta[i].Id_tag + ')">Modificar</button>';
+                renderedResults += '<button class="btn btn-info" onclick="eliminarCategorias(' + respuesta[i].Id_categoria + ')">Eliminar</button>';
+                renderedResults += '<button class="btn btn-info" onclick="openModalCat(' + respuesta[i].Id_categoria + ')">Modificar</button>';
                 renderedResults += '</td>';
-                renderedResults += '</tr>'
+                renderedResults += '</tr>';
+                renderedResults += '<div class="modal-tag" id="modal-cat' + respuesta[i].Id_categoria + '">';
+                renderedResults += '<div class="modal-content-tag">';
+                renderedResults += '<div class="close-modal-tag">';
+                renderedResults += '<span class="title-tag">Modificar categoria</span>';
+                renderedResults += '<span class="close-tag" onclick="closeModalCat(' + respuesta[i].Id_categoria + ')">&times;</span>';
+                renderedResults += '</div>';
+                renderedResults += '<div class="form-modal-tag">';
+                renderedResults += '<input type="text" id="Id_categoria' + respuesta[i].Id_categoria + '" value="' + respuesta[i].Id_categoria + '" readonly>';
+                renderedResults += '<input type="text" id="Nombre_categoria' + respuesta[i].Id_categoria + '" value="' + respuesta[i].Nom_categoria + '">';
+                renderedResults += '<button class="btn btn-info" onclick="actualizarCategoria(' + respuesta[i].Id_categoria + ')">Actualizar</button>';
+                renderedResults += '</div>';
+                renderedResults += '</div>';
+                renderedResults += '</div>';
             }
 
             section.innerHTML = renderedResults;
@@ -55,31 +80,56 @@ function renderCategorias() {
     ajax.send(datasend);
 }
 
-function añadirCategorias(e) {
+function actualizarCategoria(id) {
+    Nombre_categoria = document.getElementById('Nombre_categoria' + id).value;
+    msgTag = document.getElementById('msgTag');
+    var token = document.getElementById('token').getAttribute('content');
+
+    var ajax = new objetoAjax();
+    var datasend = new FormData();
+    datasend.append('Nombre_categoria', Nombre_categoria);
+    datasend.append('Id_categoria', id);
+    datasend.append('_token', token);
+    ajax.open('POST', '../updateCategoria', true);
+
+    ajax.onreadystatechange = function() {
+        if (ajax.status == 200 && ajax.readyState == 4) {
+            msgTag.innerHTML = "Categoria actualizada!";
+            closeModalCat(id);
+            renderCategorias();
+        } else {
+            msgTag.innerHTML = "Categoria no actualizada!";
+            console.log('App::Problems on comentarios request: ' + ajax.statusText);
+        }
+        setTimeout(function() {
+            msgTag.innerHTML = "";
+        }, 3000);
+    }
+    ajax.send(datasend);
+
+}
+
+function añadirCategoria(e) {
     e.which = e.which || e.keyCode;
     if (e.which == 13) {
-        tagValue = document.getElementById('tag').value;
-        tag = document.getElementById('tag');
-        id_restaurant = document.getElementById('id_restaurant').value;
-        id_usuari = document.getElementById('id_usuari').value;
+        tagValue = document.getElementById('cat').value;
+        tag = document.getElementById('cat');
         msgTag = document.getElementById('msgTag');
         var token = document.getElementById('token').getAttribute('content');
 
         var ajax = new objetoAjax();
         var datasend = new FormData();
-        datasend.append('tag', tagValue);
-        datasend.append('id_restaurant', id_restaurant);
-        datasend.append('id_usuari', id_usuari);
+        datasend.append('cat', tagValue);
         datasend.append('_token', token);
-        ajax.open('POST', '../addTag', true);
+        ajax.open('POST', '../addCategoria', true);
 
         ajax.onreadystatechange = function() {
             if (ajax.status == 200 && ajax.readyState == 4) {
-                msgTag.innerHTML = "Tag añadido!";
+                msgTag.innerHTML = "Categoria añadida!";
                 tag.value = "";
-                renderRestaurantTags();
+                renderCategorias();
             } else {
-                msgTag.innerHTML = "Tag no añadido!";
+                msgTag.innerHTML = "Categoria no añadida!";
                 console.log('App::Problems on comentarios request: ' + ajax.statusText);
             }
             setTimeout(function() {
@@ -90,7 +140,7 @@ function añadirCategorias(e) {
     }
 }
 
-function eliminarCategorias(id_tag) {
+function eliminarCategorias(id_cat) {
     opcion = confirm("¿Está seguro de borrar el tag?");
 
     if (opcion == false) {
@@ -102,15 +152,15 @@ function eliminarCategorias(id_tag) {
         var ajax = new objetoAjax();
         var datasend = new FormData();
         datasend.append('_token', token);
-        datasend.append('id_tag', id_tag);
-        ajax.open('POST', '../eliminarTag', true);
+        datasend.append('id_cat', id_cat);
+        ajax.open('POST', '../eliminarCategoria', true);
 
         ajax.send(datasend);
 
         ajax.onreadystatechange = function() {
             if (ajax.readyState == 4 && ajax.status == 200) {
                 // Imprimimos en pantalla un mensaje para el usuario
-                msg.innerHTML = "Tag borrado correctamente!";
+                msg.innerHTML = "Categoria borrada correctamente!";
 
                 //Refrescamos los datos
                 renderCategorias();

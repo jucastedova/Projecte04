@@ -36,6 +36,9 @@ Route::post('eliminarTag', [RestauranteController::class, 'eliminarTag']);
 Route::post('addTag', [RestauranteController::class, 'addTag']);
 Route::post('getRestaurantTags', [RestauranteController::class, 'getRestaurantTags']);
 Route::post('getCategorias', [RestauranteController::class, 'getCategorias']);
+Route::post('eliminarCategoria', [RestauranteController::class, 'eliminarCategoria']);
+Route::post('addCategoria', [RestauranteController::class, 'addCategoria']);
+Route::post('updateCategoria', [RestauranteController::class, 'updateCategoria']);
 
 /////////////////////////////////////////////
 /////////////////UsuariController////////////
