@@ -41,7 +41,17 @@ function markerMap() {
             console.log('Error', error);
             return;
         } else {
-            console.log('Bounds: ', response.results[0].bounds);
+            // REVIEW
+            // var strAdress = response.results[0].text;
+            // console.log('strAdress', strAdress);
+            // console.log('type of strAdress', typeof(strAdress));
+            // var searchAdress = strAdress.search(adrecaRestaurant.value);
+            // console.log('Adreça ', adrecaRestaurant.value);
+            // console.log('tipus adreça', typeof(adrecaRestaurant.value));
+            // console.log('SearcAdress', searchAdress);
+            // END REVIEW
+            // console.log('Bounds: ', response.results[0].bounds);
+            console.log('Response results 0 text: ', response.results[0].text);
             map.fitBounds(response.results[0].bounds);
             map.setZoom(18);
             restMarker = L.marker(response.results[0].latlng, {icon: greenIcon});
