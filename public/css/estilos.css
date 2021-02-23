@@ -481,7 +481,7 @@ i.fas.fa-star:after {
     z-index: 5;
     padding: 10px 30px;
     border-radius: 5px;
-    width: 273px;
+    width: 229px;
 }
 
 .close--modal {
@@ -541,6 +541,7 @@ i.fas.fa-star:after {
 
 .content-marker {
     margin-top: 8px;
+    margin-bottom: 30px;
 }
 
 @media (max-width:1078px) and (min-width:768px) {
@@ -601,6 +602,7 @@ i.fas.fa-star:after {
 
 .container--map {
     margin-bottom: 18px;
+    margin-top: 30px;
 }
 
 .modal-map {
@@ -630,23 +632,44 @@ i.fas.fa-star:after {
 
 
 /* END MAP */
+#modal-filter form div.container--tag-categorias,
+#modal-filter form div.container--precio-valoracion {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    column-gap: 10%; 
+}
+
+
 
 #modal-filter form {
     line-height: 2.2;
 }
 
 #modal-filter form div {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
 }
 
 #modal-filter form .container-tipo-cocina {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+}
+
+#modal-filter form div.container--tag-categorias p {
+    margin: 5px 0;
+}
+
+@media (max-width:425px) {
+    #modal-filter form div.container--tag-categorias {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+    }
 }
 
 #modal-filter form .container-tipo-cocina input {
-    justify-self: start;
+    /* justify-self: start; */
+    justify-self: flex-end;
 }
 
 #modal-filter form input {
@@ -671,6 +694,7 @@ i.fas.fa-star:after {
     display: flex;
     justify-content: space-around;
     margin: 13px 0;
+    flex-direction: row;
 }
 
 #modal-filter form div.form-btn div {

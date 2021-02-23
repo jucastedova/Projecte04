@@ -2,6 +2,23 @@ window.onload = function() {
     renderRestaurantTags();
 }
 
+function objetoAjax() {
+    var xmlhttp = false;
+    try {
+        xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+    } catch (e) {
+        try {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        } catch (E) {
+            xmlhttp = false;
+        }
+    }
+    if (!xmlhttp && typeof XMLHttpRequest != 'undefined') {
+        xmlhttp = new XMLHttpRequest();
+    }
+    return xmlhttp;
+}
+
 function renderRestaurantTags() {
     //Recogemos variables de la pagina
     section = document.getElementById('mostrarTags');
@@ -20,7 +37,7 @@ function renderRestaurantTags() {
     ajax.onreadystatechange = function() {
         if (ajax.status == 200 && ajax.readyState == 4) {
             var respuesta = JSON.parse(ajax.responseText);
-
+            console.log('respuesta tags', respuesta)
             if (respuesta.length == 0) {
                 renderedResults = "No has asignado ningún tag a este restaurante.";
             }
@@ -37,7 +54,7 @@ function renderRestaurantTags() {
             }
             section.innerHTML = renderedResults;
         } else {
-            console.log('App::Problems on comentarios request: ' + ajax.statusText);
+            console.log('App::Problems on TAGS request: ' + ajax.statusText);
         }
     }
     ajax.send(datasend);

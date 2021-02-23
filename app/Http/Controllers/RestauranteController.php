@@ -285,11 +285,18 @@ class RestauranteController extends Controller
     public function getRestaurantTags(Request $request) {
         $idUsuario = intval($request->input('idUsuario'));
         $id_restaurant = intval($request->input('id_restaurant'));
-        
-        $query = 'SELECT `tbl_tag`.*, `tbl_tag_intermitja`.* FROM `tbl_tag` LEFT JOIN `tbl_tag_intermitja` ON `tbl_tag_intermitja`.`Id_tag` = `tbl_tag`.`Id_tag` 
-        WHERE Id_usuari = ' . $idUsuario . ' AND Id_restaurant = ' . $id_restaurant;
-        $tags = DB::select($query);
-        return response()->json($tags, 200);
+        // REVIEW
+        // Mirem si hi ha tags en aquest restaurant
+        // $countTags = DB::table('tbl_tag_intermitja')
+            // ->where([['Id_restaurant','=',$id_restaurant], ['Id_usuari','=',$idUsuario]])->count();
+        // if ($countTags > 0) {
+            // Hi ha tags 
+            $query = 'SELECT `tbl_tag`.*, `tbl_tag_intermitja`.* FROM `tbl_tag` LEFT JOIN `tbl_tag_intermitja` ON `tbl_tag_intermitja`.`Id_tag` = `tbl_tag`.`Id_tag` 
+            WHERE Id_usuari = ' . $idUsuario . ' AND Id_restaurant = ' . $id_restaurant;
+            $tags = DB::select($query);
+            return response()->json($tags, 200);
+        // } 
+        // END REVIEW
     }
 
     public function addTag(Request $request) {
@@ -365,13 +372,20 @@ class RestauranteController extends Controller
     }
 
     public function getComentarios(Request $request) {
-        // $token = $request->input('_token');
         $id = intval($request->input('id_restaurant'));
-        $query = 'SELECT c.Id_comentari, c.Id_restaurant, c.Id_usuari, c.Comentari, u.Nom_usuari
-        FROM tbl_comentari c INNER JOIN tbl_usuari u ON c.Id_usuari = u.Id_usuari
-        WHERE c.Id_restaurant = ? ORDER BY c.Id_Comentari DESC';
-        $comentarios = DB::select($query, [$id]);
-        return response()->json($comentarios, 200);
+        $countComents = DB::table('tbl_comentari')
+            ->where([['Id_restaurant','=',$id]])->count(); 
+            // Mirem si hi ha comentaris
+        if ($countComents > 0) {
+            $query = 'SELECT c.Id_comentari, c.Id_restaurant, c.Id_usuari, c.Comentari, u.Nom_usuari
+            FROM tbl_comentari c INNER JOIN tbl_usuari u ON c.Id_usuari = u.Id_usuari
+            WHERE c.Id_restaurant = ? ORDER BY c.Id_Comentari DESC';
+            $comentarios = DB::select($query, [$id]);
+            return response()->json($comentarios, 200);
+        } else {
+            // No hi ha comentaris
+            return response()->json('0', 200);
+        }
     }
 
     public function addComentario(Request $request) {
@@ -399,12 +413,12 @@ class RestauranteController extends Controller
         $id_usuari = intval($request->input('id_usuari'));
         $userQuery = DB::table('tbl_valoracio')
             ->where([['Id_restaurant','=',$id_restaurant], ['Id_usuari','=',$id_usuari]])->count(); 
-            if ($userQuery > 0) {
-                // Entonces el usuario ha valorado el restaurante actual
-                // Nos traemos la valoración 
-                $queryValoracion = DB::table("tbl_valoracio")->where("Id_restaurant", $id_restaurant)->where("Id_usuari", $id_usuari)->first();
-                $valoracion = $queryValoracion->Valoracio;
-                return response()->json($valoracion, 200);
+        if ($userQuery > 0) {
+            // Entonces el usuario ha valorado el restaurante actual
+            // Nos traemos la valoración 
+            $queryValoracion = DB::table("tbl_valoracio")->where("Id_restaurant", $id_restaurant)->where("Id_usuari", $id_usuari)->first();
+            $valoracion = $queryValoracion->Valoracio;
+            return response()->json($valoracion, 200);
         }  
     }
 
@@ -444,7 +458,6 @@ class RestauranteController extends Controller
     }
     // FIN COMENTARIOS
 
-    // REVIEW
     public function favorito(Request $request) {
         $id_restaurant = intval($request->input('id_restaurante'));
         $id_usuari = intval($request->input('id_usuari'));
@@ -466,5 +479,5 @@ class RestauranteController extends Controller
             echo "No va bien $th";
         }
     }
-    // END REVIEW
+
 }

@@ -168,7 +168,7 @@
     </footer>
     <script src="{{asset('js/app1.js')}}"></script>
     <script src="{{asset('js/route.js')}}"></script>
-    <script src="{{asset('js/infoRestTags.js')}}"></script>
+    <!-- <script src="{{asset('js/infoRestTags.js')}}"></script> -->
 
     <script>
         var geocoder = L.esri.Geocoding.geocodeService();
