@@ -85,6 +85,7 @@ function getLocation() {
 
 var myLat1, myLong1;
 var miUbicacion;
+
 function onPositionObtained(position) { // Funció que obté la posició actual (segons el navegador)
     myLat1 = position.coords.latitude; // Latitud
     myLong1 = position.coords.longitude; // Longitud
@@ -123,15 +124,15 @@ function calcRoute(myLat1, myLong1, restLat, restLong) {
         // REVIEW
         createMarker: function(i, wp, nWps) {
             if (i === 0 || i === nWps - 1) {
-              // here change the starting and ending icons
-              return L.marker(wp.latLng, {
-                icon: orangeIcon // here pass the custom marker icon instance
-              });
+                // here change the starting and ending icons
+                return L.marker(wp.latLng, {
+                    icon: orangeIcon // here pass the custom marker icon instance
+                });
             } else {
-              // here change all the others
-              return L.marker(wp.latLng, {
-                icon: greenIcon
-              });
+                // here change all the others
+                return L.marker(wp.latLng, {
+                    icon: greenIcon
+                });
             }
         },
         // END REVIEW
@@ -148,10 +149,11 @@ function calcRoute(myLat1, myLong1, restLat, restLong) {
 }
 
 var control = true;
+
 function calcRouteToRestaurant() {
     if (control) {
-		getLocation();
-	}
+        getLocation();
+    }
 }
 
 function showError(error) {
@@ -198,24 +200,31 @@ function objetoAjax() {
     return xmlhttp;
 }
 
-function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina, favorito) {
+function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina, favorito, tipoCategoria) {
     let userId = document.getElementById('userId');
     var token = document.getElementById('token').getAttribute('content');
     var arrayTiposCocinasSeleccionados = [];
+    var arrayTiposCatSeleccionados = [];
     for (let i = 0; i < tipoCocina.length; i++) {
         if (tipoCocina[i].checked) {
             arrayTiposCocinasSeleccionados.push(`'${tipoCocina[i].value}'`);
             console.log(`Array tipos cocina: ${arrayTiposCocinasSeleccionados}`);
         }
     }
+    for (let i = 0; i < tipoCategoria.length; i++) {
+        if (tipoCategoria[i].checked) {
+            arrayTiposCatSeleccionados.push(`'${tipoCategoria[i].value}'`);
+            console.log(`Array tipos cocina: ${arrayTiposCatSeleccionados}`);
+        }
+    }
 
-    console.log(`Array: ${arrayTiposCocinasSeleccionados}`);
     var ajax = new objetoAjax();
     var datasend = new FormData();
     datasend.append('nombreRestaurante', nombreRestaurante);
     datasend.append('precioMedio', precioMedio);
     datasend.append('valoracion', valoracion);
     datasend.append('tipoCocina', arrayTiposCocinasSeleccionados);
+    datasend.append('tipoCat', arrayTiposCatSeleccionados);
     if (favorito) {
         if (favorito.checked) {
             datasend.append('favorito', favorito);
@@ -313,9 +322,10 @@ function searchRestaurants() {
     var precioMedio = document.getElementById('precio_medio').value;
     var valoracion = document.getElementById('valoracion').value;
     var tipoCocina = document.querySelectorAll('.filtro--tipo_cocina');
+    var tipoCategoria = document.querySelectorAll('.filtro--tipo_categoria');
     var favorito = document.getElementById('filtrofav');
 
-    filter(renderRestaurants, nombreRestaurante, precioMedio, valoracion, tipoCocina, favorito);
+    filter(renderRestaurants, nombreRestaurante, precioMedio, valoracion, tipoCocina, favorito, tipoCategoria);
 }
 
 function searchRestaurantsAdmin() {
@@ -323,8 +333,10 @@ function searchRestaurantsAdmin() {
     var precioMedio = document.getElementById('precio_medio').value;
     var valoracion = document.getElementById('valoracion').value;
     var tipoCocina = document.querySelectorAll('.filtro--tipo_cocina');
+    var tipoCategoria = document.querySelectorAll('.filtro--tipo_categoria');
+    var favorito = "";
 
-    filter(renderRestaurantsAdmin, nombreRestaurante, precioMedio, valoracion, tipoCocina);
+    filter(renderRestaurantsAdmin, nombreRestaurante, precioMedio, valoracion, tipoCocina, favorito, tipoCategoria);
 }
 
 function eliminarRestaurante($id, event) {

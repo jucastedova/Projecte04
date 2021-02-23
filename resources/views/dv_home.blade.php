@@ -104,12 +104,20 @@
                 </div>
                 <!-- REVIEW -->
                 <!-- S'AGAFEN ELS VALORS DE LA BBDD -->
-                @foreach ($listCategories as $category)
+                @foreach ($listCuina as $tipus)
                 <div class="container-tipo-cocina">
-                    <label for="{{$category->Id_cuina}}">{{$category->Nom_cuina}}</label>
-                    <input class="filtro--tipo_cocina" type="checkbox" id="{{$category->Id_cuina}}" name="{{$category->Id_cuina}}" value="{{$category->Nom_cuina}}">
+                    <label for="{{$tipus->Id_cuina}}">{{$tipus->Nom_cuina}}</label>
+                    <input class="filtro--tipo_cocina" type="checkbox" id="{{$tipus->Id_cuina}}" name="{{$tipus->Id_cuina}}" value="{{$tipus->Nom_cuina}}">
                 </div>
                 @endforeach
+
+                @foreach ($listCategories as $cat)
+                <div class="container-tipo-cocina">
+                    <label for="{{$cat->Id_categoria}}">{{$cat->Nom_categoria}}</label>
+                    <input class="filtro--tipo_categoria" type="checkbox" id="categoria{{$cat->Id_categoria}}" name="categoria{{$cat->Id_categoria}}" value="{{$cat->Nom_categoria}}">
+                </div>
+                @endforeach
+                
                 <!-- END REVIEW -->
                 @if (session()->has('estandard'))
                 <div>

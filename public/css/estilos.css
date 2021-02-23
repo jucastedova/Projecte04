@@ -525,9 +525,11 @@ i.fas.fa-star:after {
     transition: color 0.5s ease;
     cursor: pointer;
 }
+
 .calc-route--verRest:hover {
     color: black;
 }
+
 .fa-map-marker-alt {
     color: rgb(102, 102, 102);
 }
@@ -540,7 +542,6 @@ i.fas.fa-star:after {
 .content-marker {
     margin-top: 8px;
 }
-
 
 @media (max-width:1078px) and (min-width:768px) {
     .map--modal {
@@ -590,11 +591,12 @@ i.fas.fa-star:after {
 .display-none {
     display: none;
 }
+
 .map--create-modify {
     max-width: -webkit-fill-available;
     max-width: -moz-available;
     max-width: fill-available;
-    height: 500px; 
+    height: 500px;
 }
 
 .container--map {
@@ -927,4 +929,55 @@ footer div {
     footer p {
         display: none;
     }
+}
+
+
+/* CATEGORIAS */
+
+.gestorCategorias {
+    width: 75%;
+    margin: auto;
+}
+
+.gestorCategorias table {
+    margin: auto;
+}
+
+.input {
+    display: flex;
+}
+
+#cat {
+    height: 35px;
+    padding-left: 15px;
+    font-size: 15px;
+    margin: auto;
+    margin-top: 5px;
+}
+
+#gestorTable {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+}
+
+#gestorTable td,
+#gestorTable th {
+    border: 1px solid #dddddda1;
+    padding: 8px;
+}
+
+#gestorTable tr:nth-child(even) {
+    background-color: #dddddda1;
+}
+
+#gestorTable tr:hover {
+    background-color: #dddddda1;
+}
+
+#gestorTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #00CCBC;
+    color: white;
 }

@@ -54,10 +54,16 @@
         <input type="number" id="preu_mitja" step="any" name="preu_mitja" placeholder="Precio medio" min="5" max="5000" ><br><br>
         <input type="email" id="correu_gerent" name="correu_gerent" placeholder="Correo gerente" ><br><br>
         <label for="tipo_cocina">Tipo cocina:</label><br><br>
-        @foreach ($listCategories as $category)
+        @foreach ($listCuina as $tipus)
         <div class="container-tipo-cocina">
-            <label for="{{$category->Id_cuina}}">{{$category->Nom_cuina}}</label><br><br>
-            <input class="filtro--tipo_cocina" type="checkbox" id="tiposCocinas[]" name="tiposCocinas[]" value="{{$category->Nom_cuina}}">
+            <label for="{{$tipus->Id_cuina}}">{{$tipus->Nom_cuina}}</label><br><br>
+            <input class="filtro--tipo_cocina" type="checkbox" id="tiposCocinas[]" name="tiposCocinas[]" value="{{$tipus->Nom_cuina}}">
+        </div>
+        @endforeach
+        @foreach ($listCategories as $cat)
+        <div class="container-tipo-cocina">
+            <label for="{{$cat->Id_categoria}}">{{$cat->Nom_categoria}}</label><br><br>
+            <input class="filtro--tipo_cocina" type="checkbox" id="tiposCategoria[]" name="tiposCategoria[]" value="{{$cat->Nom_categoria}}">
         </div>
         @endforeach
         <textarea name="descripcio_restaurant" id="descripcio_restaurant" placeholder="Descripción"></textarea><br><br>

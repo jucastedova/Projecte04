@@ -19,17 +19,24 @@ class UsuariController extends Controller {
         if(!session()->has('admin')) {
             return redirect('login');
         }
-        $listCategories = DB::table('tbl_cuina')->get();
-        return view('dv_admin', compact('listCategories'));
+        // Consulta per obtenir tipus de cuina
+        $listCuina = DB::table('tbl_cuina')->get();
+        // Consulta per obtenir les categories 
+        $listCategories = DB::table('tbl_categoria')->get();
+        return view('dv_admin', compact('listCuina'), compact('listCategories'));
     }
+
     public function viewDv_home() { 
         if(session()->has('admin')) {
-            $listCategories = DB::table('tbl_cuina')->get();
-            return view('dv_admin', compact('listCategories'));
+            $listCuina = DB::table('tbl_cuina')->get();
+            $listCategories = DB::table('tbl_categoria')->get();
+            return view('dv_admin', compact('listCuina'), compact('listCategories'));
         }
-        // Consulta per obtenir les categories de cuina
-        $listCategories = DB::table('tbl_cuina')->get();
-        return view('dv_home', compact('listCategories'));
+        // Consulta per obtenir tipus de cuina
+        $listCuina = DB::table('tbl_cuina')->get();
+        // Consulta per obtenir les categories 
+        $listCategories = DB::table('tbl_categoria')->get();
+        return view('dv_home', compact('listCuina'), compact('listCategories'));
     }
 
     public function signupView() { 
@@ -51,11 +58,12 @@ class UsuariController extends Controller {
     }
 
     public function registerRestaurantView() { 
-        $listCategories = DB::table('tbl_cuina')->get();
+        $listCuina = DB::table('tbl_cuina')->get();
+        $listCategories = DB::table('tbl_categoria')->get();
         if(!session()->has('admin')) {
             return redirect('login');
         }
-        return view('dv_register_restaurant', compact('listCategories'));
+        return view('dv_register_restaurant', compact('listCuina'), compact('listCategories'));
     }
 
 
