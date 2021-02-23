@@ -6,6 +6,25 @@
     <link rel="stylesheet" href="{{asset('css/estilos.css')}}">
     <script src="https://kit.fontawesome.com/b2a65126dc.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
+    <!-- Load Leaflet from CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+    crossorigin=""></script>
+    <!-- Load Esri Leaflet from CDN -->
+    <script src="https://unpkg.com/esri-leaflet@2.3.2/dist/esri-leaflet.js"
+    integrity="sha512-6LVib9wGnqVKIClCduEwsCub7iauLXpwrd5njR2J507m3A2a4HXJDLMiSZzjcksag3UluIfuW1KzuWVI5n/cuQ=="
+    crossorigin=""></script>
+    <!-- GEOCODER -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/leaflet.esri.geocoder/2.1.0/esri-leaflet-geocoder.css">
+    <script src="https://cdn.jsdelivr.net/leaflet.esri.geocoder/2.1.0/esri-leaflet-geocoder.js"></script>
+    <!-- END GEOCODER -->
+    <!-- ROUTING -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+	<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <!-- END ROUTING -->
     <meta name="csrf-token" id="token" content="{{ csrf_token() }}">
     <title>Registrar restaurante</title>
 </head>
@@ -27,6 +46,11 @@
         <input type="hidden" name="userId" id="userId" value="{{ session()->get('userId') }}">
         <input type="text" id="nom_restaurant" name="nom_restaurant" placeholder="Nombre restaurante"><br><br>
         <input type="text" id="adreca_restaurant" name="adreca_restaurant" placeholder="Dirección restaurante" ><br><br>
+        <!-- REVIEW -->
+        <div class="container--map display-none" id="container-map">
+            <div id="map" class="map--create-modify"></div>
+        </div>
+        <!-- END REVIEW -->
         <input type="number" id="preu_mitja" step="any" name="preu_mitja" placeholder="Precio medio" min="5" max="5000" ><br><br>
         <input type="email" id="correu_gerent" name="correu_gerent" placeholder="Correo gerente" ><br><br>
         <label for="tipo_cocina">Tipo cocina:</label><br><br>

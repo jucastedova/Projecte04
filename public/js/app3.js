@@ -1,4 +1,8 @@
-let adrecaRestaurant = document.getElementById('adreca_restaurant');
+window.onload = function() {
+    markerMap();
+}
+
+let adrecaRestaurant = document.getElementById('Adreca_restaurant');
 let containerMap = document.getElementById('container-map');
 console.log('map:', containerMap);
 adrecaRestaurant.addEventListener('blur', markerMap);

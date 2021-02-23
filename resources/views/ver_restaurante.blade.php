@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- BOOTSTRAP 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <!-- BOOTSTRAP 5 -->
     <link rel="stylesheet" href="{{asset('css/estilos.css')}}">
     <script src="https://kit.fontawesome.com/b2a65126dc.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
@@ -46,11 +49,13 @@
     </nav>
     <h1>{{$restaurant->Nom_restaurant}}</h1>
 
-    <main>
+    <main class="container">
         <input type="hidden" name="id_restaurant" id="id_restaurant" value="{{$restaurant->Id_restaurant}}">
         <input type="hidden" name="id_usuari" id="id_usuari" value="{{ session()->get('userId') }}">
-        <div class="datos_restaurante">    
-            <div class="container--infoRestaurante">
+        <!-- <div class="datos_restaurante">     -->
+        <div class="row">    
+            <!-- <div class="container--infoRestaurante"> -->
+            <div class="col-lg">
                 <h2>Información</h2>
                 <p>
                     <span class="bold">Tipo de comida:</span>
@@ -71,56 +76,65 @@
                     <div id="progress" class="progress" style="width: calc({{$restaurant->Valoracio}} * 100%/5)"></div>;
                 </div> --}}
             </div>
-            <div class="container--imagenRestaurante">
+            <!-- <div class="container--imagenRestaurante"> -->
+            <div class="col-lg">
                 <div>
                     @foreach ($primeraImatge as $imatge)
-                        <img src="data:image/png;base64,{{ chunk_split(base64_encode($imatge->Ruta_Imatge)) }}" style="width:80%" name="{{$imatge->id_imatge}}" id="{{$imatge->id_imatge}}">
+                        <img src="data:image/png;base64,{{ chunk_split(base64_encode($imatge->Ruta_Imatge)) }}" style="width:80%" name="{{$imatge->id_imatge}}" id="{{$imatge->id_imatge}}" class="img-fluid">
                     @endforeach
                 </div>
             </div>
         </div>
 
-        <!-- TAGS -->
-        @if (session()->has('estandard'))
-        <div class="tags">
-            <input type="text" id="tag" placeholder="Escribe un tag..." onkeyup="añadirTag(event)">
-            <div id="mostrarTags"></div>
-            <p id="msgTag"></p>
-        </div>
-        @endif
-
-
-        <!-- REVIEW -->
-        @if (session()->has('estandard'))
-        <h2>Tu puntuación...</h2>
-        <div>
-            <div class="fork fork1">
-            <div class="fork-inner" id="fork_1" onclick="puntuar('1')"></div>
-            <div class="fork fork2" >
-                <div class="fork-inner" id="fork_2" onclick="puntuar('2')"></div>
-                <div class="fork fork3">
-                    <div class="fork-inner" id="fork_3" onclick="puntuar('3')"></div>
-                    <div class="fork fork4">
-                        <div class="fork-inner" id="fork_4" onclick="puntuar('4')"></div>
-                        <div class="fork fork5">
-                            <div class="fork-inner" id="fork_5" onclick="puntuar('5')"></div>
+        <div class="row">
+            <div class="col-lg-6">
+                <!-- REVIEW -->
+                @if (session()->has('estandard'))
+                <h2>Tu puntuación...</h2>
+                <div>
+                    <div class="fork fork1">
+                        <div class="fork-inner" id="fork_1" onclick="puntuar('1')"></div>
+                        <div class="fork fork2" >
+                            <div class="fork-inner" id="fork_2" onclick="puntuar('2')"></div>
+                            <div class="fork fork3">
+                                <div class="fork-inner" id="fork_3" onclick="puntuar('3')"></div>
+                                <div class="fork fork4">
+                                    <div class="fork-inner" id="fork_4" onclick="puntuar('4')"></div>
+                                    <div class="fork fork5">
+                                        <div class="fork-inner" id="fork_5" onclick="puntuar('5')"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                @endif
+                <!-- END REVIEW -->
+            </div>
+            <!-- TAGS -->
+            <div class="col-lg-6">
+                @if (session()->has('estandard'))
+                <!-- <div class="tags"> -->
+                <input type="text" id="tag" placeholder="Escribe un tag..." onkeyup="añadirTag(event)">
+                <div id="mostrarTags"></div>
+                <p id="msgTag"></p>
+                @endif
             </div>
         </div>
-        @endif
-        <!-- END REVIEW -->
-        <div class="wc--map">        
-            <div class="container--map">
-                <div id="map" class="map--ver-restaurant"></div>
-            </div>
-            <div class="content-marker">
-                <i class="fas fa-map-marker-alt"></i>
-                <span onclick="calcRouteToRestaurant()" class="calc-route--verRest">Cómo llegar</span>
-            </div>
+        <!-- <div class="wc--map">         -->
+        <div class="row"> 
+            <div class="col">
+                <div class="container--map">
+                    <div id="map" class="map--ver-restaurant"></div>
+                </div>
+                <div class="content-marker">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span onclick="calcRouteToRestaurant()" class="calc-route--verRest">Cómo llegar</span>
+                </div>
+            </div>       
         </div>
-        <div class="container--comentarios">
+        <!-- <div class="container--comentarios"> -->
+        <div>
             <h2>Opiniones</h2>
             @if (session()->has('estandard'))
             <div class="area_comentario">
@@ -193,8 +207,11 @@
             restLat = response.results[0].latlng.lat;
             restLong = response.results[0].latlng.lng;
         });
-        
     </script>
+    <!-- BOOTSTRAP 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
+    <!-- BOOTSTRAP 5 -->
 </body>
 </html>
 
