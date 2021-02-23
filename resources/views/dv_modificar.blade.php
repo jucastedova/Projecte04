@@ -55,11 +55,13 @@
                 <input type="hidden" id="destinatario" name="nom_gerent" value="{{$restaurant->Nom_gerent_restaurant}}">
         </div>
         <div class="row">
-            <div class="col-sm">
-                <label>Nombre del restaurante</label><br>
-                <input type="text" id="Nom_restaurant" name="Nom_restaurant" value="{{$restaurant->Nom_restaurant}}"><br><br>
+            <div class="col-sm col-md col-lg">
+                <div class="form-group">
+                    <label>Nombre del restaurante</label><br>
+                    <input type="text" id="Nom_restaurant" name="Nom_restaurant" value="{{$restaurant->Nom_restaurant}}"><br><br>
+                </div>
             </div>
-            <div class="col-sm">
+            <div class="col-sm col-md col-lg">
                 <label>Precio</label><br>
                 <input type="text" id="Preu_mitja_restaurant" name="Preu_mitja_restaurant" value="{{$restaurant->Preu_mitja_restaurant}}" required><br><br>
             </div>
@@ -154,11 +156,9 @@
         <div class="row">
             <input type="file" name="imatge" id="imatge" accept="image/png"><br><br>
         </div>
-        <div class="row">
-            <input type="submit" class="btn btn-succes" value="continuar" name="continuar" id="submit--control">
-            <div id="error--checked"></div>
-            </form>
-        </div>
+        <input type="submit" class="btn btn-succes" value="continuar" name="continuar" id="submit--control">
+        <div id="error--checked"></div>
+        </form>
         <div class="row">
             @if ($errors->any())
             <div class="errores">

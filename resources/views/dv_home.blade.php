@@ -94,34 +94,43 @@
                 <span class="close" onclick="closeModal()">&times;</span>
             </div>
             <form method="post" onsubmit="searchRestaurants(); return false;">
-                <div>
-                    <label for="precio_medio">Precio medio</label>
-                    <input type="number" id="precio_medio" name="precio_medio">
+                <div class="container--precio-valoracion">                    
+                    <div>
+                        <label for="precio_medio" class="bold">Precio medio</label>
+                        <input type="number" id="precio_medio" name="precio_medio">
+                    </div>
+                    <div>
+                        <label for="valoracion" class="bold">Valoración</label>
+                        <input type="number" id="valoracion" name="valoracion" min="1" max="5">
+                    </div>
                 </div>
-                <div>
-                    <label for="valoracion">Valoración</label>
-                    <input type="number" id="valoracion" name="valoracion" min="1" max="5">
-                </div>
-                <!-- REVIEW -->
                 <!-- S'AGAFEN ELS VALORS DE LA BBDD -->
-                @foreach ($listCuina as $tipus)
-                <div class="container-tipo-cocina">
-                    <label for="{{$tipus->Id_cuina}}">{{$tipus->Nom_cuina}}</label>
-                    <input class="filtro--tipo_cocina" type="checkbox" id="{{$tipus->Id_cuina}}" name="{{$tipus->Id_cuina}}" value="{{$tipus->Nom_cuina}}">
+                <div class="container--tag-categorias"> 
+                    <!-- TIPUS CUINA -->
+                    <div>   
+                        <p class="bold">Gastronomía</p>                 
+                        @foreach ($listCuina as $tipus)
+                        <div class="container-tipo-cocina">
+                            <label for="{{$tipus->Id_cuina}}">{{$tipus->Nom_cuina}}</label>
+                            <input class="filtro--tipo_cocina" type="checkbox" id="{{$tipus->Id_cuina}}" name="{{$tipus->Id_cuina}}" value="{{$tipus->Nom_cuina}}">
+                        </div>
+                        @endforeach
+                    </div>               
+                    <!-- CATEGORIES -->
+                    <div> 
+                        <p class="bold">Categoría</p>
+                        @foreach ($listCategories as $cat)
+                        <div class="container-tipo-cocina">
+                            <label for="{{$cat->Id_categoria}}">{{$cat->Nom_categoria}}</label>
+                            <input class="filtro--tipo_categoria" type="checkbox" id="categoria{{$cat->Id_categoria}}" name="categoria{{$cat->Id_categoria}}" value="{{$cat->Nom_categoria}}">
+                        </div>
+                        @endforeach
+                    </div>
                 </div>
-                @endforeach
-
-                @foreach ($listCategories as $cat)
-                <div class="container-tipo-cocina">
-                    <label for="{{$cat->Id_categoria}}">{{$cat->Nom_categoria}}</label>
-                    <input class="filtro--tipo_categoria" type="checkbox" id="categoria{{$cat->Id_categoria}}" name="categoria{{$cat->Id_categoria}}" value="{{$cat->Nom_categoria}}">
-                </div>
-                @endforeach
                 
-                <!-- END REVIEW -->
                 @if (session()->has('estandard'))
                 <div>
-                    <label for="favoritos">Favorito</label>
+                    <label for="favoritos" class="bold">Favorito</label>
                     <input type="checkbox" id="filtrofav" name="filtrofav" value="1">
                 </div>
                 @endif
