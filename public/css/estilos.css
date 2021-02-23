@@ -30,13 +30,18 @@ input[type='submit'] {
 }
 
 .btn-info {
-    border: 1px solid #013f36;
-    background-color: white;
-    color: #013f36;
+    border: 1px solid #013f36!important;
+    background-color: white!important;
+    color: #013f36!important;
     border-radius: 3px;
     padding: 6px 23px;
     cursor: pointer;
     margin: 5px;
+}
+.btn-info:hover,
+.btn-info:active {
+    border-color: inherit;
+    background-color: inherit;
 }
 
 .adress {
@@ -235,6 +240,10 @@ input{
 .rowTag {
     display: flex;
     height: fit-content;
+}
+
+#mostrarTags {
+    font-size: 14px;
 }
 
 #mostrarTags span {
@@ -938,6 +947,18 @@ i.fas.fa-star:after {
     cursor: pointer;
 }
 
+@media (max-width: 400px) {
+    .fork .fork-inner {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+.img-fluid {
+    max-height: 300px;
+    object-fit: cover;
+}
+
 .fork1:hover>.fork-inner {
     background-color: var(--primary);
 }
@@ -990,6 +1011,10 @@ footer div {
     footer p {
         display: none;
     }
+}
+
+.margin-top {
+    margin-top: 20px;
 }
 
 
