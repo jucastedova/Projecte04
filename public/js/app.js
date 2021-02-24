@@ -279,7 +279,7 @@ function renderRestaurants(respuesta) {
             renderedResults += '</div>';
             renderedResults += '<h4>' + respuesta[i].Preu_mitja_restaurant + '€</h4>';
             // REVIEW // Al fer click en l'adreça, s'obre un modal. (passem com a paràmetre la direcció del restaurant) 
-            renderedResults += `<div class="container--info"><h4 onclick="openMapModal('${respuesta[i].Adreca_restaurant}')" id="adress" class="adress">${respuesta[i].Adreca_restaurant}</h4><div><a href="verRestaurante/${respuesta[i].Id_restaurant}"><i class="fas fa-info-circle"></i></a></div></div>`;
+            renderedResults += `<div class="container--info"><div class="icon-map"><p><i class="fas fa-map-marked-alt"></i></p><h4 id="adress" class="adress" onclick="openMapModal('${respuesta[i].Adreca_restaurant}')" class="adress">${respuesta[i].Adreca_restaurant}</h4></div><div><a href="verRestaurante/${respuesta[i].Id_restaurant}"><i class="fas fa-info-circle"></i></a></div></div>`;
             // END REVIEW
             renderedResults += '</div>';
             renderedResults += '</div>';

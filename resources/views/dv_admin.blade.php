@@ -18,9 +18,7 @@
     <!-- <form action="{{url('cerrarSesion')}}" method="GET">
         <button type="submit" class="btn btn-info">Cerrar sesión</button>
     </form> -->
-    <!-- REVIEW -->
     <!-- Tener en cuenta que el menú cambia si está o no logueado. También paarecerá o no el cerrar sesión -->
-    <!-- FIN RREVIEW -->
     <nav class="menu_nav">
         <div class="logo_nav"><a href="{{url('dv_admin')}}"><img src="{{asset('img/LogoProjecte04.png')}}" alt="logo geoeat"></a></div>
         @if (session()->has('admin'))
@@ -48,13 +46,11 @@
                     <i class="fas fa-filter" onclick="openModal()"></i>
                 </div>
             </div>
-            <!-- REVIEW -->
             <div class="registros">
                 <a href="{{url('registerRestaurantView')}}">Registrar restaurante</a>
                 <a href="{{url('signupAdminView')}}">Registrar administrador</a>
                 <a href="{{url('gestionarTagsAdmin')}}">Gestionar tags</a>
             </div>
-            <!-- END REVIEW -->
         </div>
     </div>
     <!-- FILTRO https://fontawesome.com/icons/filter?style=solid -->
@@ -62,49 +58,58 @@
     <div class="row" id="section-3">
     </div>
 
-    <div class="modal" id="modal-filter">    
+    <div class="modal" id="modal-filter"> <!-- Modal filtre -->    
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <!-- <h2 id="msg"></h2> -->
+            <div class="close--modal">
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
             <form method="post" onsubmit="searchRestaurantsAdmin(); return false;">
-                <div>
-                    <label for="precio_medio">Precio medio</label>
-                    <input type="number" id="precio_medio" name="precio_medio">
+                <div class="container--precio-valoracion">                    
+                    <div>
+                        <label for="precio_medio" class="bold">Precio medio</label>
+                        <input type="number" id="precio_medio" name="precio_medio">
+                    </div>
+                    <div>
+                        <label for="valoracion" class="bold">Valoración</label>
+                        <input type="number" id="valoracion" name="valoracion" min="1" max="5">
+                    </div>
                 </div>
-                <div>
-                    <label for="valoracion">Valoración</label>
-                    <input type="number" id="valoracion" name="valoracion" min="1" max="5">
-                </div>
-                    <!-- REVIEW -->
-                    <!-- S'AGAFEN ELS VALORS DE LA BBDD -->
-                    @foreach ($listCuina as $tipus)
+                <!-- S'AGAFEN ELS VALORS DE LA BBDD -->
+                <div class="container--tag-categorias"> 
+                    <!-- TIPUS CUINA -->
+                    <div>   
+                        <p class="bold">Gastronomía</p>                 
+                        @foreach ($listCuina as $tipus)
                         <div class="container-tipo-cocina">
                             <label for="{{$tipus->Id_cuina}}">{{$tipus->Nom_cuina}}</label>
                             <input class="filtro--tipo_cocina" type="checkbox" id="{{$tipus->Id_cuina}}" name="{{$tipus->Id_cuina}}" value="{{$tipus->Nom_cuina}}">
                         </div>
-                    @endforeach
-
-                    @foreach ($listCategories as $cat)
+                        @endforeach
+                    </div>               
+                    <!-- CATEGORIES -->
+                    <div> 
+                        <p class="bold">Categoría</p>
+                        @foreach ($listCategories as $cat)
                         <div class="container-tipo-cocina">
                             <label for="{{$cat->Id_categoria}}">{{$cat->Nom_categoria}}</label>
                             <input class="filtro--tipo_categoria" type="checkbox" id="categoria{{$cat->Id_categoria}}" name="categoria{{$cat->Id_categoria}}" value="{{$cat->Nom_categoria}}">
                         </div>
-                    @endforeach
-                    <!-- END REVIEW -->
-                <div>
-
+                        @endforeach
+                    </div>
                 </div>
-                <div class="form-btn">            
+
+                <div class="form-btn">
                     <div>
                         <input type="reset" value="Borrar todo">
                     </div>
                     <div>
-                        <input type="submit" value="Aplicar">
+                        <input type="submit" value="Aplicar" id="btn--applicar-filtro">
                     </div>
                 </div>
             </form>
         </div>
-    </div>
+    </div> <!-- END Modal filtre -->
+
     <footer>
         <div>
             <h3>Descubre Deliveroo</h3>
