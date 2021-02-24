@@ -96,7 +96,7 @@
         <div class="row">
             <div class="col">
                 <label>Ciudad</label><br>
-                <input type="text" id="Ciudad" name="Ciudad" value="{{$restaurant->Ciudad}}" required><br><br>
+                <input type="text" id="Ciutat_restaurant" name="Ciutat_restaurant" value="{{$restaurant->Ciutat_restaurant}}" required><br><br>
             </div>
         </div>
         <div class="row">

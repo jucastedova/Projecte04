@@ -281,7 +281,7 @@ function renderRestaurants(respuesta) {
             // REVIEW // Al fer click en l'adreça, s'obre un modal. (passem com a paràmetre la direcció del restaurant) 
             renderedResults += `<div class="container--info"><div class="icon-map"><p><i class="fas fa-map-marked-alt"></i></p><h4 id="adress" class="adress" onclick="openMapModal('${respuesta[i].Adreca_restaurant}')" class="adress">${respuesta[i].Adreca_restaurant}</h4></div><div><a href="verRestaurante/${respuesta[i].Id_restaurant}"><i class="fas fa-info-circle"></i></a></div></div>`;
             // END REVIEW
-            renderedResults += '<input type="hidden" class="ciudad" value="' + respuesta[i].Ciudad + '"></input>';
+            renderedResults += '<input type="hidden" class="Ciutat_restaurant" value="' + respuesta[i].Ciutat_restaurant + '"></input>';
             renderedResults += '</div>';
             renderedResults += '</div>';
         }
@@ -453,11 +453,10 @@ function openModalFilterMap(event) {
         arraynomrest.push(nomrest[i].innerHTML);
         // console.log(arraynomrest);
     }
-    var ciudad = document.querySelectorAll('.ciudad');
+    var Ciutat_restaurant = document.querySelectorAll('.Ciutat_restaurant');
     var arrayCiudad = [];
-    for (let i = 0; i < ciudad.length; i++) {
-        arrayCiudad.push(ciudad[i].value);
-        // console.log(ciudad[i].value);
+    for (let i = 0; i < Ciutat_restaurant.length; i++) {
+        arrayCiudad.push(Ciutat_restaurant[i].value);
     }
     var adress = document.querySelectorAll('.adress');
     var arrayadress = [];

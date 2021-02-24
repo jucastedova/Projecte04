@@ -45,7 +45,7 @@
         @csrf
         <input type="hidden" name="userId" id="userId" value="{{ session()->get('userId') }}">
         <input type="text" id="nom_restaurant" name="nom_restaurant" placeholder="Nombre restaurante"><br><br>
-        <input type="text" id="ciudad" name="ciudad" placeholder="Ciudad restaurante" ><br><br>
+        <input type="text" id="Ciutat_restaurant" name="Ciutat_restaurant" placeholder="Ciudad restaurante" ><br><br>
         <input type="text" id="adreca_restaurant" name="adreca_restaurant" placeholder="Dirección restaurante" ><br><br>
         <!-- REVIEW -->
         <div class="container--map display-none" id="container-map">
