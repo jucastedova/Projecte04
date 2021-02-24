@@ -54,27 +54,43 @@
                 <input type="hidden" id="destinatario" name="destinatario" value="{{$restaurant->Correu_gerent_restaurant}}">
                 <input type="hidden" id="destinatario" name="nom_gerent" value="{{$restaurant->Nom_gerent_restaurant}}">
         </div>
-        <div class="row">
-            <div class="col-sm col-md col-lg">
-                <div class="form-group">
-                    <label>Nombre del restaurante</label><br>
-                    <input type="text" id="Nom_restaurant" name="Nom_restaurant" value="{{$restaurant->Nom_restaurant}}"><br><br>
+        <div class="container--modify-rest">        
+            <div class="row">
+                <div class="col-md-1 col-lg-3">
+                </div>
+                <div class="col-sm-6 col-md-5 col-lg-3">
+                    <div class="form-group">
+                        <label>Nombre del restaurante</label><br>
+                        <input type="text" id="Nom_restaurant" name="Nom_restaurant" value="{{$restaurant->Nom_restaurant}}"><br><br>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-5 col-lg-3">
+                    <div class="form-group">
+                        <label>Precio</label><br>
+                        <input type="text" id="Preu_mitja_restaurant" name="Preu_mitja_restaurant" value="{{$restaurant->Preu_mitja_restaurant}}" required><br><br>
+                    </div>
+                </div>
+                <div class="col-md-1 col-lg-3">
                 </div>
             </div>
-            <div class="col-sm col-md col-lg">
-                <label>Precio</label><br>
-                <input type="text" id="Preu_mitja_restaurant" name="Preu_mitja_restaurant" value="{{$restaurant->Preu_mitja_restaurant}}" required><br><br>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm">
-                <label>Correo del gerente</label><br>
-                <input type="email" id="Correu_gerent_restaurant" name="Correu_gerent_restaurant" value="{{$restaurant->Correu_gerent_restaurant}}" required>
-            </div><br>
+            <div class="row">
+                <div class="col-md-1 col-lg-3">
+                </div>
+                <div class="col-sm-6 col-md-5 col-lg-3">
+                    <div class="form-group">                    
+                        <label>Correo del gerente</label><br>
+                        <input type="email" id="Correu_gerent_restaurant" name="Correu_gerent_restaurant" value="{{$restaurant->Correu_gerent_restaurant}}" required>
+                    </div>
+                </div><br>
 
-            <div class="col-sm">
-                <label>Descripción</label><br>
-                <textarea id="Descripcio_restaurant" name="Descripcio_restaurant">{{$restaurant->Descripcio_restaurant}}</textarea>
+                <div class="col-sm-6 col-md-5 col-lg-3 col-descr">
+                    <div class="form-group">                    
+                        <label>Descripción</label><br>
+                        <textarea id="Descripcio_restaurant" name="Descripcio_restaurant">{{$restaurant->Descripcio_restaurant}}</textarea>
+                    </div>
+                </div>
+                <div class="col-md-1 col-lg-3">
+                </div>
             </div>
         </div>
         <div class="row">
@@ -84,11 +100,17 @@
             </div>
         </div>
         <div class="row">
-            <div class="col">
-                <label>Dirección</label><br>
-                <input type="text" id="Adreca_restaurant" name="Adreca_restaurant" value="{{$restaurant->Adreca_restaurant}}" required><br><br>
+                <div class="col-md-1 col-lg-3">
+                </div>
+                <div class="col-sm-6 col-md-5 col-lg-3">
+                    <div class="form-group">
+                        <label>Dirección</label><br>
+                        <input type="text" id="Adreca_restaurant" name="Adreca_restaurant" value="{{$restaurant->Adreca_restaurant}}" required><br><br>
+                    </div>
+                </div>
             </div>
         </div>
+
         <div class="row">
             <!-- REVIEW -->
             <div class="container--map display-none" id="container-map">
@@ -97,8 +119,11 @@
             <p class="error" id="error-address"></p>
             <!-- END REVIEW -->
         </div>
-        <div class="row">
-            <div class="col-sm">
+        <div class="row row-gast-cat">
+            <div class="col-md-1 col-lg-3">
+            </div>
+            <div class="col-sm-6 col-md-5 col-lg-3 center-gast-cat">
+                <p class="bold">Gastronomía</p>
                 @php
                 $trobat = false;
                 $trobatCat = false;
@@ -127,7 +152,8 @@
                 @endif
                 @endforeach
             </div>
-            <div class="col-sm">
+            <div class="col-sm-6 col-md-5 col-lg-3 center-gast-cat">
+                <p class="bold">Categoría</p>
                 @foreach ($lista_categories as $cat)
                 @php
                 $trobatCat = false;
@@ -151,6 +177,8 @@
                 </div>
                 @endif
                 @endforeach
+            </div>
+            <div class="col-md-1 col-lg-3">
             </div>
         </div>
         <div class="row">
