@@ -29,6 +29,45 @@ input[type='submit'] {
     font-weight: bold;
 }
 
+.container-tipo-cocina {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+@media (max-width: 576px) {
+    .container--modify-rest .col-sm-6.col-md-5.col-lg-3 {
+        display: flex;
+        justify-content: center;
+    }
+    .container--modify-rest .form-group {
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+    }
+    .container--modify-rest br {
+        display: none;
+    }
+    .container--modify-rest input, .container--modify-rest textarea {
+        margin-bottom: 22px;
+    }
+    .container--modify-rest .col-descr {
+        width: 94%;
+    }
+
+    .row-gast-cat {
+        display: flex;
+        flex-direction: column;
+    }
+    .center-gast-cat {
+        width: 42%!important;
+        margin: auto;
+        margin-bottom: 20px;
+    }
+    
+}
+
+
 .btn-info {
     border: 1px solid #013f36!important;
     background-color: white!important;
@@ -849,7 +888,8 @@ i.fas.fa-star:after {
 .pg-register .form-crear textarea,
 .pg-modificar textarea {
     border: 1px solid #d7d4d4;
-    width: 197px;
+    /* width: 197px; */
+    width: 226px;
 }
 
 .pg-register .form-crear input[type='submit'],
