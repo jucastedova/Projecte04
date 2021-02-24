@@ -15,16 +15,18 @@ window.onload = function() {
     renderTags();
 }
 
-
-
 function openModal() {
+    modal.classList.remove('hasMap');
     modal.style.display = "block";
 }
 
+var map1;
 var restLat;
 var restLong;
 var restMarker;
-
+var restaurantsFiltrats;
+var modalRestaurantMarkers = [];
+var myPositionFilterMap;
 
 function openMapModal(address, city, cp) {
     // REVIEW
@@ -243,8 +245,8 @@ function filter(callback, nombreRestaurante, precioMedio, valoracion, tipoCocina
                 console.log('App::Problems on search request: ' + ajax.status);
             } else {
                 console.log('App::Obtained search response');
-                var respuesta = JSON.parse(ajax.responseText);
-                callback(respuesta);
+                restaurantsFiltrats = JSON.parse(ajax.responseText);
+                callback(restaurantsFiltrats);
             }
         }
     }
@@ -279,13 +281,14 @@ function renderRestaurants(respuesta) {
              // Al fer click en l'adreça, s'obre un modal. (passem com a paràmetre la direcció del restaurant) 
             //  REVIEW
             renderedResults += `<div class="container--info"><div class="icon-map"><p><i class="fas fa-map-marked-alt"></i></p><h4 id="adress" class="adress" onclick="openMapModal('${respuesta[i].Adreca_restaurant}', &quot;{respuesta[i].Ciutat_restaurant}&quot;, '${respuesta[i].CP_restaurant}')" class="adress">${respuesta[i].Adreca_restaurant}</h4></div><div><a href="verRestaurante/${respuesta[i].Id_restaurant}"><i class="fas fa-info-circle"></i></a></div></div>`;
-            renderedResults += '<input type="hidden" class="Ciutat_restaurant" value="' + respuesta[i].Ciutat_restaurant + '"></input>';
-            renderedResults += '<input type="hidden" class="CP_restaurant" value="' + respuesta[i].CP_restaurant + '"></input>';
+            // renderedResults += '<input type="hidden" class="Ciutat_restaurant" value="' + respuesta[i].Ciutat_restaurant + '"></input>';
+            // renderedResults += '<input type="hidden" class="CP_restaurant" value="' + respuesta[i].CP_restaurant + '"></input>';
             renderedResults += '</div>';
             renderedResults += '</div>';
         }
     }
     section.innerHTML = renderedResults;
+    updateModalMapSpots();
 }
 
 function renderRestaurantsAdmin(respuesta) {
@@ -327,17 +330,10 @@ function searchRestaurants() {
     var tipoCocina = document.querySelectorAll('.filtro--tipo_cocina');
     var tipoCategoria = document.querySelectorAll('.filtro--tipo_categoria');
     var favorito = document.getElementById('filtrofav');
-    let btnVerMapa = document.getElementById('mapfilter');
-
-    if (btnVerMapa) { // Controlem que existeixi la classe "displat-none" per a tancar o no el modal del filtre
-        if (btnVerMapa.className != "display-none") {
-            console.log('que no te cierres!!');
-        } else {
-            console.log('ciérrate ya');
-            closeModal();
-        }
+    // Actualització 24-02-21
+    if (!modal.classList.contains('hasMap')) { // Tanca el modal quan NO té aquesta classe el modal
+        closeModal();
     }
-
     filter(renderRestaurants, nombreRestaurante, precioMedio, valoracion, tipoCocina, favorito, tipoCategoria);
 }
 
@@ -450,47 +446,70 @@ function closeSpan() {
     span1.classList.remove("display-block");
     span1.classList.add("display-none");
     // REVIEW
-    if (restMarker) { // Si eixsteix...
-        map1.removeControl(restMarker); // Treiem el marker generat anteriorment (d'un altre restaurant)
-        console.log('quitamos marker');
-    }
+    // if (restMarker) { // Si eixsteix...
+    //     map1.removeControl(restMarker); // Treiem el marker generat anteriorment (d'un altre restaurant)
+    //     console.log('quitamos marker');
+    // }
 }
 
 function openModalFilterMap() {
+    modal.classList.remove('hasMap');
+    modal.classList.add('hasMap');
     modal.style.display = "block";
     closeSpan();
-    var nomrest = document.querySelectorAll('.nomrest');
-    var arraynomrest = [];
-    for (let i = 0; i < nomrest.length; i++) {
-        arraynomrest.push(nomrest[i].innerHTML);
-        // console.log(arraynomrest);
+    // var nomrest = document.querySelectorAll('.nomrest');
+    // var arraynomrest = [];
+    // for (let i = 0; i < nomrest.length; i++) {
+    //     arraynomrest.push(nomrest[i].innerHTML);
+    //     // console.log(arraynomrest);
+    // }
+    // var Ciutat_restaurant = document.querySelectorAll('.Ciutat_restaurant');
+    // var arrayCiudad = [];
+    // for (let i = 0; i < Ciutat_restaurant.length; i++) {
+    //     arrayCiudad.push(Ciutat_restaurant[i].value);
+    // }
+    // var adress = document.querySelectorAll('.adress');
+    // var arrayadress = [];
+    // for (let i = 0; i < adress.length; i++) {
+    //     arrayadress.push(adress[i].innerHTML);
+    //     //console.log(arrayadress);
+    // }
+    // var idrest = document.querySelectorAll('.idrest');
+    // var arrayid = [];
+    // for (let i = 0; i < idrest.length; i++) {
+    //     arrayid.push(idrest[i].innerHTML);
+    //     //console.log(arrayadress);
+    // }
+    // var cp = document.querySelectorAll('.CP_restaurant');
+    // console.log('queryselectorcp', cp);
+    // var arraycp = [];
+    // for (let i = 0; i < cp.length; i++) {
+    //     arraycp.push(cp[i].innerHTML);
+    //     //console.log(arrayadress);
+    // }
+    if (!map1) {
+        map1 = L.map('mapfilter');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map1);
+        if (navigator) {
+            if (myLat1) {
+                if (!myPositionFilterMap) {
+                    myPositionFilterMap = L.marker([myLat1, myLong1]).addTo(map1).bindPopup("<b>La meva adreça!</b>").openPopup();
+                }
+            } else {
+                navigator.geolocation.getCurrentPosition(addMyPositionToFilterMap, showError);
+            }
+        }
     }
-    var Ciutat_restaurant = document.querySelectorAll('.Ciutat_restaurant');
-    var arrayCiudad = [];
-    for (let i = 0; i < Ciutat_restaurant.length; i++) {
-        arrayCiudad.push(Ciutat_restaurant[i].value);
-    }
-    var adress = document.querySelectorAll('.adress');
-    var arrayadress = [];
-    for (let i = 0; i < adress.length; i++) {
-        arrayadress.push(adress[i].innerHTML);
-        //console.log(arrayadress);
-    }
-    var idrest = document.querySelectorAll('.idrest');
-    var arrayid = [];
-    for (let i = 0; i < idrest.length; i++) {
-        arrayid.push(idrest[i].innerHTML);
-        //console.log(arrayadress);
-    }
-    var cp = document.querySelectorAll('.CP_restaurant');
-    console.log('queryselectorcp', cp);
-    var arraycp = [];
-    for (let i = 0; i < cp.length; i++) {
-        arraycp.push(cp[i].innerHTML);
-        //console.log(arrayadress);
-    }
-    openMapFilter(arrayadress, arraynomrest, arrayid, arrayCiudad, arraycp);
-
+    updateModalMapSpots();
+    // openMapFilter(arrayadress, arraynomrest, arrayid, arrayCiudad, arraycp);
+}
+// Actualització 24-02
+function addMyPositionToFilterMap(position) {
+    myLat1 = position.coords.latitude; // La meva Latitud
+	myLong1 = position.coords.longitude; // LA meva Longitud
+	L.marker([myLat1,myLong1]).addTo(map1).bindPopup("<b>La meva adreça!</b>").openPopup(); // Adreça segons navegador
 }
 
 function closeModalFilterMap() {
@@ -501,10 +520,71 @@ function closeModalFilterMap() {
 
 }
 
-function openMapFilter(arrayadress, arraynomrest, arrayid, arrayCiudad) {
+// function openMapFilter(arrayadress, arraynomrest, arrayid, arrayCiudad, arraycp) {
+//     mapafilter.classList.remove("display-none");
+//     mapafilter.classList.add("display-block");
+//     // Actualització 24-02
+//     if (!map1) {
+//         map1 = L.map('mapfilter');
+//     }
+//     //console.log('map:', mapafilter);
+//     //adrecaRestaurant.addEventListener('blur', markerMap);
+//     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//         attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+//     }).addTo(map1);
+
+//     var greenIcon = new L.Icon({
+//         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+//         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+//         iconSize: [25, 41],
+//         iconAnchor: [12, 41],
+//         popupAnchor: [1, -34],
+//         shadowSize: [41, 41]
+//     });
+
+//     for (let i = 0; i < arrayadress.length; i++) {
+//         geocoder.geocode()
+//             .address(arrayadress[i])
+//             .city(arrayCiudad[i])
+//             .postal(arraycp[i])
+//             .run(function(error, response) {
+//                 if (error) {
+//                     console.log('Error', error);
+//                     return;
+//                 } else {
+//                     console.log('Bounds filtromapa: ', response);
+//                     map1.fitBounds(response.results[0].bounds);
+//                     map1.setZoom(9);
+//                     restMarker = L.marker(response.results[0].latlng, { icon: greenIcon });
+//                     restMarker.addTo(map1)
+//                         .bindPopup(arraynomrest[i]);
+//                     restMarker.on('mouseover', function(e) {
+//                         this.openPopup();
+//                     });
+//                     restMarker.on('mouseout', function(e) {
+//                         this.closePopup();
+//                     });
+//                     restMarker.on('click', function(e) {
+//                         location.href = "verRestaurante/" + arrayid[i];
+//                         //this.openPopup();
+//                         //disable mouesout behavior?
+//                     });
+//                 }
+//             });
+//     }
+
+// }
+
+
+function updateModalMapSpots() {
+    console.log('en updatemodalmapspot', restaurantsFiltrats)
     mapafilter.classList.remove("display-none");
     mapafilter.classList.add("display-block");
-    var map1 = L.map('mapfilter');
+    // Actualització 24-02
+    if (!map1) {
+        return;
+        // map1 = L.map('mapfilter');
+    }
     //console.log('map:', mapafilter);
     //adrecaRestaurant.addEventListener('blur', markerMap);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -520,11 +600,15 @@ function openMapFilter(arrayadress, arraynomrest, arrayid, arrayCiudad) {
         shadowSize: [41, 41]
     });
 
-    for (let i = 0; i < arrayadress.length; i++) {
+    for (let i = 0; i < modalRestaurantMarkers.length; i++) {
+        map1.removeControl(modalRestaurantMarkers[i]);   
+    }
+
+    for (let i = 0; i < restaurantsFiltrats.length; i++) {
         geocoder.geocode()
-            .address(arrayadress[i])
-            .city(arrayCiudad[i])
-            .postal(arraycp[i])
+            .address(restaurantsFiltrats[i].Adreca_restaurant)
+            .city(restaurantsFiltrats[i].Ciutat_restaurant)
+            .postal(restaurantsFiltrats[i].CP_restaurant)
             .run(function(error, response) {
                 if (error) {
                     console.log('Error', error);
@@ -533,20 +617,19 @@ function openMapFilter(arrayadress, arraynomrest, arrayid, arrayCiudad) {
                     console.log('Bounds filtromapa: ', response);
                     map1.fitBounds(response.results[0].bounds);
                     map1.setZoom(9);
-                    restMarker = L.marker(response.results[0].latlng, { icon: greenIcon });
-                    restMarker.addTo(map1)
-                        .bindPopup(arraynomrest[i]);
-                    restMarker.on('mouseover', function(e) {
+                    var m = L.marker(response.results[0].latlng, { icon: greenIcon });
+                    m.addTo(map1)
+                        .bindPopup(restaurantsFiltrats[i].Nom_restaurant);
+                    m.on('mouseover', function(e) {
                         this.openPopup();
                     });
-                    restMarker.on('mouseout', function(e) {
+                    m.on('mouseout', function(e) {
                         this.closePopup();
                     });
-                    restMarker.on('click', function(e) {
-                        location.href = "verRestaurante/" + arrayid[i];
-                        //this.openPopup();
-                        //disable mouesout behavior?
+                    m.on('click', function(e) {
+                        location.href = "verRestaurante/" + restaurantsFiltrats[i].Id_restaurant;
                     });
+                    modalRestaurantMarkers.push(m);
                 }
             });
     }
