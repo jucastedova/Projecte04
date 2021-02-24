@@ -48,13 +48,13 @@ input[type='submit'] {
     .container--modify-rest br {
         display: none;
     }
-    .container--modify-rest input, .container--modify-rest textarea {
+    .container--modify-rest input,
+    .container--modify-rest textarea {
         margin-bottom: 22px;
     }
     .container--modify-rest .col-descr {
         width: 94%;
     }
-
     .row-gast-cat {
         display: flex;
         flex-direction: column;
@@ -64,9 +64,7 @@ input[type='submit'] {
         margin: auto;
         margin-bottom: 20px;
     }
-    
 }
-
 
 .btn-info {
     border: 1px solid #013f36!important;
@@ -77,6 +75,7 @@ input[type='submit'] {
     cursor: pointer;
     margin: 5px;
 }
+
 .btn-info:hover,
 .btn-info:active {
     border-color: inherit;
@@ -96,6 +95,8 @@ input[type='submit'] {
     padding: 0;
     color: #b70000;
 }
+
+
 /* FIN ERRORES */
 
 .correcto {
@@ -349,7 +350,7 @@ input{
 }
 
 .close-modal-tag {
-    background-color: rgba(0, 0, 0, 0.287);
+    background-color: #00CCBC;
     display: flex;
     width: 100%;
 }
@@ -508,8 +509,6 @@ i.fas.fa-star:after {
         max-width: 180px;
     }
 }
-
-
 
 .container--filter .form-control {
     width: 313px;
@@ -670,12 +669,15 @@ i.fas.fa-star:after {
     gap: 10px;
 }
 
+
 /* REVIEW */
+
 #section-3 .container-details .icon-map h4,
 .fa-map-marked-alt {
     color: #00988c;
     transition: color 0.5s ease;
 }
+
 #section-3 .container-details .icon-map h4:hover {
     color: #02443f;
 }
@@ -710,14 +712,13 @@ i.fas.fa-star:after {
 
 
 /* END MAP */
+
 #modal-filter form div.container--tag-categorias,
 #modal-filter form div.container--precio-valoracion {
     display: grid;
-    grid-template-columns: repeat(2,1fr);
-    column-gap: 10%; 
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 10%;
 }
-
-
 
 #modal-filter form {
     line-height: 2.2;
@@ -737,7 +738,7 @@ i.fas.fa-star:after {
 #modal-filter form .container-tipo-cocina label {
     white-space: nowrap;
     text-overflow: ellipsis;
-    overflow: hidden;  
+    overflow: hidden;
 }
 
 #modal-filter form div.container--tag-categorias p {
@@ -1133,9 +1134,7 @@ footer div {
     border: 1px solid #cccccc;
     background-color: #fdfdfd;
     z-index: 5;
-    padding: 10px 30px;
     border-radius: 5px;
-    width: 350px;
 }
 
 .modal-content-cat {
@@ -1143,22 +1142,33 @@ footer div {
     flex-direction: column;
 }
 
+.form-modal-cat {
+    width: auto;
+    padding: 0 15px;
+}
+
 .close-modal-cat {
-    background-color: rgba(0, 0, 0, 0.287);
+    background-color: #00CCBC;
     display: flex;
-    width: 100%;
+    justify-content: space-between;
+    padding: 5px;
+    width: auto;
 }
 
 .labelCat {
-    padding: 15px;
+    padding: 1px;
     margin-top: 5px;
 }
 
 .containerFlex {
-    padding: 5px;
     display: flex;
 }
 
 .btn-margin {
     margin: auto;
+    margin-bottom: 5px;
+}
+
+.inputCat {
+    padding: 0;
 }
