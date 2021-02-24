@@ -92,7 +92,14 @@
                 <div class="col-md-1 col-lg-3">
                 </div>
             </div>
-            <div class="row">
+        </div>
+        <div class="row">
+            <div class="col">
+                <label>Ciudad</label><br>
+                <input type="text" id="Ciutat_restaurant" name="Ciutat_restaurant" value="{{$restaurant->Ciutat_restaurant}}" required><br><br>
+            </div>
+        </div>
+        <div class="row">
                 <div class="col-md-1 col-lg-3">
                 </div>
                 <div class="col-sm-6 col-md-5 col-lg-3">
@@ -177,7 +184,7 @@
         <div class="row">
             @foreach ($primeraImatge as $imatge)
             <div>
-                <img class="img-fluid" src="data:image/png;base64,{{ chunk_split(base64_encode($imatge->Ruta_Imatge)) }}" style="height:400px" name="{{$imatge->id_imatge}}" id="{{$imatge->id_imatge}}"><br><br>
+                <img class="img-fluid" src="../storage/{{$imatge->Ruta_Text_Imatge}}" style="height:400px" name="{{$imatge->id_imatge}}" id="{{$imatge->id_imatge}}"><br><br>
             </div>
             @endforeach
         </div>

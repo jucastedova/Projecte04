@@ -256,7 +256,8 @@ function renderRestaurants(respuesta) {
         for (let i = 0; i < respuesta.length; i++) {
             renderedResults += '<div>';
             renderedResults += '<div class="container-img">';
-            renderedResults += '<img src="data:image/png;base64,' + respuesta[i].Ruta_Imatge + '" alt="error" width="100px" height="auto"></img>';
+            renderedResults += '<img src="storage/' + respuesta[i].Ruta_Text_Imatge + '" alt="error" width="100px" height="auto"></img>';
+            // REVIEW
             if (filterEstandard) { // Si no troba id_favorit, llavors no posem classe. Si existeix, posem la clase 'active'
                 renderedResults += `<i class="fas fa-star ${respuesta[i].Id_favorit != null ? 'active' : ''}" onclick="favorito(event, ${respuesta[i].Id_restaurant})"></i>`;
             }
@@ -271,7 +272,8 @@ function renderRestaurants(respuesta) {
             renderedResults += '<h4>' + respuesta[i].Preu_mitja_restaurant + '€</h4>';
              // Al fer click en l'adreça, s'obre un modal. (passem com a paràmetre la direcció del restaurant) 
             renderedResults += `<div class="container--info"><div class="icon-map"><p><i class="fas fa-map-marked-alt"></i></p><h4 id="adress" class="adress" onclick="openMapModal('${respuesta[i].Adreca_restaurant}')" class="adress">${respuesta[i].Adreca_restaurant}</h4></div><div><a href="verRestaurante/${respuesta[i].Id_restaurant}"><i class="fas fa-info-circle"></i></a></div></div>`;
-  
+
+            renderedResults += '<input type="hidden" class="Ciutat_restaurant" value="' + respuesta[i].Ciutat_restaurant + '"></input>';
             renderedResults += '</div>';
             renderedResults += '</div>';
         }
@@ -289,7 +291,7 @@ function renderRestaurantsAdmin(respuesta) {
         for (let i = 0; i < respuesta.length; i++) {
             renderedResults += '<div>';
             renderedResults += '<div class="container-img">';
-            renderedResults += '<img src="data:image/png;base64,' + respuesta[i].Ruta_Imatge + '" alt="error" width="100px" height="auto"></img>';
+            renderedResults += '<img src="storage/' + respuesta[i].Ruta_Text_Imatge + '" alt="error" width="100px" height="auto"></img>';
             renderedResults += '</div>';
             renderedResults += '<div class="container-details">';
             renderedResults += '<h4>' + respuesta[i].Nom_restaurant + '</h4>';
@@ -456,6 +458,11 @@ function openModalFilterMap() {
         arraynomrest.push(nomrest[i].innerHTML);
         // console.log(arraynomrest);
     }
+    var Ciutat_restaurant = document.querySelectorAll('.Ciutat_restaurant');
+    var arrayCiudad = [];
+    for (let i = 0; i < Ciutat_restaurant.length; i++) {
+        arrayCiudad.push(Ciutat_restaurant[i].value);
+    }
     var adress = document.querySelectorAll('.adress');
     var arrayadress = [];
     for (let i = 0; i < adress.length; i++) {
@@ -468,7 +475,7 @@ function openModalFilterMap() {
         arrayid.push(idrest[i].innerHTML);
         //console.log(arrayadress);
     }
-    openMapFilter(arrayadress, arraynomrest, arrayid);
+    openMapFilter(arrayadress, arraynomrest, arrayid, arrayCiudad);
 
 }
 
@@ -480,7 +487,7 @@ function closeModalFilterMap() {
 
 }
 
-function openMapFilter(arrayadress, arraynomrest, arrayid) {
+function openMapFilter(arrayadress, arraynomrest, arrayid, arrayCiudad) {
     mapafilter.classList.remove("display-none");
     mapafilter.classList.add("display-block");
     //console.log('map:', mapafilter);
@@ -497,11 +504,11 @@ function openMapFilter(arrayadress, arraynomrest, arrayid) {
         popupAnchor: [1, -34],
         shadowSize: [41, 41]
     });
+
     for (let i = 0; i < arrayadress.length; i++) {
         geocoder.geocode()
             .address(arrayadress[i])
-            .city(`L'Hospitalet de Llobregat`)
-            .region('ES')
+            .city(arrayCiudad[i])
             .run(function(error, response) {
                 if (error) {
                     console.log('Error', error);
@@ -509,7 +516,7 @@ function openMapFilter(arrayadress, arraynomrest, arrayid) {
                 } else {
                     // console.log('Bounds: ', response.results[0].bounds);
                     map1.fitBounds(response.results[0].bounds);
-                    map1.setZoom(18);
+                    map1.setZoom(9);
                     restMarker = L.marker(response.results[0].latlng, { icon: greenIcon });
                     restMarker.addTo(map1)
                         .bindPopup(arraynomrest[i]);

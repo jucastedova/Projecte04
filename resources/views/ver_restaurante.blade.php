@@ -80,7 +80,7 @@
             <div class="col-lg">
                 <div>
                     @foreach ($primeraImatge as $imatge)
-                        <img src="data:image/png;base64,{{ chunk_split(base64_encode($imatge->Ruta_Imatge)) }}" style="width:80%" name="{{$imatge->id_imatge}}" id="{{$imatge->id_imatge}}" class="img-fluid">
+                        <img src="storage/{{$imatge->Ruta_Text_Imatge}}" style="width:80%" name="{{$imatge->id_imatge}}" id="{{$imatge->id_imatge}}" class="img-fluid">
                     @endforeach
                 </div>
             </div>
