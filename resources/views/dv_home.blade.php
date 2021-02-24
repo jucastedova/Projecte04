@@ -160,7 +160,7 @@
                 </div>
             </form>
         </div>
-        <div id="mapfilter" style="width:500px;height:500px;" class="display-none"></div>
+        <div id="mapfilter" style="width:500px;height:500px;"></div>
     </div> <!-- END Modal filtre -->
 
 

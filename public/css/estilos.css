@@ -717,7 +717,13 @@ i.fas.fa-star:after {
     column-gap: 10%; 
 }
 
+#modal-filter #mapfilter {
+    display: none;
+}
 
+#modal-filter.hasMap #mapfilter {
+    display: block;
+}
 
 #modal-filter form {
     line-height: 2.2;
