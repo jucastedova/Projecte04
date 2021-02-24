@@ -184,10 +184,11 @@
             popupAnchor: [1, -34],
             shadowSize: [41, 41]
         });
+        
         geocoder.geocode()
         .address('{{$restaurant->Adreca_restaurant}}')
-        .city(`L'Hospitalet de Llobregat`)
-        .region('ES')
+        .city('{{$restaurant->Ciutat_restaurant}}')
+        .postal('{{$restaurant->CP_restaurant}}')
         .run(function (error, response) {
             if (error) {
                 return;
