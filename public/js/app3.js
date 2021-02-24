@@ -47,16 +47,13 @@ function markerMap() {
                 console.log('Error', error);
                 return;
             } else {
-                let addressResponse = response.results[0].text;
-                let splitAddress = addressResponse.split(",");
+                // let addressResponse = response.results[0].text;
+                // let splitAddress = addressResponse.split(",");
+                // console.log('Response: ', response);
                 let errorAddress = document.getElementById('error-address');
                 errorAddress.textContent = "";
-                // console.log('array splitAdress', splitAddress);
-                // console.log('splitAdress length', splitAddress.length);
-                console.log('Response: ', response);
-                if (splitAddress.length > 3) { // Llavors la direcció existeix
-                    // console.log('Bounds: ',response.results[0].bounds);
-                    // console.log('direcció existeix')
+                let score = response.results[0].score;
+                if (score > 90) { // Si té un Score superior al 90%...
                     map.fitBounds(response.results[0].bounds);
                     map.setZoom(18);
                     restMarker = L.marker(response.results[0].latlng, { icon: greenIcon });
@@ -64,7 +61,7 @@ function markerMap() {
                         .bindPopup(`<b>${adrecaRestaurant.value}</b>`)
                         .openPopup();
                 } else {
-                    console.log('direcció NO existeix');
+                    // console.log('direcció NO existeix');
                     errorAddress.textContent = "Dirección incorrecta";
                 }
             }
