@@ -88,6 +88,7 @@
             <div class="container--map display-none" id="container-map">
                 <div id="map" class="map--create-modify"></div>
             </div>
+            <p class="error" id="error-address"></p>
             <!-- END REVIEW -->
         </div>
         <div class="row">

@@ -50,6 +50,7 @@
         <div class="container--map display-none" id="container-map">
             <div id="map" class="map--create-modify"></div>
         </div>
+        <p class="error" id="error-address"></p>
         <!-- END REVIEW -->
         <input type="number" id="preu_mitja" step="any" name="preu_mitja" placeholder="Precio medio" min="5" max="5000" ><br><br>
         <input type="email" id="correu_gerent" name="correu_gerent" placeholder="Correo gerente" ><br><br>
