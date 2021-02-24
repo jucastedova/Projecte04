@@ -25,7 +25,7 @@ class RestauranteController extends Controller
         $datos = $request->except('_token', 'Crear');
         try {
             DB::beginTransaction();
-            $data = DB::table('tbl_restaurant')->insertGetId(['Nom_restaurant' => $datos['nom_restaurant'], 'Ciutat_restaurant' => $datos['Ciutat_restaurant'], 'Adreca_restaurant' => $datos['adreca_restaurant'], 'Preu_mitja_restaurant' => $datos['preu_mitja'], 'Correu_gerent_restaurant' => $datos['correu_gerent'], 'Descripcio_restaurant' => $datos['descripcio_restaurant']]);
+            $data = DB::table('tbl_restaurant')->insertGetId(['Nom_restaurant' => $datos['nom_restaurant'], 'Ciutat_restaurant' => $datos['Ciutat_restaurant'], 'CP_restaurant' => $datos['CP_restaurant'], 'Adreca_restaurant' => $datos['adreca_restaurant'], 'Preu_mitja_restaurant' => $datos['preu_mitja'], 'Correu_gerent_restaurant' => $datos['correu_gerent'], 'Descripcio_restaurant' => $datos['descripcio_restaurant']]);
 
             $tipos_cocinas = $datos['tiposCocinas'];
 

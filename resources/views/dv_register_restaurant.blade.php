@@ -46,6 +46,7 @@
         <input type="hidden" name="userId" id="userId" value="{{ session()->get('userId') }}">
         <input type="text" id="nom_restaurant" name="nom_restaurant" placeholder="Nombre restaurante"><br><br>
         <input type="text" id="Ciutat_restaurant" name="Ciutat_restaurant" placeholder="Ciudad restaurante" ><br><br>
+        <input type="text" id="CP_restaurant" name="CP_restaurant" placeholder="Código postal restaurante" ><br><br>
         <input type="text" id="adreca_restaurant" name="adreca_restaurant" placeholder="Dirección restaurante" ><br><br>
         <!-- REVIEW -->
         <div class="container--map display-none" id="container-map">
@@ -55,19 +56,20 @@
         <!-- END REVIEW -->
         <input type="number" id="preu_mitja" step="any" name="preu_mitja" placeholder="Precio medio" min="5" max="5000" ><br><br>
         <input type="email" id="correu_gerent" name="correu_gerent" placeholder="Correo gerente" ><br><br>
-        <label for="tipo_cocina">Tipo cocina:</label><br><br>
+        <label for="tipo_cocina">Tipo cocina:</label>
         @foreach ($listCuina as $tipus)
         <div class="container-tipo-cocina">
             <label for="{{$tipus->Id_cuina}}">{{$tipus->Nom_cuina}}</label><br><br>
             <input class="filtro--tipo_cocina" type="checkbox" id="tiposCocinas[]" name="tiposCocinas[]" value="{{$tipus->Nom_cuina}}">
         </div>
-        @endforeach
+        @endforeach<br>
+        <label for="tipo_cocina">Categoria:</label>
         @foreach ($listCategories as $cat)
         <div class="container-tipo-cocina">
             <label for="{{$cat->Id_categoria}}">{{$cat->Nom_categoria}}</label><br><br>
             <input class="filtro--tipo_cocina" type="checkbox" id="tiposCategoria[]" name="tiposCategoria[]" value="{{$cat->Nom_categoria}}">
         </div>
-        @endforeach
+        @endforeach<br>
         <textarea name="descripcio_restaurant" id="descripcio_restaurant" placeholder="Descripción"></textarea><br><br>
         <input type="file" name="imatge" id="imatge" accept="image/png"><br><br>
         <input type="submit" value="Crear restaurante" id="submit--control">
