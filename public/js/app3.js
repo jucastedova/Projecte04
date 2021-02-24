@@ -4,10 +4,12 @@ window.onload = function() {
 
 let adrecaRestaurant = document.getElementById('Adreca_restaurant');
 let ciutatRestaurant = document.getElementById('Ciutat_restaurant');
+let CPRestaurant = document.getElementById('CP_restaurant');
 let containerMap = document.getElementById('container-map');
 console.log('map:', containerMap);
 adrecaRestaurant.addEventListener('blur', markerMap);
 ciutatRestaurant.addEventListener('blur', markerMap);
+CPRestaurant.addEventListener('blur', markerMap);
 
 var geocoder = L.esri.Geocoding.geocodeService();
 var map = L.map('map');
@@ -39,6 +41,7 @@ function markerMap() {
     geocoder.geocode()
         .address(adrecaRestaurant.value)
         .city(ciutatRestaurant.value)
+        .postal(CPRestaurant.value)
         .run(function(error, response) {
             if (error) {
                 console.log('Error', error);

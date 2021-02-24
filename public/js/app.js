@@ -14,7 +14,8 @@ window.onload = function() {
     modalTag = document.getElementById('modal-tag');
     renderTags();
 }
-var map1;
+
+
 
 function openModal() {
     modal.style.display = "block";
@@ -25,8 +26,10 @@ var restLong;
 var restMarker;
 
 
-function openMapModal(address, city) {
-    console.log('marker:', restMarker);
+function openMapModal(address, city, cp) {
+    // REVIEW
+    console.log('Cityyy', city)
+    // console.log('marker:', restMarker);
     if (restMarker) { // Si eixsteix...
         map.removeControl(restMarker); // Treiem el marker generat anteriorment (d'un altre restaurant)
         console.log('quitamos marker');
@@ -52,6 +55,7 @@ function openMapModal(address, city) {
     geocoder.geocode()
         .address(address)
         .city(city)
+        .postal(cp)
         .run(function(error, response) {
             if (error) {
                 return;
@@ -270,9 +274,10 @@ function renderRestaurants(respuesta) {
             renderedResults += '</div>';
             renderedResults += '<h4>' + respuesta[i].Preu_mitja_restaurant + '€</h4>';
              // Al fer click en l'adreça, s'obre un modal. (passem com a paràmetre la direcció del restaurant) 
-            renderedResults += `<div class="container--info"><div class="icon-map"><p><i class="fas fa-map-marked-alt"></i></p><h4 id="adress" class="adress" onclick="openMapModal('${respuesta[i].Adreca_restaurant}', '${respuesta[i].Ciutat_restaurant}')" class="adress">${respuesta[i].Adreca_restaurant}</h4></div><div><a href="verRestaurante/${respuesta[i].Id_restaurant}"><i class="fas fa-info-circle"></i></a></div></div>`;
-
+            //  REVIEW
+            renderedResults += `<div class="container--info"><div class="icon-map"><p><i class="fas fa-map-marked-alt"></i></p><h4 id="adress" class="adress" onclick="openMapModal('${respuesta[i].Adreca_restaurant}', &quot;{respuesta[i].Ciutat_restaurant}&quot;, '${respuesta[i].CP_restaurant}')" class="adress">${respuesta[i].Adreca_restaurant}</h4></div><div><a href="verRestaurante/${respuesta[i].Id_restaurant}"><i class="fas fa-info-circle"></i></a></div></div>`;
             renderedResults += '<input type="hidden" class="Ciutat_restaurant" value="' + respuesta[i].Ciutat_restaurant + '"></input>';
+            renderedResults += '<input type="hidden" class="CP_restaurant" value="' + respuesta[i].CP_restaurant + '"></input>';
             renderedResults += '</div>';
             renderedResults += '</div>';
         }
@@ -474,7 +479,14 @@ function openModalFilterMap() {
         arrayid.push(idrest[i].innerHTML);
         //console.log(arrayadress);
     }
-    openMapFilter(arrayadress, arraynomrest, arrayid, arrayCiudad);
+    var cp = document.querySelectorAll('.CP_restaurant');
+    console.log('queryselectorcp', cp);
+    var arraycp = [];
+    for (let i = 0; i < cp.length; i++) {
+        arraycp.push(cp[i].innerHTML);
+        //console.log(arrayadress);
+    }
+    openMapFilter(arrayadress, arraynomrest, arrayid, arrayCiudad, arraycp);
 
 }
 
@@ -489,7 +501,7 @@ function closeModalFilterMap() {
 function openMapFilter(arrayadress, arraynomrest, arrayid, arrayCiudad) {
     mapafilter.classList.remove("display-none");
     mapafilter.classList.add("display-block");
-    map1 = L.map('mapfilter');
+    var map1 = L.map('mapfilter');
     //console.log('map:', mapafilter);
     //adrecaRestaurant.addEventListener('blur', markerMap);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -509,12 +521,13 @@ function openMapFilter(arrayadress, arraynomrest, arrayid, arrayCiudad) {
         geocoder.geocode()
             .address(arrayadress[i])
             .city(arrayCiudad[i])
+            .postal(arraycp[i])
             .run(function(error, response) {
                 if (error) {
                     console.log('Error', error);
                     return;
                 } else {
-                    // console.log('Bounds: ', response.results[0].bounds);
+                    console.log('Bounds filtromapa: ', response);
                     map1.fitBounds(response.results[0].bounds);
                     map1.setZoom(9);
                     restMarker = L.marker(response.results[0].latlng, { icon: greenIcon });

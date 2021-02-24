@@ -172,7 +172,7 @@ class RestauranteController extends Controller
         $restaurant = DB::table('tbl_restaurant')->WHERE('Id_restaurant', '=', $id)->first();
         $lista_cuines = DB::table('tbl_cuina')->get();
         $cocinas_seleccionadas = DB::select("SELECT t.id_tipus_cuina, t.id_restaurant, t.id_cuina, c.Nom_cuina FROM  tbl_tipus_cuina AS t INNER JOIN tbl_cuina AS c ON t.Id_cuina = c.Id_cuina WHERE t.Id_restaurant = $id");
-        $primeraImatge = DB::select("SELECT r.Id_restaurant, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, r.id_restaurant FROM tbl_restaurant r
+        $primeraImatge = DB::select("SELECT r.Id_restaurant, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Text_Imatge, r.id_restaurant FROM tbl_restaurant r
         LEFT JOIN (SELECT MIN(id_imatge) as id_imatge, id_restaurant FROM `tbl_imatge` GROUP BY Id_restaurant) i ON r.Id_restaurant = i.id_restaurant
         LEFT JOIN tbl_imatge i2 ON i2.Id_imatge = i.id_imatge and i.id_restaurant = i2.id_restaurant WHERE r.Id_restaurant = $id");
         //Devolver esos datos y mostrarlos
@@ -201,7 +201,7 @@ class RestauranteController extends Controller
             $userId = -1;
         }
 
-        $query = 'SELECT r.Id_restaurant, f.Id_favorit, r.Nom_restaurant, r.Valoracio, r.Ciutat_restaurant, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Text_Imatge, r.id_restaurant FROM tbl_restaurant r
+        $query = 'SELECT r.Id_restaurant, f.Id_favorit, r.Nom_restaurant, r.Valoracio, r.Ciutat_restaurant, r.CP_restaurant, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Text_Imatge, r.id_restaurant FROM tbl_restaurant r
         LEFT JOIN tbl_imatge i2 ON i2.Id_restaurant = r.Id_restaurant
         LEFT JOIN tbl_favorit f ON f.Id_usuari = ? AND r.Id_restaurant = f.Id_restaurant';
 

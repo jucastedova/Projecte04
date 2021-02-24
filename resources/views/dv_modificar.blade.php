@@ -100,6 +100,12 @@
             </div>
         </div>
         <div class="row">
+            <div class="col">
+                <label>Código postal</label><br>
+                <input type="text" id="CP_restaurant" name="CP_restaurant" value="{{$restaurant->CP_restaurant}}" required><br><br>
+            </div>
+        </div>
+        <div class="row">
                 <div class="col-md-1 col-lg-3">
                 </div>
                 <div class="col-sm-6 col-md-5 col-lg-3">
