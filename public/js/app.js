@@ -75,7 +75,6 @@ function openMapModal(address, city, cp) {
 }
 
 function getLocation() {
-    control = false;
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(onPositionObtained, showError);
     } else {
@@ -87,6 +86,7 @@ var myLat1, myLong1;
 var miUbicacion;
 
 function onPositionObtained(position) { // Funció que obté la posició actual (segons el navegador)
+    userPositionObtained = true; // Actualització 24-02-21
     myLat1 = position.coords.latitude; // Latitud
     myLong1 = position.coords.longitude; // Longitud
     miUbicacion = L.marker([myLat1, myLong1]).addTo(map).bindPopup("<b>La meva adreça!</b>").openPopup(); // Adreça segons navegador
@@ -148,11 +148,14 @@ function calcRoute(myLat1, myLong1, restLat, restLong) {
     lastControl.addTo(map);
 }
 
-var control = true;
-
+// Actualització 24-02
+var userPositionObtained = false;
 function calcRouteToRestaurant() {
-    if (control) {
+    if (!userPositionObtained) {
         getLocation();
+    } else {
+        // Actualització 24-02
+        calcRoute(myLat1, myLong1, restLat, restLong);
     }
 }
 
