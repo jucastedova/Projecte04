@@ -5,7 +5,6 @@ window.onload = function() {
     modalMap = document.getElementById('modal-map');
     mapafilter = document.getElementById("mapfilter");
     filterAdmin = document.getElementById('filterAdmin');
-    map1 = L.map('mapfilter');
     if (filterAdmin) {
         searchRestaurantsAdmin();
     } else {
@@ -15,6 +14,7 @@ window.onload = function() {
     modalTag = document.getElementById('modal-tag');
     renderTags();
 }
+var map1;
 
 function openModal() {
     modal.style.display = "block";
@@ -25,7 +25,7 @@ var restLong;
 var restMarker;
 
 
-function openMapModal(address) {
+function openMapModal(address, city) {
     console.log('marker:', restMarker);
     if (restMarker) { // Si eixsteix...
         map.removeControl(restMarker); // Treiem el marker generat anteriorment (d'un altre restaurant)
@@ -51,8 +51,7 @@ function openMapModal(address) {
     });
     geocoder.geocode()
         .address(address)
-        .city(`L'Hospitalet de Llobregat`)
-        .region('ES')
+        .city(city)
         .run(function(error, response) {
             if (error) {
                 return;
@@ -271,7 +270,7 @@ function renderRestaurants(respuesta) {
             renderedResults += '</div>';
             renderedResults += '<h4>' + respuesta[i].Preu_mitja_restaurant + '€</h4>';
              // Al fer click en l'adreça, s'obre un modal. (passem com a paràmetre la direcció del restaurant) 
-            renderedResults += `<div class="container--info"><div class="icon-map"><p><i class="fas fa-map-marked-alt"></i></p><h4 id="adress" class="adress" onclick="openMapModal('${respuesta[i].Adreca_restaurant}')" class="adress">${respuesta[i].Adreca_restaurant}</h4></div><div><a href="verRestaurante/${respuesta[i].Id_restaurant}"><i class="fas fa-info-circle"></i></a></div></div>`;
+            renderedResults += `<div class="container--info"><div class="icon-map"><p><i class="fas fa-map-marked-alt"></i></p><h4 id="adress" class="adress" onclick="openMapModal('${respuesta[i].Adreca_restaurant}', '${respuesta[i].Ciutat_restaurant}')" class="adress">${respuesta[i].Adreca_restaurant}</h4></div><div><a href="verRestaurante/${respuesta[i].Id_restaurant}"><i class="fas fa-info-circle"></i></a></div></div>`;
 
             renderedResults += '<input type="hidden" class="Ciutat_restaurant" value="' + respuesta[i].Ciutat_restaurant + '"></input>';
             renderedResults += '</div>';
@@ -490,6 +489,7 @@ function closeModalFilterMap() {
 function openMapFilter(arrayadress, arraynomrest, arrayid, arrayCiudad) {
     mapafilter.classList.remove("display-none");
     mapafilter.classList.add("display-block");
+    map1 = L.map('mapfilter');
     //console.log('map:', mapafilter);
     //adrecaRestaurant.addEventListener('blur', markerMap);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

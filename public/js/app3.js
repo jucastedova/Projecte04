@@ -3,15 +3,18 @@ window.onload = function() {
 }
 
 let adrecaRestaurant = document.getElementById('Adreca_restaurant');
+let ciutatRestaurant = document.getElementById('Ciutat_restaurant');
 let containerMap = document.getElementById('container-map');
 console.log('map:', containerMap);
 adrecaRestaurant.addEventListener('blur', markerMap);
+ciutatRestaurant.addEventListener('blur', markerMap);
 
 var geocoder = L.esri.Geocoding.geocodeService();
 var map = L.map('map');
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
+
 
 var restMarker;
 
@@ -35,8 +38,7 @@ function markerMap() {
     });
     geocoder.geocode()
         .address(adrecaRestaurant.value)
-        .city(`L'Hospitalet de Llobregat`)
-        .region('ES')
+        .city(ciutatRestaurant.value)
         .run(function(error, response) {
             if (error) {
                 console.log('Error', error);
@@ -48,7 +50,7 @@ function markerMap() {
                 errorAddress.textContent = "";
                 // console.log('array splitAdress', splitAddress);
                 // console.log('splitAdress length', splitAddress.length);
-                // console.log('Response: ', response);
+                console.log('Response: ', response);
                 if (splitAddress.length > 3) { // Llavors la direcció existeix
                     // console.log('Bounds: ',response.results[0].bounds);
                     // console.log('direcció existeix')
