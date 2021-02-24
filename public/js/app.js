@@ -5,6 +5,7 @@ window.onload = function() {
     modalMap = document.getElementById('modal-map');
     mapafilter = document.getElementById("mapfilter");
     filterAdmin = document.getElementById('filterAdmin');
+    map1 = L.map('mapfilter');
     if (filterAdmin) {
         searchRestaurantsAdmin();
     } else {
@@ -15,21 +16,14 @@ window.onload = function() {
     renderTags();
 }
 
-// Tancar modal al donar click a "Aplicar"
-let btnAplicarFiltro = document.getElementById('btn--applicar-filtro');
-btnAplicarFiltro.addEventListener('click', function() {
-    closeModal();
-});
-// END REVIEW
-
 function openModal() {
     modal.style.display = "block";
 }
 
-// REVIEW
 var restLat;
 var restLong;
 var restMarker;
+
 
 function openMapModal(address) {
     console.log('marker:', restMarker);
@@ -101,7 +95,7 @@ function onPositionObtained(position) { // Funció que obté la posició actual 
 var lastControl;
 
 function calcRoute(myLat1, myLong1, restLat, restLong) {
-    // REVIEW
+
     var greenIcon = new L.Icon({
         iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-shadow.png',
@@ -118,13 +112,13 @@ function calcRoute(myLat1, myLong1, restLat, restLong) {
         popupAnchor: [1, -34],
         shadowSize: [41, 41]
     });
-    // END REVIEW
+
     lastControl = L.Routing.control({
         waypoints: [
             L.latLng(myLat1, myLong1), // posició inicial
             L.latLng(restLat, restLong) // posició final
         ],
-        // REVIEW
+
         createMarker: function(i, wp, nWps) {
             if (i === 0 || i === nWps - 1) {
                 // here change the starting and ending icons
@@ -138,7 +132,7 @@ function calcRoute(myLat1, myLong1, restLat, restLong) {
                 });
             }
         },
-        // END REVIEW
+
         language: 'es',
         showAlternatives: true, // Veure alternatives de ruta
         lineOptions: { // color ruta
@@ -176,15 +170,14 @@ function showError(error) {
     }
 }
 
-// END REVIEW
+
 function closeModal() {
     modal.style.display = "none";
 }
-// REVIEW
+
 function closeMapModal() {
     modalMap.style.display = "none";
 }
-// END REVIEW
 
 function objetoAjax() {
     var xmlhttp = false;
@@ -264,11 +257,9 @@ function renderRestaurants(respuesta) {
             renderedResults += '<div>';
             renderedResults += '<div class="container-img">';
             renderedResults += '<img src="data:image/png;base64,' + respuesta[i].Ruta_Imatge + '" alt="error" width="100px" height="auto"></img>';
-            // REVIEW
             if (filterEstandard) { // Si no troba id_favorit, llavors no posem classe. Si existeix, posem la clase 'active'
                 renderedResults += `<i class="fas fa-star ${respuesta[i].Id_favorit != null ? 'active' : ''}" onclick="favorito(event, ${respuesta[i].Id_restaurant})"></i>`;
             }
-            // END REVIEW
             renderedResults += '</div>';
             renderedResults += '<div class="container-details">';
             renderedResults += `<h4 class="idrest" id="idrest" style="display:none;">${respuesta[i].Id_restaurant}</h4>`;
@@ -278,9 +269,9 @@ function renderRestaurants(respuesta) {
             renderedResults += `<div id="progress" class="progress" style="width: calc(${respuesta[i].Valoracio} * 100%/5)"></div>`;
             renderedResults += '</div>';
             renderedResults += '<h4>' + respuesta[i].Preu_mitja_restaurant + '€</h4>';
-            // REVIEW // Al fer click en l'adreça, s'obre un modal. (passem com a paràmetre la direcció del restaurant) 
+             // Al fer click en l'adreça, s'obre un modal. (passem com a paràmetre la direcció del restaurant) 
             renderedResults += `<div class="container--info"><div class="icon-map"><p><i class="fas fa-map-marked-alt"></i></p><h4 id="adress" class="adress" onclick="openMapModal('${respuesta[i].Adreca_restaurant}')" class="adress">${respuesta[i].Adreca_restaurant}</h4></div><div><a href="verRestaurante/${respuesta[i].Id_restaurant}"><i class="fas fa-info-circle"></i></a></div></div>`;
-            // END REVIEW
+  
             renderedResults += '</div>';
             renderedResults += '</div>';
         }
@@ -320,7 +311,6 @@ function renderRestaurantsAdmin(respuesta) {
     section.innerHTML = renderedResults;
 }
 
-
 function searchRestaurants() {
     var nombreRestaurante = document.getElementById('search--rest').value;
     var precioMedio = document.getElementById('precio_medio').value;
@@ -328,6 +318,16 @@ function searchRestaurants() {
     var tipoCocina = document.querySelectorAll('.filtro--tipo_cocina');
     var tipoCategoria = document.querySelectorAll('.filtro--tipo_categoria');
     var favorito = document.getElementById('filtrofav');
+    let btnVerMapa = document.getElementById('mapfilter');
+
+    if (btnVerMapa) { // Controlem que existeixi la classe "displat-none" per a tancar o no el modal del filtre
+        if (btnVerMapa.className != "display-none") {
+            console.log('que no te cierres!!');
+        } else {
+            console.log('ciérrate ya');
+            closeModal();
+        }
+    }
 
     filter(renderRestaurants, nombreRestaurante, precioMedio, valoracion, tipoCocina, favorito, tipoCategoria);
 }
@@ -440,17 +440,21 @@ function closeSpan() {
     span2.classList.add("display-block");
     span1.classList.remove("display-block");
     span1.classList.add("display-none");
+    // REVIEW
+    if (restMarker) { // Si eixsteix...
+        map1.removeControl(restMarker); // Treiem el marker generat anteriorment (d'un altre restaurant)
+        console.log('quitamos marker');
+    }
 }
 
-function openModalFilterMap(event) {
+function openModalFilterMap() {
     modal.style.display = "block";
-    event.preventDefault();
     closeSpan();
     var nomrest = document.querySelectorAll('.nomrest');
     var arraynomrest = [];
     for (let i = 0; i < nomrest.length; i++) {
         arraynomrest.push(nomrest[i].innerHTML);
-        console.log(arraynomrest);
+        // console.log(arraynomrest);
     }
     var adress = document.querySelectorAll('.adress');
     var arrayadress = [];
@@ -481,8 +485,6 @@ function openMapFilter(arrayadress, arraynomrest, arrayid) {
     mapafilter.classList.add("display-block");
     //console.log('map:', mapafilter);
     //adrecaRestaurant.addEventListener('blur', markerMap);
-
-    var map1 = L.map('mapfilter');
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map1);
@@ -505,7 +507,7 @@ function openMapFilter(arrayadress, arraynomrest, arrayid) {
                     console.log('Error', error);
                     return;
                 } else {
-                    console.log('Bounds: ', response.results[0].bounds);
+                    // console.log('Bounds: ', response.results[0].bounds);
                     map1.fitBounds(response.results[0].bounds);
                     map1.setZoom(18);
                     restMarker = L.marker(response.results[0].latlng, { icon: greenIcon });
@@ -525,7 +527,5 @@ function openMapFilter(arrayadress, arraynomrest, arrayid) {
                 }
             });
     }
-
-
 
 }

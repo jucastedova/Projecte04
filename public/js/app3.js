@@ -48,10 +48,10 @@ function markerMap() {
                 errorAddress.textContent = "";
                 // console.log('array splitAdress', splitAddress);
                 // console.log('splitAdress length', splitAddress.length);
+                // console.log('Response: ', response);
                 if (splitAddress.length > 3) { // Llavors la direcció existeix
+                    // console.log('Bounds: ',response.results[0].bounds);
                     // console.log('direcció existeix')
-                    //console.log('Bounds: ',response.results[0].bounds);
-                    // console.log('Response: ', response);
                     map.fitBounds(response.results[0].bounds);
                     map.setZoom(18);
                     restMarker = L.marker(response.results[0].latlng, { icon: greenIcon });

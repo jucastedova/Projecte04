@@ -67,7 +67,7 @@
                     @if (session()->has('estandard'))
                     <button class="btn btn-info" onclick="openModalTags()">Ver tags</button>
                     @endif
-                    <button class="btn btn-info" id="botonmapa" onclick="openModalFilterMap(event)">Ver Mapa</button>
+                    <button class="btn btn-info" id="botonmapa" onclick="openModalFilterMap()">Ver Mapa</button>
                     </div>
                 
             </div>
