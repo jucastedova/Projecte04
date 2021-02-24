@@ -24,6 +24,7 @@ class RestaurantRegisterRequest extends FormRequest
     {
         return [
             'nom_restaurant' => 'required',
+            'ciudad' => 'required',
             'adreca_restaurant' => 'required', 
             'preu_mitja' => 'required',
             'correu_gerent' => 'required|email',

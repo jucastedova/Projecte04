@@ -29,7 +29,7 @@ class RestauranteController extends Controller
         $datos=$request->except('_token', 'Crear');
         try {
             DB::beginTransaction();
-            $data = DB::table('tbl_restaurant')->insertGetId(['Nom_restaurant'=>$datos['nom_restaurant'],'Adreca_restaurant'=>$datos['adreca_restaurant'],'Preu_mitja_restaurant'=>$datos['preu_mitja'], 'Correu_gerent_restaurant'=>$datos['correu_gerent'], 'Descripcio_restaurant'=>$datos['descripcio_restaurant']]);
+            $data = DB::table('tbl_restaurant')->insertGetId(['Nom_restaurant'=>$datos['nom_restaurant'],'Ciudad'=>$datos['ciudad'],'Adreca_restaurant'=>$datos['adreca_restaurant'],'Preu_mitja_restaurant'=>$datos['preu_mitja'], 'Correu_gerent_restaurant'=>$datos['correu_gerent'], 'Descripcio_restaurant'=>$datos['descripcio_restaurant']]);
             
             $tipos_cocinas = $datos['tiposCocinas'];
     
@@ -206,7 +206,7 @@ class RestauranteController extends Controller
             $userId = -1;
         }
 
-        $query = 'SELECT r.Id_restaurant, f.Id_favorit, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant FROM tbl_restaurant r
+        $query = 'SELECT r.Id_restaurant, f.Id_favorit, r.Nom_restaurant, r.Valoracio, r.Ciudad, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant FROM tbl_restaurant r
         LEFT JOIN tbl_imatge i2 ON i2.Id_restaurant = r.Id_restaurant
         LEFT JOIN tbl_favorit f ON f.Id_usuari = ? AND r.Id_restaurant = f.Id_restaurant';
 

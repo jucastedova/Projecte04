@@ -79,6 +79,12 @@
         </div>
         <div class="row">
             <div class="col">
+                <label>Ciudad</label><br>
+                <input type="text" id="Ciudad" name="Ciudad" value="{{$restaurant->Ciudad}}" required><br><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
                 <label>Dirección</label><br>
                 <input type="text" id="Adreca_restaurant" name="Adreca_restaurant" value="{{$restaurant->Adreca_restaurant}}" required><br><br>
             </div>

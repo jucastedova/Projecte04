@@ -281,6 +281,7 @@ function renderRestaurants(respuesta) {
             // REVIEW // Al fer click en l'adreça, s'obre un modal. (passem com a paràmetre la direcció del restaurant) 
             renderedResults += `<div class="container--info"><div class="icon-map"><p><i class="fas fa-map-marked-alt"></i></p><h4 id="adress" class="adress" onclick="openMapModal('${respuesta[i].Adreca_restaurant}')" class="adress">${respuesta[i].Adreca_restaurant}</h4></div><div><a href="verRestaurante/${respuesta[i].Id_restaurant}"><i class="fas fa-info-circle"></i></a></div></div>`;
             // END REVIEW
+            renderedResults += '<input type="hidden" class="ciudad" value="' + respuesta[i].Ciudad + '"></input>';
             renderedResults += '</div>';
             renderedResults += '</div>';
         }
@@ -450,7 +451,13 @@ function openModalFilterMap(event) {
     var arraynomrest = [];
     for (let i = 0; i < nomrest.length; i++) {
         arraynomrest.push(nomrest[i].innerHTML);
-        console.log(arraynomrest);
+        // console.log(arraynomrest);
+    }
+    var ciudad = document.querySelectorAll('.ciudad');
+    var arrayCiudad = [];
+    for (let i = 0; i < ciudad.length; i++) {
+        arrayCiudad.push(ciudad[i].value);
+        // console.log(ciudad[i].value);
     }
     var adress = document.querySelectorAll('.adress');
     var arrayadress = [];
@@ -464,7 +471,7 @@ function openModalFilterMap(event) {
         arrayid.push(idrest[i].innerHTML);
         //console.log(arrayadress);
     }
-    openMapFilter(arrayadress, arraynomrest, arrayid);
+    openMapFilter(arrayadress, arraynomrest, arrayid, arrayCiudad);
 
 }
 
@@ -476,7 +483,7 @@ function closeModalFilterMap() {
 
 }
 
-function openMapFilter(arrayadress, arraynomrest, arrayid) {
+function openMapFilter(arrayadress, arraynomrest, arrayid, arrayCiudad) {
     mapafilter.classList.remove("display-none");
     mapafilter.classList.add("display-block");
     //console.log('map:', mapafilter);
@@ -495,11 +502,12 @@ function openMapFilter(arrayadress, arraynomrest, arrayid) {
         popupAnchor: [1, -34],
         shadowSize: [41, 41]
     });
+
     for (let i = 0; i < arrayadress.length; i++) {
         geocoder.geocode()
             .address(arrayadress[i])
-            .city(`L'Hospitalet de Llobregat`)
-            .region('ES')
+            .city(arrayCiudad[i])
+            // .country('spain')
             .run(function(error, response) {
                 if (error) {
                     console.log('Error', error);
@@ -507,7 +515,7 @@ function openMapFilter(arrayadress, arraynomrest, arrayid) {
                 } else {
                     console.log('Bounds: ', response.results[0].bounds);
                     map1.fitBounds(response.results[0].bounds);
-                    map1.setZoom(18);
+                    map1.setZoom(9);
                     restMarker = L.marker(response.results[0].latlng, { icon: greenIcon });
                     restMarker.addTo(map1)
                         .bindPopup(arraynomrest[i]);
