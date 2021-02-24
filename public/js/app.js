@@ -506,7 +506,6 @@ function openMapFilter(arrayadress, arraynomrest, arrayid, arrayCiudad) {
         geocoder.geocode()
             .address(arrayadress[i])
             .city(arrayCiudad[i])
-            // .country('spain')
             .run(function(error, response) {
                 if (error) {
                     console.log('Error', error);
