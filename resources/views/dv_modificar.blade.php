@@ -184,7 +184,7 @@
         <div class="row">
             @foreach ($primeraImatge as $imatge)
             <div>
-                <img class="img-fluid" src="data:image/png;base64,{{ chunk_split(base64_encode($imatge->Ruta_Imatge)) }}" style="height:400px" name="{{$imatge->id_imatge}}" id="{{$imatge->id_imatge}}"><br><br>
+                <img class="img-fluid" src="../storage/{{$imatge->Ruta_Text_Imatge}}" style="height:400px" name="{{$imatge->id_imatge}}" id="{{$imatge->id_imatge}}"><br><br>
             </div>
             @endforeach
         </div>

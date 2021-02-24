@@ -18,12 +18,6 @@ class RestauranteController extends Controller
     public function read()
     {
         $restaurantes = DB::select("SELECT tbl_cuina.*, tbl_restaurant.*, tbl_restaurant.*, tbl_imatge.* FROM tbl_cuina INNER JOIN tbl_tipus_cuina ON tbl_cuina.Id_cuina = tbl_tipus_cuina.Id_cuina INNER JOIN tbl_restaurant ON tbl_tipus_cuina.Id_restaurant = tbl_restaurant.Id_restaurant INNER JOIN tbl_imatge ON tbl_restaurant.Id_restaurant = tbl_imatge.Id_restaurant");
-
-        foreach ($restaurantes as $restaurante) {
-            if ($restaurante->Ruta_Imatge != null) {
-                $restaurante->Ruta_Imatge = base64_encode($restaurante->Ruta_Imatge);
-            }
-        }
     }
 
     public function crearRestaurante(RestaurantRegisterRequest $request)
@@ -62,7 +56,7 @@ class RestauranteController extends Controller
 
             // El ID del user se debe colocar bindeando.
             DB::table('tbl_imatge')->insertGetId([
-                'Id_restaurant' => $data, 'Id_usuari' => $datos['userId'], 'Ruta_imatge' => $bin, 'Ruta_Text_Imatge' => $datos['imatge'],
+                'Id_restaurant' => $data, 'Id_usuari' => $datos['userId'], 'Ruta_Text_Imatge' => $datos['imatge'],
                 'Titol' => $datos['nom_restaurant']
             ]);
 
@@ -88,7 +82,7 @@ class RestauranteController extends Controller
             $lista_categories = DB::table('tbl_categoria')->get();
             $cocinas_seleccionadas = DB::select("SELECT t.id_tipus_cuina, t.id_restaurant, t.id_cuina, c.Nom_cuina FROM tbl_tipus_cuina AS t INNER JOIN tbl_cuina AS c ON t.Id_cuina = c.Id_cuina WHERE t.Id_restaurant = $id");
             $categorias_seleccionadas = DB::select("SELECT tc.*, c.* FROM tbl_tipus_categoria AS tc INNER JOIN tbl_categoria AS c ON tc.Id_categoria = c.Id_categoria WHERE tc.Id_restaurant = $id");
-            $primeraImatge = DB::select("SELECT r.Id_restaurant, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant FROM tbl_restaurant r
+            $primeraImatge = DB::select("SELECT r.Id_restaurant, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Text_Imatge, r.id_restaurant FROM tbl_restaurant r
             LEFT JOIN (SELECT MIN(id_imatge) as id_imatge, id_restaurant FROM `tbl_imatge` GROUP BY Id_restaurant) i ON r.Id_restaurant = i.id_restaurant
             LEFT JOIN tbl_imatge i2 ON i2.Id_imatge = i.id_imatge and i.id_restaurant = i2.id_restaurant WHERE r.Id_restaurant = $id");
             //Devolver esos datos y mostrarlos
@@ -156,11 +150,6 @@ class RestauranteController extends Controller
                 Storage::delete('public/' . $imgBD->Ruta_Text_Imatge);
                 //Actualizamos la ruta de la imagen
                 DB::table('tbl_imatge')->where('Id_restaurant', '=', $id)->update(['Ruta_Text_Imatge' => $rutaImatge]);
-
-                //Metodo antiguo
-                $img = $request->file('imatge')->getRealPath();
-                $bin = file_get_contents($img);
-                DB::table('tbl_imatge')->where('Id_restaurant', '=', $id)->update(['Ruta_imatge' => $bin]);
             }
 
             //Enviamos el correo
@@ -183,7 +172,7 @@ class RestauranteController extends Controller
         $restaurant = DB::table('tbl_restaurant')->WHERE('Id_restaurant', '=', $id)->first();
         $lista_cuines = DB::table('tbl_cuina')->get();
         $cocinas_seleccionadas = DB::select("SELECT t.id_tipus_cuina, t.id_restaurant, t.id_cuina, c.Nom_cuina FROM  tbl_tipus_cuina AS t INNER JOIN tbl_cuina AS c ON t.Id_cuina = c.Id_cuina WHERE t.Id_restaurant = $id");
-        $primeraImatge = DB::select("SELECT r.Id_restaurant, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant FROM tbl_restaurant r
+        $primeraImatge = DB::select("SELECT r.Id_restaurant, r.Nom_restaurant, r.Valoracio, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, r.id_restaurant FROM tbl_restaurant r
         LEFT JOIN (SELECT MIN(id_imatge) as id_imatge, id_restaurant FROM `tbl_imatge` GROUP BY Id_restaurant) i ON r.Id_restaurant = i.id_restaurant
         LEFT JOIN tbl_imatge i2 ON i2.Id_imatge = i.id_imatge and i.id_restaurant = i2.id_restaurant WHERE r.Id_restaurant = $id");
         //Devolver esos datos y mostrarlos
@@ -212,7 +201,7 @@ class RestauranteController extends Controller
             $userId = -1;
         }
 
-        $query = 'SELECT r.Id_restaurant, f.Id_favorit, r.Nom_restaurant, r.Valoracio, r.Ciutat_restaurant, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Imatge, r.id_restaurant FROM tbl_restaurant r
+        $query = 'SELECT r.Id_restaurant, f.Id_favorit, r.Nom_restaurant, r.Valoracio, r.Ciutat_restaurant, r.Adreca_restaurant, r.Preu_mitja_restaurant, i2.id_imatge, i2.Ruta_Text_Imatge, r.id_restaurant FROM tbl_restaurant r
         LEFT JOIN tbl_imatge i2 ON i2.Id_restaurant = r.Id_restaurant
         LEFT JOIN tbl_favorit f ON f.Id_usuari = ? AND r.Id_restaurant = f.Id_restaurant';
 
@@ -265,15 +254,6 @@ class RestauranteController extends Controller
 
         $restaurantes = DB::select($query . $queryConditions, $queryParams);
 
-        foreach ($restaurantes as $restaurante) {
-            if ($restaurante->Ruta_Imatge != null) {
-                $restaurante->Ruta_Imatge = base64_encode($restaurante->Ruta_Imatge);
-            }
-        }
-        // $restaurantes[0]->query = $query;
-        // if (count($restaurantes) == 0) {
-        //     print_r($query);
-        // }
         return response()->json($restaurantes, 200);
     }
 

@@ -263,7 +263,7 @@ function renderRestaurants(respuesta) {
         for (let i = 0; i < respuesta.length; i++) {
             renderedResults += '<div>';
             renderedResults += '<div class="container-img">';
-            renderedResults += '<img src="data:image/png;base64,' + respuesta[i].Ruta_Imatge + '" alt="error" width="100px" height="auto"></img>';
+            renderedResults += '<img src="storage/' + respuesta[i].Ruta_Text_Imatge + '" alt="error" width="100px" height="auto"></img>';
             // REVIEW
             if (filterEstandard) { // Si no troba id_favorit, llavors no posem classe. Si existeix, posem la clase 'active'
                 renderedResults += `<i class="fas fa-star ${respuesta[i].Id_favorit != null ? 'active' : ''}" onclick="favorito(event, ${respuesta[i].Id_restaurant})"></i>`;
@@ -299,7 +299,7 @@ function renderRestaurantsAdmin(respuesta) {
         for (let i = 0; i < respuesta.length; i++) {
             renderedResults += '<div>';
             renderedResults += '<div class="container-img">';
-            renderedResults += '<img src="data:image/png;base64,' + respuesta[i].Ruta_Imatge + '" alt="error" width="100px" height="auto"></img>';
+            renderedResults += '<img src="storage/' + respuesta[i].Ruta_Text_Imatge + '" alt="error" width="100px" height="auto"></img>';
             renderedResults += '</div>';
             renderedResults += '<div class="container-details">';
             renderedResults += '<h4>' + respuesta[i].Nom_restaurant + '</h4>';

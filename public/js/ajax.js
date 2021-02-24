@@ -38,18 +38,18 @@ function read() {
             var tabla = '';
             for (let i = 0; i < respuesta.length; i++) {
                 //const element = array[i];
-                    tabla += '<div>';
-                    tabla += '<h4>' + respuesta[i].Nom_restaurant + '</h4>';
-                    tabla += '<h4>' + respuesta[i].Preu_mitja_restaurant + '</h4>';
-                    tabla += '<h4>' + respuesta[i].Adreca_restaurant + '</h4>';
-                    tabla += '<h4>' + respuesta[i].Descripcio_restaurant + '</h4>';
-                    tabla += '<h4>' + respuesta[i].Nom_cuina + '</h4>';
-                    tabla += '<img src="data:image/png;base64,' + respuesta[i].Ruta_Imatge + '" alt="error" with="100%" height="60%"></img>';
-                    tabla += '</div>';
-                    console.log("hola")
-                    section.innerHTML = tabla;
+                tabla += '<div>';
+                tabla += '<h4>' + respuesta[i].Nom_restaurant + '</h4>';
+                tabla += '<h4>' + respuesta[i].Preu_mitja_restaurant + '</h4>';
+                tabla += '<h4>' + respuesta[i].Adreca_restaurant + '</h4>';
+                tabla += '<h4>' + respuesta[i].Descripcio_restaurant + '</h4>';
+                tabla += '<h4>' + respuesta[i].Nom_cuina + '</h4>';
+                tabla += '<img src="storage/' + respuesta[i].Ruta_Text_Imatge + '" alt="error" with="100%" height="60%"></img>';
+                tabla += '</div>';
+                console.log("hola")
+                section.innerHTML = tabla;
             }
-        }else{
+        } else {
             console.log("adios")
         }
     }
