@@ -1,7 +1,5 @@
 window.onload = function() {
-    // modal = document.getElementById('addImage');
     read();
-    // alert("hola");
 }
 
 function objetoAjax() {
@@ -30,14 +28,12 @@ function read() {
     // Busca la ruta read y que sea asyncrono
     ajax.open('post', 'read', true);
     var datasend = new FormData();
-    //datasend.append('filtro', buscador);
     datasend.append('_token', token);
     ajax.onreadystatechange = function() {
         if (ajax.readyState == 4 && ajax.status == 200) {
             var respuesta = JSON.parse(ajax.responseText);
             var tabla = '';
             for (let i = 0; i < respuesta.length; i++) {
-                //const element = array[i];
                 tabla += '<div>';
                 tabla += '<h4>' + respuesta[i].Nom_restaurant + '</h4>';
                 tabla += '<h4>' + respuesta[i].Preu_mitja_restaurant + '</h4>';
@@ -46,11 +42,8 @@ function read() {
                 tabla += '<h4>' + respuesta[i].Nom_cuina + '</h4>';
                 tabla += '<img src="storage/' + respuesta[i].Ruta_Text_Imatge + '" alt="error" with="100%" height="60%"></img>';
                 tabla += '</div>';
-                console.log("hola")
                 section.innerHTML = tabla;
             }
-        } else {
-            console.log("adios")
         }
     }
     ajax.send(datasend);

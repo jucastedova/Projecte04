@@ -33,10 +33,7 @@ function renderComentarios() {
     ajax.onreadystatechange = function() {
         if (ajax.status == 200 && ajax.readyState == 4) {
             var respuesta = JSON.parse(ajax.responseText);
-            console.log(' respuesta comentarios:', respuesta);
-            console.log(' respuesta length:', respuesta.length);
             for (let i = 0; i < respuesta.length; i++) {
-                // REVIEW
                 if (respuesta == '0') {
                     renderedResults += `<p>0 opiniones</p>`;
                 } else {
@@ -45,11 +42,8 @@ function renderComentarios() {
                     renderedResults += `<p>${respuesta[i].Comentari}</p>`;
                     renderedResults += '</div>';
                 }
-                // END REVIEW
             }
             section.innerHTML = renderedResults;
-        } else {
-            console.log('App::Problems on comentarios request: ' + ajax.statusText);
         }
     }
     ajax.open('POST', '../getComentarios', true);
@@ -71,10 +65,7 @@ function enviarComentario() {
     ajax.onreadystatechange = function() {
         if (ajax.status == 200 && ajax.readyState == 4) {
             document.getElementById("nuevo_comentario").value = "";
-            console.log('comentario añadido');
             renderComentarios();
-        } else {
-            console.log('App::Problems on comentarios request: ' + ajax.statusText);
         }
     }
     ajax.send(datasend);
@@ -103,8 +94,6 @@ function getValoracion() {
                 }
                 forquilla[i].style.backgroundColor = "#00ccbc";
             }
-        } else {
-            console.log('App::Problems on comentarios request: ' + ajax.statusText);
         }
     }
     ajax.send(datasend);
@@ -129,17 +118,13 @@ function puntuar(fork) {
     ajax.onreadystatechange = function() {
         if (ajax.status == 200 && ajax.readyState == 4) {
             getValoracion();
-        } else {
-            console.log('App::Problems on comentarios request: ' + ajax.statusText);
         }
-
     }
     ajax.send(datasend);
 }
 
 // FIN VALORACIÓN
 
-// REVIEW
 function renderRestaurantTags() {
     //Recogemos variables de la pagina
     section = document.getElementById('mostrarTags');
@@ -158,7 +143,6 @@ function renderRestaurantTags() {
     ajax.onreadystatechange = function() {
         if (ajax.status == 200 && ajax.readyState == 4) {
             var respuesta = JSON.parse(ajax.responseText);
-            console.log('respuesta tags', respuesta)
             if (respuesta.length == 0) {
                 renderedResults = "No has asignado ningún tag a este restaurante.";
             }
@@ -174,8 +158,6 @@ function renderRestaurantTags() {
                 }
             }
             section.innerHTML = renderedResults;
-        } else {
-            console.log('App::Problems on TAGS request: ' + ajax.statusText);
         }
     }
     ajax.send(datasend);
@@ -206,7 +188,6 @@ function añadirTag(e) {
                 renderRestaurantTags();
             } else {
                 msgTag.innerHTML = "Tag no añadido!";
-                console.log('App::Problems on comentarios request: ' + ajax.statusText);
             }
             setTimeout(function() {
                 msgTag.innerHTML = "";
@@ -249,4 +230,3 @@ function eliminarTag(id_tag) {
         }
     }
 }
-// END REVIEW

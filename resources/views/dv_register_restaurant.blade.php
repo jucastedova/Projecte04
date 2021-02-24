@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,12 +48,10 @@
         <input type="text" id="Ciutat_restaurant" name="Ciutat_restaurant" placeholder="Ciudad restaurante" ><br><br>
         <input type="text" id="CP_restaurant" name="CP_restaurant" placeholder="Código postal restaurante" ><br><br>
         <input type="text" id="adreca_restaurant" name="adreca_restaurant" placeholder="Dirección restaurante" ><br><br>
-        <!-- REVIEW -->
         <div class="container--map display-none" id="container-map">
             <div id="map" class="map--create-modify"></div>
         </div>
         <p class="error" id="error-address"></p>
-        <!-- END REVIEW -->
         <input type="number" id="preu_mitja" step="any" name="preu_mitja" placeholder="Precio medio" min="5" max="5000" ><br><br>
         <input type="email" id="correu_gerent" name="correu_gerent" placeholder="Correo gerente" ><br><br>
         <label for="tipo_cocina">Tipo cocina:</label>

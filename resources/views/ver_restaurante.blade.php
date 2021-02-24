@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -88,7 +88,6 @@
 
         <div class="row">
             <div class="col-lg-6 margin-top">
-                <!-- REVIEW -->
                 @if (session()->has('estandard'))
                 <h2>Tu puntuación...</h2>
                 <div>
@@ -109,7 +108,6 @@
                     </div>
                 </div>
                 @endif
-                <!-- END REVIEW -->
             </div>
             <!-- TAGS -->
             <div class="col-lg-6 margin-top">
@@ -121,7 +119,7 @@
                 @endif
             </div>
         </div>
-        <!-- <div class="wc--map">         -->
+        
         <div class="row"> 
             <div class="col">
                 <div class="container--map">
@@ -133,7 +131,7 @@
                 </div>
             </div>       
         </div>
-        <!-- <div class="container--comentarios"> -->
+        
         <div>
             <h2>Opiniones</h2>
             @if (session()->has('estandard'))
@@ -168,7 +166,6 @@
     </footer>
     <script src="{{asset('js/app1.js')}}"></script>
     <script src="{{asset('js/route.js')}}"></script>
-    <!-- <script src="{{asset('js/infoRestTags.js')}}"></script> -->
 
     <script>
         var geocoder = L.esri.Geocoding.geocodeService();
@@ -196,11 +193,8 @@
                 return;
             }
             map.fitBounds(response.results[0].bounds);
-            // console.log('response', response);
-            // console.log('bounds', response.results[0].bounds);
             map.setZoom(18);
             restMarker = L.marker(response.results[0].latlng, {icon: greenIcon});
-            // console.log('latlng', response.results[0].latlng);
             restMarker.addTo(map)
                 .bindPopup(`<b>{{$restaurant->Adreca_restaurant}}</b>`)
                 .openPopup();

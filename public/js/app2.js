@@ -1,24 +1,20 @@
 let adrecaRestaurant = document.getElementById('adreca_restaurant');
 let containerMap = document.getElementById('container-map');
-console.log('map:', containerMap);
 adrecaRestaurant.addEventListener('blur', markerMap);
 
-var geocoder = L.esri.Geocoding.geocodeService();  
+var geocoder = L.esri.Geocoding.geocodeService();
 var map = L.map('map');
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
 var restMarker;
+
 function markerMap() {
     if (restMarker) { // Si eixsteix...
-        console.log('eliminem last control');
         map.removeControl(restMarker); // Treiem el marker
     }
     containerMap.classList.remove('display-none');
-    // containerMap.classList.add('map--create-modify');
-    // console.log(adrecaRestaurant.value);
-    
 
     var greenIcon = new L.Icon({
         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
@@ -29,36 +25,27 @@ function markerMap() {
         shadowSize: [41, 41]
     });
     geocoder.geocode()
-    .address(adrecaRestaurant.value)
-    .city(`L'Hospitalet de Llobregat`)
-    .region('ES')
-    .run(function (error, response) {
-        if (error) {
-            console.log('Error', error);
-            return;
-        } else {
-            let addressResponse = response.results[0].text;
-            let splitAddress = addressResponse.split(",");
-            let errorAddress = document.getElementById('error-address');
-            errorAddress.textContent = "";
-            // console.log('array splitAdress', splitAddress);
-            // console.log('splitAdress length', splitAddress.length);
-            if (splitAddress.length > 3) { // Controlem que la direcció existeixi
-                // console.log('direcció existeix')
-                //console.log('Bounds: ',response.results[0].bounds);
-                // console.log('Response: ', response);
-                map.fitBounds(response.results[0].bounds);
-                map.setZoom(18);
-                restMarker = L.marker(response.results[0].latlng, { icon: greenIcon });
-                restMarker.addTo(map)
-                    .bindPopup(`<b>${adrecaRestaurant.value}</b>`)
-                    .openPopup();
+        .address(adrecaRestaurant.value)
+        .city(`L'Hospitalet de Llobregat`)
+        .region('ES')
+        .run(function(error, response) {
+            if (error) {
+                return;
             } else {
-                console.log('direcció NO existeix');
-                errorAddress.textContent = "Dirección incorrecta";
+                let addressResponse = response.results[0].text;
+                let splitAddress = addressResponse.split(",");
+                let errorAddress = document.getElementById('error-address');
+                errorAddress.textContent = "";
+                if (splitAddress.length > 3) { // Controlem que la direcció existeixi
+                    map.fitBounds(response.results[0].bounds);
+                    map.setZoom(18);
+                    restMarker = L.marker(response.results[0].latlng, { icon: greenIcon });
+                    restMarker.addTo(map)
+                        .bindPopup(`<b>${adrecaRestaurant.value}</b>`)
+                        .openPopup();
+                } else {
+                    errorAddress.textContent = "Dirección incorrecta";
+                }
             }
-        }
-    });
+        });
 }
-
-
