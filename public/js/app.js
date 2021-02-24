@@ -1,6 +1,9 @@
 window.onload = function() {
     modal = document.getElementById('modal-filter');
+    span1 = document.getElementById('span1');
+    span2 = document.getElementById('span2');
     modalMap = document.getElementById('modal-map');
+    mapafilter = document.getElementById("mapfilter");
     filterAdmin = document.getElementById('filterAdmin');
     if (filterAdmin) {
         searchRestaurantsAdmin();
@@ -268,14 +271,15 @@ function renderRestaurants(respuesta) {
             // END REVIEW
             renderedResults += '</div>';
             renderedResults += '<div class="container-details">';
-            renderedResults += `<h4>${respuesta[i].Nom_restaurant}</h4>`;
+            renderedResults += `<h4 class="idrest" id="idrest" style="display:none;">${respuesta[i].Id_restaurant}</h4>`;
+            renderedResults += `<h4 class="nomrest" id="nomrest">${respuesta[i].Nom_restaurant}</h4>`;
             renderedResults += '<div class="container--progress">';
             renderedResults += '<div class="capa-progress"></div>';
             renderedResults += `<div id="progress" class="progress" style="width: calc(${respuesta[i].Valoracio} * 100%/5)"></div>`;
             renderedResults += '</div>';
             renderedResults += '<h4>' + respuesta[i].Preu_mitja_restaurant + '€</h4>';
             // REVIEW // Al fer click en l'adreça, s'obre un modal. (passem com a paràmetre la direcció del restaurant) 
-            renderedResults += `<div class="container--info"><h4 onclick="openMapModal('${respuesta[i].Adreca_restaurant}')" class="adress">${respuesta[i].Adreca_restaurant}</h4><div><a href="verRestaurante/${respuesta[i].Id_restaurant}"><i class="fas fa-info-circle"></i></a></div></div>`;
+            renderedResults += `<div class="container--info"><h4 onclick="openMapModal('${respuesta[i].Adreca_restaurant}')" id="adress" class="adress">${respuesta[i].Adreca_restaurant}</h4><div><a href="verRestaurante/${respuesta[i].Id_restaurant}"><i class="fas fa-info-circle"></i></a></div></div>`;
             // END REVIEW
             renderedResults += '</div>';
             renderedResults += '</div>';
@@ -427,4 +431,101 @@ function renderTags() {
         }
     }
     ajax.send(datasend);
+}
+
+//  Filtro Mapa
+
+function closeSpan() {
+    span2.classList.remove("display-none");
+    span2.classList.add("display-block");
+    span1.classList.remove("display-block");
+    span1.classList.add("display-none");
+}
+
+function openModalFilterMap(event) {
+    modal.style.display = "block";
+    event.preventDefault();
+    closeSpan();
+    var nomrest = document.querySelectorAll('.nomrest');
+    var arraynomrest = [];
+    for (let i = 0; i < nomrest.length; i++) {
+        arraynomrest.push(nomrest[i].innerHTML);
+        console.log(arraynomrest);
+    }
+    var adress = document.querySelectorAll('.adress');
+    var arrayadress = [];
+    for (let i = 0; i < adress.length; i++) {
+        arrayadress.push(adress[i].innerHTML);
+        //console.log(arrayadress);
+    }
+    var idrest = document.querySelectorAll('.idrest');
+    var arrayid = [];
+    for (let i = 0; i < idrest.length; i++) {
+        arrayid.push(idrest[i].innerHTML);
+        //console.log(arrayadress);
+    }
+    openMapFilter(arrayadress, arraynomrest, arrayid);
+
+}
+
+function closeModalFilterMap() {
+    modal.style.display = "none";
+    mapafilter.classList.remove("display-block");
+    mapafilter.classList.add("display-none");
+    closeSpan();
+
+}
+
+function openMapFilter(arrayadress, arraynomrest, arrayid) {
+    mapafilter.classList.remove("display-none");
+    mapafilter.classList.add("display-block");
+    //console.log('map:', mapafilter);
+    //adrecaRestaurant.addEventListener('blur', markerMap);
+
+    var map1 = L.map('mapfilter');
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map1);
+
+    var greenIcon = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+    for (let i = 0; i < arrayadress.length; i++) {
+        geocoder.geocode()
+            .address(arrayadress[i])
+            .city(`L'Hospitalet de Llobregat`)
+            .region('ES')
+            .run(function(error, response) {
+                if (error) {
+                    console.log('Error', error);
+                    return;
+                } else {
+                    console.log('Bounds: ', response.results[0].bounds);
+                    map1.fitBounds(response.results[0].bounds);
+                    map1.setZoom(18);
+                    restMarker = L.marker(response.results[0].latlng, { icon: greenIcon });
+                    restMarker.addTo(map1)
+                        .bindPopup(arraynomrest[i]);
+                    restMarker.on('mouseover', function(e) {
+                        this.openPopup();
+                    });
+                    restMarker.on('mouseout', function(e) {
+                        this.closePopup();
+                    });
+                    restMarker.on('click', function(e) {
+                        location.href = "verRestaurante/" + arrayid[i];
+                        //this.openPopup();
+                        //disable mouesout behavior?
+                    });
+                }
+            });
+    }
+
+
+
 }

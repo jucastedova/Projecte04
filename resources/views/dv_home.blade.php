@@ -65,6 +65,7 @@
                     @if (session()->has('estandard'))
                     <button class="btn btn-info" onclick="openModalTags()">Ver tags</button>
                     @endif
+                    <button class="btn btn-info" id="botonmapa" onclick="openModalFilterMap(event)">Ver Mapa</button>
                 </div>
             </div>
         </div>
@@ -74,7 +75,8 @@
     <div class="row" id="section-3">
     </div>
 
-    <div class="modal-tag" id="modal-tag"> <!-- Modal tag -->    
+    <div class="modal-tag" id="modal-tag">
+        <!-- Modal tag -->
         <div class="modal-content-tag">
             <input type="hidden" value="{{ session()->get('userId') }}" id="idUsuario">
             <div class="close-modal-tag">
@@ -86,15 +88,24 @@
                 </div>
             </div>
         </div>
-    </div> <!-- END Modal tag --> 
-    
-    <div class="modal" id="modal-filter"> <!-- Modal filtre -->    
+    </div> <!-- END Modal tag -->
+
+    <div>
+    </div>
+
+    <div class="modal" id="modal-filter">
+        <!-- Modal filtre -->
         <div class="modal-content">
             <div class="close--modal">
-                <span class="close" onclick="closeModal()">&times;</span>
+                <div class="display-block" id="span1">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div class="display-none" id="span2">
+                    <span class="close" onclick="closeModalFilterMap()">&times;</span>
+                </div>
             </div>
             <form method="post" onsubmit="searchRestaurants(); return false;">
-                <div class="container--precio-valoracion">                    
+                <div class="container--precio-valoracion">
                     <div>
                         <label for="precio_medio" class="bold">Precio medio</label>
                         <input type="number" id="precio_medio" name="precio_medio">
@@ -105,19 +116,19 @@
                     </div>
                 </div>
                 <!-- S'AGAFEN ELS VALORS DE LA BBDD -->
-                <div class="container--tag-categorias"> 
+                <div class="container--tag-categorias">
                     <!-- TIPUS CUINA -->
-                    <div>   
-                        <p class="bold">Gastronomía</p>                 
+                    <div>
+                        <p class="bold">Gastronomía</p>
                         @foreach ($listCuina as $tipus)
                         <div class="container-tipo-cocina">
                             <label for="{{$tipus->Id_cuina}}">{{$tipus->Nom_cuina}}</label>
                             <input class="filtro--tipo_cocina" type="checkbox" id="{{$tipus->Id_cuina}}" name="{{$tipus->Id_cuina}}" value="{{$tipus->Nom_cuina}}">
                         </div>
                         @endforeach
-                    </div>               
+                    </div>
                     <!-- CATEGORIES -->
-                    <div> 
+                    <div>
                         <p class="bold">Categoría</p>
                         @foreach ($listCategories as $cat)
                         <div class="container-tipo-cocina">
@@ -127,7 +138,7 @@
                         @endforeach
                     </div>
                 </div>
-                
+
                 @if (session()->has('estandard'))
                 <div>
                     <label for="favoritos" class="bold">Favorito</label>
@@ -146,7 +157,10 @@
                 </div>
             </form>
         </div>
+        <div id="mapfilter" style="width:500px;height:500px;" class="display-none"></div>
     </div> <!-- END Modal filtre -->
+
+
 
     <!-- Modal Map -->
     <div id="modal-map" class="modal-map">
