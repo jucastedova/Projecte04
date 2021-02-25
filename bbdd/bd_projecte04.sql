@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-02-2021 a las 22:09:32
+-- Tiempo de generación: 25-02-2021 a las 22:49:15
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 7.4.14
 
@@ -102,7 +102,7 @@ CREATE TABLE `tbl_favorit` (
 --
 
 INSERT INTO `tbl_favorit` (`Id_favorit`, `Id_usuari`, `Id_restaurant`) VALUES
-(9, 6, 14);
+(10, 6, 2);
 
 -- --------------------------------------------------------
 
@@ -145,7 +145,7 @@ INSERT INTO `tbl_imatge` (`Id_imatge`, `Id_restaurant`, `Id_usuari`, `Ruta_Text_
 (24, 27, 6, 'uploads/XTPbmjqBetioVtdv6CTXZpsDTUE7WHAZtBse1DXL.jpg', 'minamo'),
 (26, 2, 6, 'uploads/vn3jmouCUGZY4BO82trxcC0eLjoB8PxQxAlB7nVW.jpg', 'Al punt'),
 (27, 3, 6, 'uploads/Yf5QmFvwcycp46QyPjTNmhXqKdOSDBJ75ktCknKm.jpg', 'Koy Shunka'),
-(28, 1, 6, 'uploads/pgUtg1MurUCLs1EvpPmFhzvC6MwP16SZCPA1Vkku.jpg', 'Cuina Deu');
+(28, 1, 6, 'uploads/95ikBa2L6KNkHipt5dSw1PKdE9ueEaQ3Q27gnrRS.jpg', 'Cuina Deu');
 
 -- --------------------------------------------------------
 
@@ -308,7 +308,7 @@ INSERT INTO `tbl_tipus_cuina` (`Id_tipus_cuina`, `Id_restaurant`, `Id_cuina`) VA
 (81, 24, 3),
 (82, 25, 2),
 (83, 26, 3),
-(88, 1, 3);
+(91, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -463,7 +463,7 @@ ALTER TABLE `tbl_valoracio`
 -- AUTO_INCREMENT de la tabla `tbl_categoria`
 --
 ALTER TABLE `tbl_categoria`
-  MODIFY `Id_categoria` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `Id_categoria` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_comentari`
@@ -481,7 +481,7 @@ ALTER TABLE `tbl_cuina`
 -- AUTO_INCREMENT de la tabla `tbl_favorit`
 --
 ALTER TABLE `tbl_favorit`
-  MODIFY `Id_favorit` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `Id_favorit` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_imatge`
@@ -523,7 +523,7 @@ ALTER TABLE `tbl_tipus_categoria`
 -- AUTO_INCREMENT de la tabla `tbl_tipus_cuina`
 --
 ALTER TABLE `tbl_tipus_cuina`
-  MODIFY `Id_tipus_cuina` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `Id_tipus_cuina` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_usuari`

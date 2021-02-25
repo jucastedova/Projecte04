@@ -485,32 +485,34 @@ function updateModalMapSpots() {
         map1.removeControl(modalRestaurantMarkers[i]);
     }
 
-    for (let i = 0; i < restaurantsFiltrats.length; i++) {
-        geocoder.geocode()
-            .address(restaurantsFiltrats[i].Adreca_restaurant)
-            .city(restaurantsFiltrats[i].Ciutat_restaurant)
-            .postal(restaurantsFiltrats[i].CP_restaurant)
-            .run(function(error, response) {
-                if (error) {
-                    return;
-                } else {
-                    map1.fitBounds(response.results[0].bounds);
-                    map1.setZoom(9);
-                    var m = L.marker(response.results[0].latlng, { icon: greenIcon });
-                    m.addTo(map1)
-                        .bindPopup(restaurantsFiltrats[i].Nom_restaurant);
-                    m.on('mouseover', function(e) {
-                        this.openPopup();
-                    });
-                    m.on('mouseout', function(e) {
-                        this.closePopup();
-                    });
-                    m.on('click', function(e) {
-                        location.href = "verRestaurante/" + restaurantsFiltrats[i].Id_restaurant;
-                    });
-                    modalRestaurantMarkers.push(m);
-                }
-            });
+    if (restaurantsFiltrats.length != 0) {
+        for (let i = 0; i < restaurantsFiltrats.length; i++) {
+            geocoder.geocode()
+                .address(restaurantsFiltrats[i].Adreca_restaurant)
+                .city(restaurantsFiltrats[i].Ciutat_restaurant)
+                .postal(restaurantsFiltrats[i].CP_restaurant)
+                .run(function(error, response) {
+                    if (error) {
+                        return;
+                    } else {
+                        map1.fitBounds(response.results[0].bounds);
+                        map1.setZoom(9);
+                        var m = L.marker(response.results[0].latlng, { icon: greenIcon });
+                        m.addTo(map1)
+                            .bindPopup(restaurantsFiltrats[i].Nom_restaurant);
+                        m.on('mouseover', function(e) {
+                            this.openPopup();
+                        });
+                        m.on('mouseout', function(e) {
+                            this.closePopup();
+                        });
+                        m.on('click', function(e) {
+                            location.href = "verRestaurante/" + restaurantsFiltrats[i].Id_restaurant;
+                        });
+                        modalRestaurantMarkers.push(m);
+                    }
+                });
+        }
     }
 
 }
