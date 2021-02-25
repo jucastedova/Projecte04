@@ -182,8 +182,8 @@ function añadirTag(e) {
         ajax.open('POST', '../addTag', true);
 
         ajax.onreadystatechange = function() {
-            var respuesta = JSON.parse(ajax.responseText);
             if (ajax.status == 200 && ajax.readyState == 4) {
+                var respuesta = JSON.parse(ajax.responseText);
                 msgTag.innerHTML = respuesta;
                 tag.value = "";
                 renderRestaurantTags();
