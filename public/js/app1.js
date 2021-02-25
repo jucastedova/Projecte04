@@ -182,12 +182,13 @@ function añadirTag(e) {
         ajax.open('POST', '../addTag', true);
 
         ajax.onreadystatechange = function() {
+            var respuesta = JSON.parse(ajax.responseText);
             if (ajax.status == 200 && ajax.readyState == 4) {
-                msgTag.innerHTML = "Tag añadido!";
+                msgTag.innerHTML = respuesta;
                 tag.value = "";
                 renderRestaurantTags();
             } else {
-                msgTag.innerHTML = "Tag no añadido!";
+                msgTag.innerHTML = respuesta;
             }
             setTimeout(function() {
                 msgTag.innerHTML = "";
@@ -199,6 +200,8 @@ function añadirTag(e) {
 
 function eliminarTag(id_tag) {
     opcion = confirm("¿Está seguro de borrar el tag?");
+    id_restaurant = document.getElementById('id_restaurant').value;
+    id_usuari = document.getElementById('id_usuari').value;
 
     if (opcion == false) {
         event.preventDefault();
@@ -210,6 +213,8 @@ function eliminarTag(id_tag) {
         var datasend = new FormData();
         datasend.append('_token', token);
         datasend.append('id_tag', id_tag);
+        datasend.append('id_restaurant', id_restaurant);
+        datasend.append('id_usuari', id_usuari);
         ajax.open('POST', '../eliminarTag', true);
 
         ajax.send(datasend);

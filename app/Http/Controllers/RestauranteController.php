@@ -307,17 +307,42 @@ class RestauranteController extends Controller
     {
         //Recogemos todos los datos
         $datos = $request->except('_token');
-        $tag = $datos['tag'];
+        // $Nom_tag = mb_strtolower($datos['tag'],'UTF-8');
+        $Nom_tag = $datos['tag'];
         $id_restaurant = $datos['id_restaurant'];
         $id_usuari = $datos['id_usuari'];
 
         try {
-            //Insertamos el tag en la tbl_tag
-            DB::table('tbl_tag')->insertGetId(['Nom_tag' => $tag]);
-            //Recogemos la id del tag insertado
-            $id_tag = DB::getPdo()->lastInsertId();
-            //Insertamos el registro en la tabla intermedia
-            DB::table('tbl_tag_intermitja')->insertGetId(['Id_restaurant' => $id_restaurant, 'Id_tag' => $id_tag, 'Id_usuari' => $id_usuari]);
+            //Recogemos el tag en cuestion y comprobamos si el tag en cuestion ya existe en tbl_tag
+            $tagData = DB::select('SELECT * FROM tbl_tag WHERE Nom_tag = "' . $Nom_tag . '"');
+            $existTag = DB::select('SELECT COUNT(*) as "existTag" FROM tbl_tag WHERE Nom_tag = "' . $Nom_tag . '"');
+            $existUserTag = DB::select('SELECT COUNT(*) as "existUserTag" FROM tbl_tag_intermitja WHERE Id_restaurant = ' . $id_restaurant . ' AND Id_tag = ' .  $tagData[0]->Id_tag . ' AND Id_usuari = ' . $id_usuari);
+            $flag = 0;
+
+            if(isset($existTag)) {
+                $flag = 1;
+            }
+            
+            die;
+
+            //Si el count es mayor que 0 solo insertamos en la tabla intermedia
+            if($flag != 0) {
+                if($existUserTag[0]->existUserTag == 0) {
+                    DB::table('tbl_tag_intermitja')->insertGetId(['Id_restaurant' => $id_restaurant, 'Id_tag' => $tagData[0]->Id_tag, 'Id_usuari' => $id_usuari]);
+                    return response()->json("Tag registrado!");
+                } else {
+                    return response()->json("Tag ya registrado!");
+                }
+            } else {
+                //Insertamos el tag en la tbl_tag
+                DB::table('tbl_tag')->insertGetId(['Nom_tag' => $Nom_tag]);
+                //Recogemos la id del tag insertado
+                $id_tag = DB::getPdo()->lastInsertId();
+                //Insertamos el registro en la tabla intermedia
+                DB::table('tbl_tag_intermitja')->insertGetId(['Id_restaurant' => $id_restaurant, 'Id_tag' => $id_tag, 'Id_usuari' => $id_usuari]);
+                return response()->json("Tag registrado!");
+            }
+            
         } catch (\Throwable $th) {
         }
     }
@@ -325,9 +350,23 @@ class RestauranteController extends Controller
     public function eliminarTag(Request $request)
     {
         $id_tag = $request->input('id_tag');
+        $id_usuari = $request->input('id_usuari');
+        $id_restaurant = $request->input('id_restaurant');
+        
         try {
-            DB::table('tbl_tag')->where('Id_Tag', '=', $id_tag)->delete();
-            DB::table('tbl_tag_intermitja')->where('Id_Tag', '=', $id_tag)->delete();
+            //Comprobamos si el tag en cuestion ya existe en tbl_tag_intermitja
+            $existTag = DB::table('tbl_tag_intermitja')->where('Id_tag', $id_tag)->count();
+
+            //Si el count es mayor que 1 solo eliminamos en la tabla intermedia por id de usuario
+            if($existTag > 1) {
+                print_r($id_restaurant . " " . $id_usuari . " " . $id_tag);
+                DB::table('tbl_tag_intermitja')->where('Id_restaurant', '=', $id_restaurant)->where('Id_tag', '=', $id_tag)->where('Id_usuari', '=', $id_usuari)->delete();
+            } else {
+                print_r("else");
+                DB::table('tbl_tag')->where('Id_Tag', '=', $id_tag)->delete();
+                DB::table('tbl_tag_intermitja')->where('Id_restaurant', '=', $id_restaurant)->where('Id_Tag', '=', $id_tag)->delete();
+            }
+
         } catch (\Throwable $th) {
         }
     }
