@@ -317,6 +317,9 @@ function searchRestaurantsAdmin() {
     var tipoCocina = document.querySelectorAll('.filtro--tipo_cocina');
     var tipoCategoria = document.querySelectorAll('.filtro--tipo_categoria');
     var favorito = "";
+    if (!modal.classList.contains('hasMap')) { // Tanca el modal quan NO té aquesta classe el modal
+        closeModal();
+    }
 
     filter(renderRestaurantsAdmin, nombreRestaurante, precioMedio, valoracion, tipoCocina, favorito, tipoCategoria);
 }
