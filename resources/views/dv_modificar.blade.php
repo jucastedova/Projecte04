@@ -46,6 +46,17 @@
             <h1>MODIFICAR RESTAURANTE</h1>
         </div>
         <div class="row">
+            @if ($errors->any())
+            <div class="errores">
+                <ul class="error">
+                    @foreach ($errors->all() as $error)
+                    <li>{{$error}}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+        </div>
+        <div class="row">
             <form action="{{url('actualizarRestaurante')}}" method="POST" enctype="multipart/form-data" class="form-modificar">
                 @csrf
                 {{method_field('PUT')}}
@@ -148,12 +159,12 @@
                 @if ($trobat)
                 <div class="container-tipo-cocina">
                     <label for="{{$cuina->Id_cuina}}">{{$cuina->Nom_cuina}}</label>
-                    <input class="filtro--tipo_cocina" type="checkbox" id="tiposCocinas[]" name="tiposCocinas[]" value="{{$cuina->Nom_cuina}}" checked>
+                    <input class="filtro--tipo_cocina" type="checkbox" id="Tipos_Cocinas[]" name="Tipos_Cocinas[]" value="{{$cuina->Nom_cuina}}" checked>
                 </div>
                 @else
                 <div class="container-tipo-cocina">
                     <label for="{{$cuina->Id_cuina}}">{{$cuina->Nom_cuina}}</label>
-                    <input class="filtro--tipo_cocina" type="checkbox" id="tiposCocinas[]" name="tiposCocinas[]" value="{{$cuina->Nom_cuina}}">
+                    <input class="filtro--tipo_cocina" type="checkbox" id="Tipos_Cocinas[]" name="Tipos_Cocinas[]" value="{{$cuina->Nom_cuina}}">
                 </div>
                 @endif
                 @endforeach
@@ -174,12 +185,12 @@
                 @if ($trobatCat)
                 <div class="container-tipo-categoria">
                     <label for="{{$cat->Id_categoria}}">{{$cat->Nom_categoria}}</label>
-                    <input class="filtro--tipo_categoria" type="checkbox" id="tiposCategorias[]" name="tiposCategorias[]" value="{{$cat->Nom_categoria}}" checked>
+                    <input class="filtro--tipo_categoria" type="checkbox" id="Tipos_Categorias[]" name="Tipos_Categorias[]" value="{{$cat->Nom_categoria}}" checked>
                 </div>
                 @else
                 <div class="container-tipo-categoria">
                     <label for="{{$cat->Id_categoria}}">{{$cat->Nom_categoria}}</label>
-                    <input class="filtro--tipo_categoria" type="checkbox" id="tiposCategorias[]" name="tiposCategorias[]" value="{{$cat->Nom_categoria}}">
+                    <input class="filtro--tipo_categoria" type="checkbox" id="Tipos_Categorias[]" name="Tipos_Categorias[]" value="{{$cat->Nom_categoria}}">
                 </div>
                 @endif
                 @endforeach
@@ -200,17 +211,6 @@
         <input type="submit" class="btn btn-succes" value="continuar" name="continuar" id="submit--control">
         <div id="error--checked"></div>
         </form>
-        <div class="row">
-            @if ($errors->any())
-            <div class="errores">
-                <ul class="error">
-                    @foreach ($errors->all() as $error)
-                    <li>{{$error}}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-        </div>
     </div>
     <footer>
         <div>

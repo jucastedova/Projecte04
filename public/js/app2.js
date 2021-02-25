@@ -1,6 +1,10 @@
-let adrecaRestaurant = document.getElementById('adreca_restaurant');
+let adrecaRestaurant = document.getElementById('Adreca_restaurant');
+let cpRestaurant = document.getElementById('CP_restaurant');
+let ciutatRestaurant = document.getElementById('Ciutat_restaurant');
 let containerMap = document.getElementById('container-map');
 adrecaRestaurant.addEventListener('blur', markerMap);
+cpRestaurant.addEventListener('blur', markerMap);
+ciutatRestaurant.addEventListener('blur', markerMap);
 
 var geocoder = L.esri.Geocoding.geocodeService();
 var map = L.map('map');
@@ -26,17 +30,16 @@ function markerMap() {
     });
     geocoder.geocode()
         .address(adrecaRestaurant.value)
-        .city(`L'Hospitalet de Llobregat`)
-        .region('ES')
+        .city(ciutatRestaurant.value)
+        .postal(cpRestaurant.value)
         .run(function(error, response) {
             if (error) {
                 return;
             } else {
-                let addressResponse = response.results[0].text;
-                let splitAddress = addressResponse.split(",");
                 let errorAddress = document.getElementById('error-address');
                 errorAddress.textContent = "";
-                if (splitAddress.length > 3) { // Controlem que la direcció existeixi
+                let score = response.results[0].score;
+                if (score > 90) { // Si té un Score superior al 90%...
                     map.fitBounds(response.results[0].bounds);
                     map.setZoom(18);
                     restMarker = L.marker(response.results[0].latlng, { icon: greenIcon });

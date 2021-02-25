@@ -23,15 +23,15 @@ class RestaurantRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'nom_restaurant' => 'required',
+            'Nom_restaurant' => 'required',
             'Ciutat_restaurant' => 'required',
-            'CP_restaurant' => 'required',
-            'adreca_restaurant' => 'required', 
-            'preu_mitja' => 'required',
-            'correu_gerent' => 'required|email',
-            'descripcio_restaurant' => 'required',
+            'CP_restaurant' => 'required|max:5',
+            'Adreca_restaurant' => 'required', 
+            'Preu_mitja_restaurant' => 'required',
+            'Correu_gerent_restaurant' => 'required|email',
+            'Descripcio_restaurant' => 'required',
             'imatge' => 'required',
-            'tiposCocinas' => 'required'
+            'Tipos_Cocinas' => 'required'
         ];
     }
 }
