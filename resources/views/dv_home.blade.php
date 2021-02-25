@@ -53,156 +53,160 @@
             <div class="container-top">
                 <div class="container--filter">
                     <div class="form-group">
+                        @if (session()->has('estandard'))
                         <input class="form-control" type="text" id="search--rest" name="search--rest" placeholder="Buscar por restaurante o por #tags..." onkeyup="searchRestaurants()">
+                        @else
+                        <input class="form-control" type="text" id="search--rest" name="search--rest" placeholder="Buscar por restaurante" onkeyup="searchRestaurants()">
+                        @endif
                     </div>
                     <div class="logo-filtro">
                         <i class="fas fa-filter" onclick="openModal()"></i>
-                    <!-- TAGS -->
+                        <!-- TAGS -->
+                        @if (session()->has('estandard'))
+                        <button class="btn btn-info" onclick="openModalTags()">Ver tags</button>
+                        @endif
+                        <button class="btn btn-info" id="botonmapa" onclick="openModalFilterMap()">Ver Mapa</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- FILTRO https://fontawesome.com/icons/filter?style=solid -->
+        <!-- Sección que vamos a recargar con AJAX -->
+        <div class="row" id="section-3">
+        </div>
+
+        <div class="modal-tag" id="modal-tag">
+            <!-- Modal tag -->
+            <div class="modal-content-tag">
+                <input type="hidden" value="{{ session()->get('userId') }}" id="idUsuario">
+                <div class="close-modal-tag">
+                    <span class="title-tag">TAGS</span>
+                    <span class="close-tag" onclick="closeModalTag()">&times;</span>
+                </div>
+                <div class="ventanaTags">
+                    <div id="tags">
+                    </div>
+                </div>
+            </div>
+        </div> <!-- END Modal tag -->
+
+        <div>
+        </div>
+
+        <div class="modal" id="modal-filter">
+            <!-- Modal filtre -->
+            <div class="modal-content">
+                <div class="close--modal">
+                    <div class="display-block" id="span1">
+                        <span class="close" onclick="closeModal()">&times;</span>
+                    </div>
+                    <div class="display-none" id="span2">
+                        <span class="close" onclick="closeModalFilterMap()">&times;</span>
+                    </div>
+                </div>
+                <form method="post" onsubmit="searchRestaurants(); return false;">
+                    <div class="container--precio-valoracion">
+                        <div>
+                            <label for="precio_medio" class="bold">Precio medio</label>
+                            <input type="number" id="precio_medio" name="precio_medio">
+                        </div>
+                        <div>
+                            <label for="valoracion" class="bold">Valoración</label>
+                            <input type="number" id="valoracion" name="valoracion" min="1" max="5">
+                        </div>
+                    </div>
+                    <!-- S'AGAFEN ELS VALORS DE LA BBDD -->
+                    <div class="container--tag-categorias">
+                        <!-- TIPUS CUINA -->
+                        <div>
+                            <p class="bold">Gastronomía</p>
+                            @foreach ($listCuina as $tipus)
+                            <div class="container-tipo-cocina">
+                                <label for="{{$tipus->Id_cuina}}">{{$tipus->Nom_cuina}}</label>
+                                <input class="filtro--tipo_cocina" type="checkbox" id="{{$tipus->Id_cuina}}" name="{{$tipus->Id_cuina}}" value="{{$tipus->Nom_cuina}}">
+                            </div>
+                            @endforeach
+                        </div>
+                        <!-- CATEGORIES -->
+                        <div>
+                            <p class="bold">Categoría</p>
+                            @foreach ($listCategories as $cat)
+                            <div class="container-tipo-cocina">
+                                <label for="{{$cat->Id_categoria}}">{{$cat->Nom_categoria}}</label>
+                                <input class="filtro--tipo_categoria" type="checkbox" id="categoria{{$cat->Id_categoria}}" name="categoria{{$cat->Id_categoria}}" value="{{$cat->Nom_categoria}}">
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+
                     @if (session()->has('estandard'))
-                    <button class="btn btn-info" onclick="openModalTags()">Ver tags</button>
+                    <div>
+                        <label for="favoritos" class="bold">Favorito</label>
+                        <input type="checkbox" id="filtrofav" name="filtrofav" value="1">
+                    </div>
                     @endif
-                    <button class="btn btn-info" id="botonmapa" onclick="openModalFilterMap()">Ver Mapa</button>
-                    </div>
-                
-            </div>
-        </div>
-    </div>
-    <!-- FILTRO https://fontawesome.com/icons/filter?style=solid -->
-    <!-- Sección que vamos a recargar con AJAX -->
-    <div class="row" id="section-3">
-    </div>
 
-    <div class="modal-tag" id="modal-tag">
-        <!-- Modal tag -->
-        <div class="modal-content-tag">
-            <input type="hidden" value="{{ session()->get('userId') }}" id="idUsuario">
-            <div class="close-modal-tag">
-                <span class="title-tag">TAGS</span>
-                <span class="close-tag" onclick="closeModalTag()">&times;</span>
-            </div>
-            <div class="ventanaTags">
-                <div id="tags">
-                </div>
-            </div>
-        </div>
-    </div> <!-- END Modal tag -->
 
-    <div>
-    </div>
-
-    <div class="modal" id="modal-filter">
-        <!-- Modal filtre -->
-        <div class="modal-content">
-            <div class="close--modal">
-                <div class="display-block" id="span1">
-                    <span class="close" onclick="closeModal()">&times;</span>
-                </div>
-                <div class="display-none" id="span2">
-                    <span class="close" onclick="closeModalFilterMap()">&times;</span>
-                </div>
-            </div>
-            <form method="post" onsubmit="searchRestaurants(); return false;">
-                <div class="container--precio-valoracion">
-                    <div>
-                        <label for="precio_medio" class="bold">Precio medio</label>
-                        <input type="number" id="precio_medio" name="precio_medio">
-                    </div>
-                    <div>
-                        <label for="valoracion" class="bold">Valoración</label>
-                        <input type="number" id="valoracion" name="valoracion" min="1" max="5">
-                    </div>
-                </div>
-                <!-- S'AGAFEN ELS VALORS DE LA BBDD -->
-                <div class="container--tag-categorias">
-                    <!-- TIPUS CUINA -->
-                    <div>
-                        <p class="bold">Gastronomía</p>
-                        @foreach ($listCuina as $tipus)
-                        <div class="container-tipo-cocina">
-                            <label for="{{$tipus->Id_cuina}}">{{$tipus->Nom_cuina}}</label>
-                            <input class="filtro--tipo_cocina" type="checkbox" id="{{$tipus->Id_cuina}}" name="{{$tipus->Id_cuina}}" value="{{$tipus->Nom_cuina}}">
+                    <div class="form-btn">
+                        <div>
+                            <input type="reset" value="Borrar todo">
                         </div>
-                        @endforeach
-                    </div>
-                    <!-- CATEGORIES -->
-                    <div>
-                        <p class="bold">Categoría</p>
-                        @foreach ($listCategories as $cat)
-                        <div class="container-tipo-cocina">
-                            <label for="{{$cat->Id_categoria}}">{{$cat->Nom_categoria}}</label>
-                            <input class="filtro--tipo_categoria" type="checkbox" id="categoria{{$cat->Id_categoria}}" name="categoria{{$cat->Id_categoria}}" value="{{$cat->Nom_categoria}}">
+                        <div>
+                            <input type="submit" value="Aplicar" id="btn--applicar-filtro">
                         </div>
-                        @endforeach
                     </div>
-                </div>
-
-                @if (session()->has('estandard'))
-                <div>
-                    <label for="favoritos" class="bold">Favorito</label>
-                    <input type="checkbox" id="filtrofav" name="filtrofav" value="1">
-                </div>
-                @endif
-
-
-                <div class="form-btn">
-                    <div>
-                        <input type="reset" value="Borrar todo">
-                    </div>
-                    <div>
-                        <input type="submit" value="Aplicar" id="btn--applicar-filtro">
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div id="mapfilter" style="width:500px;height:500px;"></div>
-    </div> <!-- END Modal filtre -->
-
-    <!-- Modal Map -->
-    <div id="modal-map" class="modal-map">
-        <div class="container--map">
-            <div class="close--modal-map">
-                <span class="close--map" onclick="closeMapModal()">&times;</span>
+                </form>
             </div>
-            <div id="map" class="map--modal"></div>
-            <div class="content-marker--home">
-                <p><i class="fas fa-map-marker-alt mk-home"></i></p>
-                <p onclick="calcRouteToRestaurant()" class="calc-route">Cómo llegar</p>
+            <div id="mapfilter" style="width:500px;height:500px;"></div>
+        </div> <!-- END Modal filtre -->
+
+        <!-- Modal Map -->
+        <div id="modal-map" class="modal-map">
+            <div class="container--map">
+                <div class="close--modal-map">
+                    <span class="close--map" onclick="closeMapModal()">&times;</span>
+                </div>
+                <div id="map" class="map--modal"></div>
+                <div class="content-marker--home">
+                    <p><i class="fas fa-map-marker-alt mk-home"></i></p>
+                    <p onclick="calcRouteToRestaurant()" class="calc-route">Cómo llegar</p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- END Modal Map -->
-    <footer>
-        <div>
-            <h3>Descubre Deliveroo</h3>
-            <p>Quiénes somos</p>
-            <p>Sala de prensa</p>
-            <p>Empleo</p>
-        </div>
-        <div>
-            <h3>Legal</h3>
-            <p>Términos y condiciones</p>
-            <p>Privacidad</p>
-            <p>Cookies</p>
-        </div>
-        <div>
-            <h3>Ayuda</h3>
-            <p>Contacto</p>
-            <p>Preguntas frecuentes</p>
-            <p>Cocina</p>
-        </div>
-    </footer>
-    <script src="{{asset('js/app.js')}}"></script>
+        <!-- END Modal Map -->
+        <footer>
+            <div>
+                <h3>Descubre Deliveroo</h3>
+                <p>Quiénes somos</p>
+                <p>Sala de prensa</p>
+                <p>Empleo</p>
+            </div>
+            <div>
+                <h3>Legal</h3>
+                <p>Términos y condiciones</p>
+                <p>Privacidad</p>
+                <p>Cookies</p>
+            </div>
+            <div>
+                <h3>Ayuda</h3>
+                <p>Contacto</p>
+                <p>Preguntas frecuentes</p>
+                <p>Cocina</p>
+            </div>
+        </footer>
+        <script src="{{asset('js/app.js')}}"></script>
 
-    <script>
-        var geocoder = L.esri.Geocoding.geocodeService();
+        <script>
+            var geocoder = L.esri.Geocoding.geocodeService();
 
-        var map = L.map('map');
+            var map = L.map('map');
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-    </script>
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+        </script>
 </body>
 
 </html>
