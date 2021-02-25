@@ -46,19 +46,18 @@ function markerMap() {
                 // console.log('Response: ', response);
                 let errorAddress = document.getElementById('error-address');
                 errorAddress.textContent = "";
-                if (splitAddress.length > 3) { // Llavors la direcció existeix
-                    let score = response.results[0].score;
-                    if (score > 90) { // Si té un Score superior al 90%...
-                        map.fitBounds(response.results[0].bounds);
-                        map.setZoom(18);
-                        restMarker = L.marker(response.results[0].latlng, { icon: greenIcon });
-                        restMarker.addTo(map)
-                            .bindPopup(`<b>${adrecaRestaurant.value}</b>`)
-                            .openPopup();
-                    } else {
-                        errorAddress.textContent = "Dirección incorrecta";
-                    }
+                let score = response.results[0].score;
+                if (score > 90) { // Si té un Score superior al 90%...
+                    map.fitBounds(response.results[0].bounds);
+                    map.setZoom(18);
+                    restMarker = L.marker(response.results[0].latlng, { icon: greenIcon });
+                    restMarker.addTo(map)
+                        .bindPopup(`<b>${adrecaRestaurant.value}</b>`)
+                        .openPopup();
+                } else {
+                    errorAddress.textContent = "Dirección incorrecta";
                 }
+
             }
         });
 }
