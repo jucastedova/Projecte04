@@ -60,7 +60,7 @@ input[type='submit'] {
         flex-direction: column;
     }
     .center-gast-cat {
-        width: 42%!important;
+        width: 60%!important;
         margin: auto;
         margin-bottom: 20px;
     }
@@ -522,13 +522,6 @@ i.fas.fa-star:after {
 
 /* MODAL */
 
-
-/* @media (max-width: 412px) and (min-width:320px) {
-    .modal {
-        width: 273px;
-    }
-} */
-
 .modal {
     position: fixed;
     top: 50%;
@@ -880,7 +873,6 @@ i.fas.fa-star:after {
     display: flex;
 }
 
-.pg-register .form-crear,
 .pg-modificar .form-modificar {
     max-width: 250px;
     margin: 32px auto;
@@ -924,6 +916,50 @@ i.fas.fa-star:after {
     margin: 32px auto;
 }
 
+.pg-register .wc--input {
+    display: flex;
+    justify-content: center;
+    column-gap: 75px;
+    margin-bottom: 29px;
+}
+
+.pg-register h1 {
+    margin-bottom: 64px;
+}
+
+.pg-register .wc--cat-cocina {
+    display: flex;
+    justify-content: center;
+    column-gap: 170px;
+}
+
+.pg-register textarea {
+    display: block;
+    margin: 28px auto;
+}
+
+@media (max-width: 667px) {
+    .pg-register .wc--cat-cocina {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+    .pg-register .wc--cat-cocina >div{
+        max-width: 80%;
+        margin: auto;
+    }
+    .pg-register .wc--cat-cocina >div p{
+        text-align: center;
+        margin-top: 20px;
+    }
+    .pg-register .wc--input {
+        display: grid;
+        row-gap: 25px;
+    }
+}
+
+#error-address {
+    text-align: center;
+}
 
 /* FIN DV_REGISTER */
 
@@ -1179,4 +1215,25 @@ footer div {
 
 .inputCat {
     padding: 0;
+}
+
+
+.container-img-adm {
+    display: flex;
+    justify-content: center;
+    margin-top: 22px;
+}
+
+.container-file {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px!important;
+}
+.container-file input {
+    width: auto;
+}
+.wc--continuar {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
