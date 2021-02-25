@@ -49,7 +49,7 @@ function markerMap() {
             } else {
                 // let addressResponse = response.results[0].text;
                 // let splitAddress = addressResponse.split(",");
-                // console.log('Response: ', response);
+                console.log('Response: ', response);
                 let errorAddress = document.getElementById('error-address');
                 errorAddress.textContent = "";
                 let score = response.results[0].score;
