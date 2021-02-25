@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="css/style.css"> -->
-    <!-- <link rel="preconnect" href="https://fonts.gstatic.com"> -->
     <link rel="stylesheet" href="{{asset('css/estilos.css')}}">
     
     <script src="https://kit.fontawesome.com/b2a65126dc.js" crossorigin="anonymous"></script>
@@ -15,9 +13,6 @@
 </head>
 
 <body class="dv_admin">
-    <!-- <form action="{{url('cerrarSesion')}}" method="GET">
-        <button type="submit" class="btn btn-info">Cerrar sesión</button>
-    </form> -->
     <!-- Tener en cuenta que el menú cambia si está o no logueado. También paarecerá o no el cerrar sesión -->
     <nav class="menu_nav">
         <div class="logo_nav"><a href="{{url('dv_admin')}}"><img src="{{asset('img/LogoProjecte04.png')}}" alt="logo geoeat"></a></div>

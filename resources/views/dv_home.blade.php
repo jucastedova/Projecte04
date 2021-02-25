@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -25,18 +25,12 @@
 </head>
 
 <body>
-    <!-- <div id="map"></div> -->
     @if (session()->has('estandard'))
     <input type="hidden" value="1" id="filterEstandard" name="filterEstandard">
     <input type="hidden" value="{{ session()->get('userId') }}" id="userId" name="userId">
     @endif
 
-    <!-- <form action="{{url('cerrarSesion')}}" method="GET">
-        <button type="submit" class="btn btn-info">Cerrar sesión</button>
-    </form> -->
-    <!-- REVIEW -->
     <!-- Tener en cuenta que el menú cambia si está o no logueado. También paarecerá o no el cerrar sesión -->
-    <!-- FIN RREVIEW -->
     <nav class="menu_nav">
         <div class="logo_nav"><a href="{{url('/')}}"><img src="{{asset('img/LogoProjecte04.png')}}" alt="logo geoeat"></a></div>
         @if (session()->has('admin') || session()->has('estandard'))
@@ -163,13 +157,8 @@
         <div id="mapfilter" style="width:500px;height:500px;"></div>
     </div> <!-- END Modal filtre -->
 
-
-
     <!-- Modal Map -->
     <div id="modal-map" class="modal-map">
-        <!-- <div class="close--modal-map">
-            <span class="close--map" onclick="closeMapModal()">&times;</span>
-        </div> -->
         <div class="container--map">
             <div class="close--modal-map">
                 <span class="close--map" onclick="closeMapModal()">&times;</span>
@@ -181,6 +170,7 @@
             </div>
         </div>
     </div>
+
     <!-- END Modal Map -->
     <footer>
         <div>

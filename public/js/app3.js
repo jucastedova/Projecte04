@@ -6,7 +6,6 @@ let adrecaRestaurant = document.getElementById('Adreca_restaurant');
 let ciutatRestaurant = document.getElementById('Ciutat_restaurant');
 let CPRestaurant = document.getElementById('CP_restaurant');
 let containerMap = document.getElementById('container-map');
-console.log('map:', containerMap);
 adrecaRestaurant.addEventListener('blur', markerMap);
 ciutatRestaurant.addEventListener('blur', markerMap);
 CPRestaurant.addEventListener('blur', markerMap);
@@ -22,13 +21,9 @@ var restMarker;
 
 function markerMap() {
     if (restMarker) { // Si eixsteix...
-        console.log('eliminem last control');
         map.removeControl(restMarker); // Treiem el marker
     }
     containerMap.classList.remove('display-none');
-    // containerMap.classList.add('map--create-modify');
-    // console.log(adrecaRestaurant.value);
-
 
     var greenIcon = new L.Icon({
         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
@@ -44,25 +39,25 @@ function markerMap() {
         .postal(CPRestaurant.value)
         .run(function(error, response) {
             if (error) {
-                console.log('Error', error);
                 return;
             } else {
                 // let addressResponse = response.results[0].text;
                 // let splitAddress = addressResponse.split(",");
-                console.log('Response: ', response);
+                // console.log('Response: ', response);
                 let errorAddress = document.getElementById('error-address');
                 errorAddress.textContent = "";
-                let score = response.results[0].score;
-                if (score > 90) { // Si té un Score superior al 90%...
-                    map.fitBounds(response.results[0].bounds);
-                    map.setZoom(18);
-                    restMarker = L.marker(response.results[0].latlng, { icon: greenIcon });
-                    restMarker.addTo(map)
-                        .bindPopup(`<b>${adrecaRestaurant.value}</b>`)
-                        .openPopup();
-                } else {
-                    // console.log('direcció NO existeix');
-                    errorAddress.textContent = "Dirección incorrecta";
+                if (splitAddress.length > 3) { // Llavors la direcció existeix
+                    let score = response.results[0].score;
+                    if (score > 90) { // Si té un Score superior al 90%...
+                        map.fitBounds(response.results[0].bounds);
+                        map.setZoom(18);
+                        restMarker = L.marker(response.results[0].latlng, { icon: greenIcon });
+                        restMarker.addTo(map)
+                            .bindPopup(`<b>${adrecaRestaurant.value}</b>`)
+                            .openPopup();
+                    } else {
+                        errorAddress.textContent = "Dirección incorrecta";
+                    }
                 }
             }
         });

@@ -37,7 +37,6 @@ function renderRestaurantTags() {
     ajax.onreadystatechange = function() {
         if (ajax.status == 200 && ajax.readyState == 4) {
             var respuesta = JSON.parse(ajax.responseText);
-            console.log('respuesta tags', respuesta)
             if (respuesta.length == 0) {
                 renderedResults = "No has asignado ningún tag a este restaurante.";
             }
@@ -53,8 +52,6 @@ function renderRestaurantTags() {
                 }
             }
             section.innerHTML = renderedResults;
-        } else {
-            console.log('App::Problems on TAGS request: ' + ajax.statusText);
         }
     }
     ajax.send(datasend);
@@ -85,7 +82,6 @@ function añadirTag(e) {
                 renderRestaurantTags();
             } else {
                 msgTag.innerHTML = "Tag no añadido!";
-                console.log('App::Problems on comentarios request: ' + ajax.statusText);
             }
             setTimeout(function() {
                 msgTag.innerHTML = "";

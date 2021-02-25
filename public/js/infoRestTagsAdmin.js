@@ -57,8 +57,6 @@ function renderCategorias() {
                 renderedResults = "No hay tags.";
             }
 
-            console.info(respuesta)
-
             for (let i = 0; i < respuesta.length; i++) {
                 renderedResults += '<tr>';
                 renderedResults += '<td>' + respuesta[i].Id_categoria + '</td>' + '<td>' + respuesta[i].Nom_categoria + '</td>';
@@ -93,8 +91,6 @@ function renderCategorias() {
             }
 
             section.innerHTML = renderedResults;
-        } else {
-            console.log('App::Problems on comentarios request: ' + ajax.statusText);
         }
     }
     ajax.send(datasend);
