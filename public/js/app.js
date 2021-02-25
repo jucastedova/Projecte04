@@ -391,7 +391,9 @@ function renderTags() {
     ajax.onreadystatechange = function() {
         if (ajax.status == 200 && ajax.readyState == 4) {
             var respuesta = JSON.parse(ajax.responseText);
-
+            if (respuesta.length == 0) {
+                renderedResults += "No has asignado ningún tag.";
+            }
             for (let i = 0; i < respuesta.length; i++) {
                 if (cont % 3 == 0) {
                     renderedResults += '<div class="rowTag">';

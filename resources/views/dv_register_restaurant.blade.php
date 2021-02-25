@@ -50,7 +50,7 @@
             </ul>
         </div>
     @endif
-    <form action="{{url('crearRestaurante')}}" method="POST" enctype="multipart/form-data" class="form-crear">
+    <form action="{{url('crearRestaurante')}}" onsubmit="validarMap(event);" method="POST" enctype="multipart/form-data" class="form-crear">
         @csrf
         <input type="hidden" name="userId" id="userId" value="{{ session()->get('userId') }}">
         <input type="text" id="Nom_restaurant" name="Nom_restaurant" placeholder="Nombre restaurante"><br><br>

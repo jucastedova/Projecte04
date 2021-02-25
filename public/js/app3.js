@@ -61,3 +61,14 @@ function markerMap() {
             }
         });
 }
+
+//Control map data
+function validarMap(event) {
+    //Recogemos el div que contiene el error
+    error = document.getElementById('error-address').innerHTML;
+
+    //Si el div contiene un mensaje, no dejamos que haga submit
+    if (error.length > 0) {
+        event.preventDefault();
+    }
+}

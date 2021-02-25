@@ -57,7 +57,7 @@
             @endif
         </div>
         <div class="row">
-            <form action="{{url('actualizarRestaurante')}}" method="POST" enctype="multipart/form-data" class="form-modificar">
+            <form action="{{url('actualizarRestaurante')}}" onsubmit="validarMap(event);" method="POST" enctype="multipart/form-data" class="form-modificar">
                 @csrf
                 {{method_field('PUT')}}
                 <input type="hidden" name="userId" id="userId" value="{{ session()->get('userId') }}">
