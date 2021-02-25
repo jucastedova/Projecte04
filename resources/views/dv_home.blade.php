@@ -178,7 +178,7 @@
         <!-- END Modal Map -->
         <footer>
             <div>
-                <h3>Descubre Deliveroo</h3>
+                <h3>Descubre GeoEat</h3>
                 <p>Quiénes somos</p>
                 <p>Sala de prensa</p>
                 <p>Empleo</p>
