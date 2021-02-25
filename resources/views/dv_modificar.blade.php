@@ -103,31 +103,40 @@
                 <div class="col-md-1 col-lg-3">
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <label>Ciudad</label><br>
-                <input type="text" id="Ciutat_restaurant" name="Ciutat_restaurant" value="{{$restaurant->Ciutat_restaurant}}"><br><br>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <label>Código postal</label><br>
-                <input type="text" id="CP_restaurant" name="CP_restaurant" value="{{$restaurant->CP_restaurant}}"><br><br>
-            </div>
-        </div>
-        <div class="row">
+            <div class="row">
                 <div class="col-md-1 col-lg-3">
                 </div>
                 <div class="col-sm-6 col-md-5 col-lg-3">
-                    <div class="form-group">
-                        <label>Dirección</label><br>
-                        <input type="text" id="Adreca_restaurant" name="Adreca_restaurant" value="{{$restaurant->Adreca_restaurant}}"><br><br>
+                    <div class="form-group"> 
+                        <label>Ciudad</label><br>
+                        <input type="text" id="Ciutat_restaurant" name="Ciutat_restaurant" value="{{$restaurant->Ciutat_restaurant}}"><br><br>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-5 col-lg-3">
+                <div class="form-group">
+                    <label>Código postal</label><br>
+                    <input type="text" id="CP_restaurant" name="CP_restaurant" value="{{$restaurant->CP_restaurant}}"><br><br>
+                </div>
+                </div>
+                    <div class="col-md-1 col-lg-3">
+                    </div>
+                </div>
+            <div class="row">
+                    <div class="col-md-1 col-lg-3">
+                    </div>
+                    <div class="col-sm-6 col-md-5 col-lg-3">
+                        <div class="form-group">
+                            <label>Dirección</label><br>
+                            <input type="text" id="Adreca_restaurant" name="Adreca_restaurant" value="{{$restaurant->Adreca_restaurant}}"><br><br>
+                        </div>
+                        <div class="col-sm-6 col-md-5 col-lg-3">
+                        </div>
+                        <div class="col-md-1 col-lg-3">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="row">
             <!-- REVIEW -->
             <div class="container--map display-none" id="container-map">
@@ -200,15 +209,17 @@
         </div>
         <div class="row">
             @foreach ($primeraImatge as $imatge)
-            <div>
+            <div class="container-img-adm">
                 <img class="img-fluid" src="../storage/{{$imatge->Ruta_Text_Imatge}}" style="height:400px" name="{{$imatge->id_imatge}}" id="{{$imatge->id_imatge}}"><br><br>
             </div>
             @endforeach
+            <div class="row container-file">
+                <input type="file" name="imatge" id="imatge" accept="image/png"><br><br>
+            </div>
         </div>
-        <div class="row">
-            <input type="file" name="imatge" id="imatge" accept="image/png"><br><br>
+        <div class="wc--continuar">
+            <input type="submit" class="btn btn-succes" value="continuar" name="continuar" id="submit--control">
         </div>
-        <input type="submit" class="btn btn-succes" value="continuar" name="continuar" id="submit--control">
         <div id="error--checked"></div>
         </form>
     </div>
