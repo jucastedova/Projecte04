@@ -154,7 +154,7 @@ class RestauranteController extends Controller
 
             //Enviamos el correo
             $co = $datos_imagen['destinatario'];
-            $datos_correo = "Estimado Sr/a. " . $datos_imagen['nom_gerent'] . " Informarle de que su restaurante " . $datos_imagen['Nom_restaurant'] . " ha sido modificado Saludos cordiales, Deliveroo";
+            $datos_correo = "Estimado Sr/a. " . $datos_imagen['nom_gerent'] . " Informarle de que su restaurante " . $datos_imagen['Nom_restaurant'] . " ha sido modificado Saludos cordiales, GeoEat";
             $enviar = new EnviarCorreoGerente($datos_correo);
             $enviar->asunto = "GeoEat: restaurante modificado.";
             Mail::to($co)->send($enviar);

@@ -78,7 +78,7 @@
                 <div class="col-sm-6 col-md-5 col-lg-3">
                     <div class="form-group">
                         <label>Precio</label><br>
-                        <input type="text" id="Preu_mitja_restaurant" name="Preu_mitja_restaurant" value="{{$restaurant->Preu_mitja_restaurant}}" required><br><br>
+                        <input type="text" id="Preu_mitja_restaurant" name="Preu_mitja_restaurant" value="{{$restaurant->Preu_mitja_restaurant}}"><br><br>
                     </div>
                 </div>
                 <div class="col-md-1 col-lg-3">
@@ -90,7 +90,7 @@
                 <div class="col-sm-6 col-md-5 col-lg-3">
                     <div class="form-group">                    
                         <label>Correo del gerente</label><br>
-                        <input type="email" id="Correu_gerent_restaurant" name="Correu_gerent_restaurant" value="{{$restaurant->Correu_gerent_restaurant}}" required>
+                        <input type="email" id="Correu_gerent_restaurant" name="Correu_gerent_restaurant" value="{{$restaurant->Correu_gerent_restaurant}}">
                     </div>
                 </div><br>
 
@@ -107,13 +107,13 @@
         <div class="row">
             <div class="col">
                 <label>Ciudad</label><br>
-                <input type="text" id="Ciutat_restaurant" name="Ciutat_restaurant" value="{{$restaurant->Ciutat_restaurant}}" required><br><br>
+                <input type="text" id="Ciutat_restaurant" name="Ciutat_restaurant" value="{{$restaurant->Ciutat_restaurant}}"><br><br>
             </div>
         </div>
         <div class="row">
             <div class="col">
                 <label>Código postal</label><br>
-                <input type="text" id="CP_restaurant" name="CP_restaurant" value="{{$restaurant->CP_restaurant}}" required><br><br>
+                <input type="text" id="CP_restaurant" name="CP_restaurant" value="{{$restaurant->CP_restaurant}}"><br><br>
             </div>
         </div>
         <div class="row">
@@ -122,7 +122,7 @@
                 <div class="col-sm-6 col-md-5 col-lg-3">
                     <div class="form-group">
                         <label>Dirección</label><br>
-                        <input type="text" id="Adreca_restaurant" name="Adreca_restaurant" value="{{$restaurant->Adreca_restaurant}}" required><br><br>
+                        <input type="text" id="Adreca_restaurant" name="Adreca_restaurant" value="{{$restaurant->Adreca_restaurant}}"><br><br>
                     </div>
                 </div>
             </div>
@@ -214,7 +214,7 @@
     </div>
     <footer>
         <div>
-            <h3>Descubre Deliveroo</h3>
+            <h3>Descubre GeoEat</h3>
             <p>Quiénes somos</p>
             <p>Sala de prensa</p>
             <p>Empleo</p>
