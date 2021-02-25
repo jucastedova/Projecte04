@@ -96,69 +96,71 @@
 
         <div class="modal" id="modal-filter">
             <!-- Modal filtre -->
-            <div class="modal-content">
-                <div class="close--modal">
-                    <div class="display-block" id="span1">
-                        <span class="close" onclick="closeModal()">&times;</span>
+            <div class="modal-content-wrapper">
+                <div class="modal-content">
+                    <div class="close--modal">
+                        <div class="display-block" id="span1">
+                            <span class="close" onclick="closeModal()">&times;</span>
+                        </div>
+                        <div class="display-none" id="span2">
+                            <span class="close" onclick="closeModalFilterMap()">&times;</span>
+                        </div>
                     </div>
-                    <div class="display-none" id="span2">
-                        <span class="close" onclick="closeModalFilterMap()">&times;</span>
-                    </div>
+                    <form method="post" onsubmit="searchRestaurants(); return false;">
+                        <div class="container--precio-valoracion">
+                            <div>
+                                <label for="precio_medio" class="bold">Precio medio</label>
+                                <input type="number" id="precio_medio" name="precio_medio">
+                            </div>
+                            <div>
+                                <label for="valoracion" class="bold">Valoración</label>
+                                <input type="number" id="valoracion" name="valoracion" min="1" max="5">
+                            </div>
+                        </div>
+                        <!-- S'AGAFEN ELS VALORS DE LA BBDD -->
+                        <div class="container--tag-categorias">
+                            <!-- TIPUS CUINA -->
+                            <div>
+                                <p class="bold">Gastronomía</p>
+                                @foreach ($listCuina as $tipus)
+                                <div class="container-tipo-cocina">
+                                    <label for="{{$tipus->Id_cuina}}">{{$tipus->Nom_cuina}}</label>
+                                    <input class="filtro--tipo_cocina" type="checkbox" id="{{$tipus->Id_cuina}}" name="{{$tipus->Id_cuina}}" value="{{$tipus->Nom_cuina}}">
+                                </div>
+                                @endforeach
+                            </div>
+                            <!-- CATEGORIES -->
+                            <div>
+                                <p class="bold">Categoría</p>
+                                @foreach ($listCategories as $cat)
+                                <div class="container-tipo-cocina">
+                                    <label for="{{$cat->Id_categoria}}">{{$cat->Nom_categoria}}</label>
+                                    <input class="filtro--tipo_categoria" type="checkbox" id="categoria{{$cat->Id_categoria}}" name="categoria{{$cat->Id_categoria}}" value="{{$cat->Nom_categoria}}">
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+    
+                        @if (session()->has('estandard'))
+                        <div>
+                            <label for="favoritos" class="bold">Favorito</label>
+                            <input type="checkbox" id="filtrofav" name="filtrofav" value="1">
+                        </div>
+                        @endif
+    
+    
+                        <div class="form-btn">
+                            <div>
+                                <input type="reset" value="Borrar todo">
+                            </div>
+                            <div>
+                                <input type="submit" value="Aplicar" id="btn--applicar-filtro">
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <form method="post" onsubmit="searchRestaurants(); return false;">
-                    <div class="container--precio-valoracion">
-                        <div>
-                            <label for="precio_medio" class="bold">Precio medio</label>
-                            <input type="number" id="precio_medio" name="precio_medio">
-                        </div>
-                        <div>
-                            <label for="valoracion" class="bold">Valoración</label>
-                            <input type="number" id="valoracion" name="valoracion" min="1" max="5">
-                        </div>
-                    </div>
-                    <!-- S'AGAFEN ELS VALORS DE LA BBDD -->
-                    <div class="container--tag-categorias">
-                        <!-- TIPUS CUINA -->
-                        <div>
-                            <p class="bold">Gastronomía</p>
-                            @foreach ($listCuina as $tipus)
-                            <div class="container-tipo-cocina">
-                                <label for="{{$tipus->Id_cuina}}">{{$tipus->Nom_cuina}}</label>
-                                <input class="filtro--tipo_cocina" type="checkbox" id="{{$tipus->Id_cuina}}" name="{{$tipus->Id_cuina}}" value="{{$tipus->Nom_cuina}}">
-                            </div>
-                            @endforeach
-                        </div>
-                        <!-- CATEGORIES -->
-                        <div>
-                            <p class="bold">Categoría</p>
-                            @foreach ($listCategories as $cat)
-                            <div class="container-tipo-cocina">
-                                <label for="{{$cat->Id_categoria}}">{{$cat->Nom_categoria}}</label>
-                                <input class="filtro--tipo_categoria" type="checkbox" id="categoria{{$cat->Id_categoria}}" name="categoria{{$cat->Id_categoria}}" value="{{$cat->Nom_categoria}}">
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    @if (session()->has('estandard'))
-                    <div>
-                        <label for="favoritos" class="bold">Favorito</label>
-                        <input type="checkbox" id="filtrofav" name="filtrofav" value="1">
-                    </div>
-                    @endif
-
-
-                    <div class="form-btn">
-                        <div>
-                            <input type="reset" value="Borrar todo">
-                        </div>
-                        <div>
-                            <input type="submit" value="Aplicar" id="btn--applicar-filtro">
-                        </div>
-                    </div>
-                </form>
+                <div id="mapfilter" style="width:500px;height:500px;"></div>
             </div>
-            <div id="mapfilter" style="width:500px;height:500px;"></div>
         </div> <!-- END Modal filtre -->
 
         <!-- Modal Map -->

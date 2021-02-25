@@ -24,7 +24,7 @@
     <title>Home | dv</title>
 </head>
 
-<body>
+<body class="pg-gestionar-tags">
     @if (session()->has('estandard'))
     <input type="hidden" value="1" id="filterEstandard" name="filterEstandard">
     <input type="hidden" value="{{ session()->get('userId') }}" id="userId" name="userId">
