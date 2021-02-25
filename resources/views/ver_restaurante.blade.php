@@ -47,7 +47,8 @@
             </div>
         @endif
     </nav>
-    <h1>{{$restaurant->Nom_restaurant}}</h1>
+    
+    <h1 id="nombreRest">{{$restaurant->Nom_restaurant}}</h1>
 
     <main class="container">
         <input type="hidden" name="id_restaurant" id="id_restaurant" value="{{$restaurant->Id_restaurant}}">

@@ -943,11 +943,11 @@ i.fas.fa-star:after {
         display: grid;
         grid-template-columns: 1fr;
     }
-    .pg-register .wc--cat-cocina >div{
+    .pg-register .wc--cat-cocina>div {
         max-width: 80%;
         margin: auto;
     }
-    .pg-register .wc--cat-cocina >div p{
+    .pg-register .wc--cat-cocina>div p {
         text-align: center;
         margin-top: 20px;
     }
@@ -960,6 +960,7 @@ i.fas.fa-star:after {
 #error-address {
     text-align: center;
 }
+
 
 /* FIN DV_REGISTER */
 
@@ -1012,6 +1013,12 @@ i.fas.fa-star:after {
 
 .pg-verRestaurante .comentario {
     border-bottom: 1px solid #d2d2d2;
+}
+
+#nombreRest {
+    font-size: 50px;
+    margin-bottom: 5%;
+    margin-top: 3%;
 }
 
 
@@ -1217,7 +1224,6 @@ footer div {
     padding: 0;
 }
 
-
 .container-img-adm {
     display: flex;
     justify-content: center;
@@ -1229,9 +1235,11 @@ footer div {
     justify-content: center;
     margin-top: 20px!important;
 }
+
 .container-file input {
     width: auto;
 }
+
 .wc--continuar {
     display: flex;
     justify-content: center;
