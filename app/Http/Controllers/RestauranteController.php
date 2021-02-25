@@ -25,9 +25,9 @@ class RestauranteController extends Controller
         $datos = $request->except('_token', 'Crear');
         try {
             DB::beginTransaction();
-            $data = DB::table('tbl_restaurant')->insertGetId(['Nom_restaurant' => $datos['nom_restaurant'], 'Ciutat_restaurant' => $datos['Ciutat_restaurant'], 'CP_restaurant' => $datos['CP_restaurant'], 'Adreca_restaurant' => $datos['adreca_restaurant'], 'Preu_mitja_restaurant' => $datos['preu_mitja'], 'Correu_gerent_restaurant' => $datos['correu_gerent'], 'Descripcio_restaurant' => $datos['descripcio_restaurant']]);
+            $data = DB::table('tbl_restaurant')->insertGetId(['Nom_restaurant' => $datos['Nom_restaurant'], 'Ciutat_restaurant' => $datos['Ciutat_restaurant'], 'CP_restaurant' => $datos['CP_restaurant'], 'Adreca_restaurant' => $datos['Adreca_restaurant'], 'Preu_mitja_restaurant' => $datos['Preu_mitja_restaurant'], 'Correu_gerent_restaurant' => $datos['Correu_gerent_restaurant'], 'Descripcio_restaurant' => $datos['Descripcio_restaurant']]);
 
-            $tipos_cocinas = $datos['tiposCocinas'];
+            $tipos_cocinas = $datos['Tipos_Cocinas'];
 
             foreach ($tipos_cocinas as $tipoCocina) {
                 $cocinas = DB::table('tbl_cuina')
@@ -37,7 +37,7 @@ class RestauranteController extends Controller
                 }
             }
 
-            $tipos_categorias = $datos['tiposCategoria'];
+            $tipos_categorias = $datos['Tipos_Categorias'];
 
             foreach ($tipos_categorias as $tipoCat) {
                 $categorias = DB::table('tbl_categoria')
@@ -57,7 +57,7 @@ class RestauranteController extends Controller
             // El ID del user se debe colocar bindeando.
             DB::table('tbl_imatge')->insertGetId([
                 'Id_restaurant' => $data, 'Id_usuari' => $datos['userId'], 'Ruta_Text_Imatge' => $datos['imatge'],
-                'Titol' => $datos['nom_restaurant']
+                'Titol' => $datos['Nom_restaurant']
             ]);
 
             DB::commit();
@@ -99,12 +99,12 @@ class RestauranteController extends Controller
         try {
             DB::beginTransaction();
             //Recoge datos restaurante
-            $datos_restaurante = request()->except('_token', 'continuar', '_method', 'tiposCocinas', 'tiposCategorias', 'imatge', 'userId', 'destinatario', 'nom_gerent');
+            $datos_restaurante = request()->except('_token', 'continuar', '_method', 'Tipos_Cocinas', 'Tipos_Categorias', 'imatge', 'userId', 'destinatario', 'nom_gerent');
             $id = $datos_restaurante['Id_restaurant'];
             //Recoge datos cocina
             $datos_cocinas = request()->except('_token', 'continuar', '_method', 'Nom_restaurant', 'Adreca_restaurant', 'Preu_mitja_restaurant', 'Correu_gerent_restaurant', 'Descripcio_restaurant');
             //Recoge datos categorias
-            $datos_categorias = request()->except('_token', 'continuar', '_method', 'Nom_restaurant', 'Adreca_restaurant', 'Preu_mitja_restaurant', 'Correu_gerent_restaurant', 'Descripcio_restaurant', 'tiposCocinas', 'imatge');
+            $datos_categorias = request()->except('_token', 'continuar', '_method', 'Nom_restaurant', 'Adreca_restaurant', 'Preu_mitja_restaurant', 'Correu_gerent_restaurant', 'Descripcio_restaurant', 'Tipos_Cocinas', 'imatge');
 
             //Recoge datos imagen
             $datos_imagen = request()->except('_token', 'continuar', '_method');
@@ -118,8 +118,8 @@ class RestauranteController extends Controller
             DB::table('tbl_tipus_categoria')->where('Id_restaurant', '=', $id)->delete();
 
             //Comprobamos si esta inicializada la llave 'tiposCocinas'
-            if (isset($datos_cocinas['tiposCocinas'])) {
-                $tipos_cocinas = $datos_cocinas['tiposCocinas'];
+            if (isset($datos_cocinas['Tipos_Cocinas'])) {
+                $tipos_cocinas = $datos_cocinas['Tipos_Cocinas'];
                 foreach ($tipos_cocinas as $tipoCocina) {
                     $cocinas = DB::table('tbl_cuina')
                         ->where([['Nom_cuina', '=', $tipoCocina]])->get();
@@ -130,8 +130,8 @@ class RestauranteController extends Controller
             }
 
             //Comprobamos si esta inicializada la llave 'tiposCategorias'
-            if (isset($datos_categorias['tiposCategorias'])) {
-                $tipos_categorias = $datos_categorias['tiposCategorias'];
+            if (isset($datos_categorias['Tipos_Categorias'])) {
+                $tipos_categorias = $datos_categorias['Tipos_Categorias'];
                 foreach ($tipos_categorias as $tipoCategoria) {
                     $categorias = DB::table('tbl_categoria')
                         ->where([['Nom_categoria', '=', $tipoCategoria]])->get();
@@ -156,7 +156,7 @@ class RestauranteController extends Controller
             $co = $datos_imagen['destinatario'];
             $datos_correo = "Estimado Sr/a. " . $datos_imagen['nom_gerent'] . " Informarle de que su restaurante " . $datos_imagen['Nom_restaurant'] . " ha sido modificado Saludos cordiales, Deliveroo";
             $enviar = new EnviarCorreoGerente($datos_correo);
-            $enviar->asunto = "Asunto test";
+            $enviar->asunto = "GeoEat: restaurante modificado.";
             Mail::to($co)->send($enviar);
 
             DB::commit();

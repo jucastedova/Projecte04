@@ -25,11 +25,13 @@ class RestaurantModifyRequest extends FormRequest
     {
         return [
             'Nom_restaurant' => 'required',
-            'Adreca_restaurant' => 'required', 
+            'Ciutat_restaurant' => 'required',
+            'CP_restaurant' => 'required|max:5',
+            'Adreca_restaurant' => 'required',
             'Preu_mitja_restaurant' => 'required',
             'Correu_gerent_restaurant' => 'required|email',
             'Descripcio_restaurant' => 'required',
-            'tiposCocinas' => 'required'
+            'Tipos_Cocinas' => 'required'
         ];
     }
 }

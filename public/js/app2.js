@@ -1,12 +1,10 @@
 let ciutatRestaurant = document.getElementById('Ciutat_restaurant');
 let CPrestaurant = document.getElementById('CP_restaurant');
-let adrecaRestaurant = document.getElementById('adreca_restaurant');
+let adrecaRestaurant = document.getElementById('Adreca_restaurant');
 let containerMap = document.getElementById('container-map');
 ciutatRestaurant.addEventListener('blur', markerMap);
 CPrestaurant.addEventListener('blur', markerMap);
 adrecaRestaurant.addEventListener('blur', markerMap);
-
-
 
 var geocoder = L.esri.Geocoding.geocodeService();
 var map = L.map('map');
