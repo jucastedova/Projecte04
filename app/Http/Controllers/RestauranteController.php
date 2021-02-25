@@ -311,9 +311,9 @@ class RestauranteController extends Controller
         $Nom_tag = $datos['tag'];
         $id_restaurant = $datos['id_restaurant'];
         $id_usuari = $datos['id_usuari'];
-
+        $responseData = '';
         try {
-            // DB::beginTransaction();
+            DB::beginTransaction();
             //Recogemos el tag en cuestion y comprobamos si el tag en cuestion ya existe en tbl_tag
             $tagData = DB::table('tbl_tag')->where('Nom_tag', $Nom_tag)->first();
             $existTag = DB::table('tbl_tag')->where('Nom_tag', $Nom_tag)->count();
@@ -330,9 +330,9 @@ class RestauranteController extends Controller
             if($existTag > 0) {
                 if($existUserTag == 0) {
                     DB::table('tbl_tag_intermitja')->insertGetId(['Id_restaurant' => $id_restaurant, 'Id_tag' => $tagData->Id_tag, 'Id_usuari' => $id_usuari]);
-                    return response()->json("Tag registrado!");
+                    $responseData = response()->json("Tag registrado!");
                 } else {
-                    return response()->json("Tag ya registrado!");
+                    $responseData = response()->json("Tag ya registrado!");
                 }
             } else {
                 //Insertamos el tag en la tbl_tag
@@ -341,11 +341,13 @@ class RestauranteController extends Controller
                 $id_tag = DB::getPdo()->lastInsertId();
                 //Insertamos el registro en la tabla intermedia
                 DB::table('tbl_tag_intermitja')->insertGetId(['Id_restaurant' => $id_restaurant, 'Id_tag' => $id_tag, 'Id_usuari' => $id_usuari]);
-                return response()->json("Tag registrado!");
+                $responseData = response()->json("Tag registrado!");
             }
-            // DB::commit();
+            DB::commit();
+            return $responseData;
         } catch (\Throwable $th) {
-            // DB::rollBack();
+            print_r($th);
+            DB::rollBack();
         }
     }
 
