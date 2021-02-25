@@ -314,21 +314,21 @@ class RestauranteController extends Controller
 
         try {
             //Recogemos el tag en cuestion y comprobamos si el tag en cuestion ya existe en tbl_tag
-            $tagData = DB::select('SELECT * FROM tbl_tag WHERE Nom_tag = "' . $Nom_tag . '"');
-            $existTag = DB::select('SELECT COUNT(*) as "existTag" FROM tbl_tag WHERE Nom_tag = "' . $Nom_tag . '"');
-            $existUserTag = DB::select('SELECT COUNT(*) as "existUserTag" FROM tbl_tag_intermitja WHERE Id_restaurant = ' . $id_restaurant . ' AND Id_tag = ' .  $tagData[0]->Id_tag . ' AND Id_usuari = ' . $id_usuari);
-            $flag = 0;
-
-            if(isset($existTag)) {
-                $flag = 1;
-            }
+            $tagData = DB::table('tbl_tag')->where('Nom_tag', $Nom_tag)->first();
+            $existTag = DB::table('tbl_tag')->where('Nom_tag', $Nom_tag)->count();
             
-            die;
+            $existUserTag = 0;
+            if(isset($tagData)) {
+                $existUserTag = DB::table('tbl_tag_intermitja')
+                ->where('Id_restaurant', $id_restaurant)
+                ->where('Id_tag', $tagData->Id_tag)
+                ->where('Id_usuari', $id_usuari)->count();
+            }
 
             //Si el count es mayor que 0 solo insertamos en la tabla intermedia
-            if($flag != 0) {
-                if($existUserTag[0]->existUserTag == 0) {
-                    DB::table('tbl_tag_intermitja')->insertGetId(['Id_restaurant' => $id_restaurant, 'Id_tag' => $tagData[0]->Id_tag, 'Id_usuari' => $id_usuari]);
+            if($existTag > 0) {
+                if($existUserTag == 0) {
+                    DB::table('tbl_tag_intermitja')->insertGetId(['Id_restaurant' => $id_restaurant, 'Id_tag' => $tagData->Id_tag, 'Id_usuari' => $id_usuari]);
                     return response()->json("Tag registrado!");
                 } else {
                     return response()->json("Tag ya registrado!");
