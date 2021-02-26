@@ -57,7 +57,7 @@ function renderRestaurantTags() {
     ajax.send(datasend);
 }
 
-function añadirTag(e) {
+function añadirTag(e) { // Afegir tags
     e.which = e.which || e.keyCode;
     if (e.which == 13) {
         tagValue = document.getElementById('tag').value;
@@ -91,7 +91,7 @@ function añadirTag(e) {
     }
 }
 
-function eliminarTag(id_tag) {
+function eliminarTag(id_tag) { // Eliminar tags
     opcion = confirm("¿Está seguro de borrar el tag?");
 
     if (opcion == false) {

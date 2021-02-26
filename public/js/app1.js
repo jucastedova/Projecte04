@@ -50,7 +50,7 @@ function renderComentarios() {
     ajax.send(datasend);
 }
 
-function enviarComentario() {
+function enviarComentario() { // Afegeix comentari
     let comentario = document.getElementById('nuevo_comentario').value;
     let id_restaurant = document.getElementById('id_restaurant').value;
     let id_usuari = document.getElementById('id_usuari').value;
@@ -73,7 +73,7 @@ function enviarComentario() {
 //  FIN COMENTARIOS
 
 // VALORACIÓN
-function getValoracion() {
+function getValoracion() { // Obtenir valoració
     var forquilla = document.getElementsByClassName('fork-inner');
     var token = document.getElementById('token').getAttribute('content');
     let id_restaurant = document.getElementById('id_restaurant').value;
@@ -99,7 +99,7 @@ function getValoracion() {
     ajax.send(datasend);
 }
 
-function puntuar(fork) {
+function puntuar(fork) { 
     let forquilla = document.getElementsByClassName('fork-inner');
     for (let i = 0; i < forquilla.length; i++) {
         forquilla[i].style.backgroundColor = "transparent";
@@ -163,7 +163,7 @@ function renderRestaurantTags() {
     ajax.send(datasend);
 }
 
-function añadirTag(e) {
+function añadirTag(e) { // Per afegir tags
     e.which = e.which || e.keyCode;
     if (e.which == 13) {
         tagValue = document.getElementById('tag').value;
@@ -198,7 +198,7 @@ function añadirTag(e) {
     }
 }
 
-function eliminarTag(id_tag) {
+function eliminarTag(id_tag) { // Elimina tags
     opcion = confirm("¿Está seguro de borrar el tag?");
     id_restaurant = document.getElementById('id_restaurant').value;
     id_usuari = document.getElementById('id_usuari').value;

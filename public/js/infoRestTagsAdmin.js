@@ -19,12 +19,12 @@ function objetoAjax() {
     return xmlhttp;
 }
 
-function openModalCat(id) {
+function openModalCat(id) { // Obre modal categoria
     modalCategoria = document.getElementById('modal-cat' + id);
     modalCategoria.style.display = "block";
 }
 
-function closeModalCat(id) {
+function closeModalCat(id) { // Tanca modal categoria
     modalCategoria = document.getElementById('modal-cat' + id);
     modalCategoria.style.display = "none";
 }
@@ -96,7 +96,7 @@ function renderCategorias() {
     ajax.send(datasend);
 }
 
-function actualizarCategoria(id) {
+function actualizarCategoria(id) { // Actualitza categories
     Nombre_categoria = document.getElementById('Nombre_categoria' + id).value;
     msgTag = document.getElementById('msgTag');
     var token = document.getElementById('token').getAttribute('content');
@@ -136,7 +136,7 @@ function actualizarCategoria(id) {
 
 }
 
-function añadirCategoria(e) {
+function añadirCategoria(e) { // Afegeix categories
     e.which = e.which || e.keyCode;
     if (e.which == 13) {
         tagValue = document.getElementById('cat').value;
@@ -177,7 +177,7 @@ function añadirCategoria(e) {
     }
 }
 
-function eliminarCategorias(id_cat) {
+function eliminarCategorias(id_cat) { // Elimina categories
     opcion = confirm("¿Está seguro de borrar el tag?");
 
     if (opcion == false) {

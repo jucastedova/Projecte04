@@ -169,7 +169,7 @@ class RestauranteController extends Controller
         }
     }
 
-    public function verRestaurante($id)
+    public function verRestaurante($id) 
     {
         $restaurant = DB::table('tbl_restaurant')->WHERE('Id_restaurant', '=', $id)->first();
         $lista_cuines = DB::table('tbl_cuina')->get();
@@ -181,7 +181,7 @@ class RestauranteController extends Controller
         return view('ver_restaurante', compact('restaurant', 'lista_cuines', 'cocinas_seleccionadas', 'primeraImatge'));
     }
 
-    public function buscarPorTag($filtro)
+    public function buscarPorTag($filtro) // Comprobem si s'ha escrit # en el filtre de búsqueda
     {
         $c = substr($filtro, 0, 1);
         if ($c == "#") {
@@ -190,7 +190,7 @@ class RestauranteController extends Controller
         return false;
     }
 
-    public function filter(Request $request)
+    public function filter(Request $request) // Mètode per filtrar
     {
         $nombreRestaurante = $request->input('nombreRestaurante');
         $precioMedio = $request->input('precioMedio');
@@ -259,7 +259,7 @@ class RestauranteController extends Controller
         return response()->json($restaurantes, 200);
     }
 
-    public function eliminarRestaurante(Request $request)
+    public function eliminarRestaurante(Request $request) // Mètode per eliminar restaurants
     {
         $id = $request->input('id_restaurante');
         try {
@@ -278,7 +278,7 @@ class RestauranteController extends Controller
         }
     }
 
-    public function getTags(Request $request)
+    public function getTags(Request $request) 
     {
         $id = intval($request->input('idUsuario'));
 
@@ -287,25 +287,17 @@ class RestauranteController extends Controller
         return response()->json($tags, 200);
     }
 
-    public function getRestaurantTags(Request $request)
+    public function getRestaurantTags(Request $request) 
     {
         $idUsuario = intval($request->input('idUsuario'));
         $id_restaurant = intval($request->input('id_restaurant'));
-        // REVIEW
-        // Mirem si hi ha tags en aquest restaurant
-        // $countTags = DB::table('tbl_tag_intermitja')
-        // ->where([['Id_restaurant','=',$id_restaurant], ['Id_usuari','=',$idUsuario]])->count();
-        // if ($countTags > 0) {
-        // Hi ha tags 
         $query = 'SELECT `tbl_tag`.*, `tbl_tag_intermitja`.* FROM `tbl_tag` LEFT JOIN `tbl_tag_intermitja` ON `tbl_tag_intermitja`.`Id_tag` = `tbl_tag`.`Id_tag` 
             WHERE Id_usuari = ' . $idUsuario . ' AND Id_restaurant = ' . $id_restaurant;
         $tags = DB::select($query);
         return response()->json($tags, 200);
-        // } 
-        // END REVIEW
     }
 
-    public function addTag(Request $request)
+    public function addTag(Request $request) // Mètode per afegir tags
     {
         //Recogemos todos los datos
         $datos = $request->except('_token');
@@ -353,7 +345,7 @@ class RestauranteController extends Controller
         }
     }
 
-    public function eliminarTag(Request $request)
+    public function eliminarTag(Request $request) // Mètode per eliminar tags
     {
         $id_tag = $request->input('id_tag');
         $id_usuari = $request->input('id_usuari');
@@ -377,14 +369,14 @@ class RestauranteController extends Controller
         }
     }
 
-    public function getCategorias()
+    public function getCategorias() // Mètode per obtenir categories
     {
         $query = 'SELECT `tbl_categoria`.* FROM `tbl_categoria` ORDER BY Id_categoria ASC';
         $categorias = DB::select($query);
         return response()->json($categorias, 200);
     }
 
-    public function eliminarCategoria(Request $request)
+    public function eliminarCategoria(Request $request) // Mètode per eliminar categories
     {
         $id_cat = $request->input('id_cat');
         try {
@@ -396,7 +388,7 @@ class RestauranteController extends Controller
         }
     }
 
-    public function addCategoria(Request $request)
+    public function addCategoria(Request $request) // Mètode per afegir categories
     {
         //Recogemos todos los datos
         $datos = $request->except('_token');
@@ -411,7 +403,7 @@ class RestauranteController extends Controller
         }
     }
 
-    public function updateCategoria(Request $request)
+    public function updateCategoria(Request $request) // Mètode per actualitzar categories
     {
         //Recogemos todos los datos
         $datos = $request->except('_token');
@@ -426,7 +418,7 @@ class RestauranteController extends Controller
         }
     }
 
-    public function getComentarios(Request $request)
+    public function getComentarios(Request $request) // Mètode per obtenir comentaris
     {
         $id = intval($request->input('id_restaurant'));
         $countComents = DB::table('tbl_comentari')
@@ -444,7 +436,7 @@ class RestauranteController extends Controller
         }
     }
 
-    public function addComentario(Request $request)
+    public function addComentario(Request $request) // Mètode per afegir comentaris
     {
         $token = $request->input('_token');
         $id_restaurant = intval($request->input('id_restaurant'));
@@ -465,7 +457,7 @@ class RestauranteController extends Controller
         }
     }
 
-    public function getValoracion(Request $request)
+    public function getValoracion(Request $request) // Mètode per obtenir valoracions
     {
         $id_restaurant = intval($request->input('id_restaurant'));
         $id_usuari = intval($request->input('id_usuari'));
@@ -480,7 +472,7 @@ class RestauranteController extends Controller
         }
     }
 
-    public function puntuar(Request $request)
+    public function puntuar(Request $request) // Mètode per afegir/modificar les puntuacions
     {
         $token = $request->input('_token');
         $id_restaurant = intval($request->input('id_restaurant'));
@@ -517,7 +509,7 @@ class RestauranteController extends Controller
     }
     // FIN COMENTARIOS
 
-    public function favorito(Request $request)
+    public function favorito(Request $request) // Mètode per afegir/eliminar favorit
     {
         $id_restaurant = intval($request->input('id_restaurante'));
         $id_usuari = intval($request->input('id_usuari'));
@@ -532,7 +524,6 @@ class RestauranteController extends Controller
                 // El té com a favorit, llavors eliminem el registre
                 DB::table('tbl_favorit')->where(['Id_usuari' => $id_usuari, 'Id_restaurant' => $id_restaurant])->delete();
             }
-            // die;
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
