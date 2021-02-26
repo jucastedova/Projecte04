@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-02-2021 a las 22:09:32
+-- Tiempo de generación: 26-02-2021 a las 00:04:20
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 7.4.14
 
@@ -102,7 +102,7 @@ CREATE TABLE `tbl_favorit` (
 --
 
 INSERT INTO `tbl_favorit` (`Id_favorit`, `Id_usuari`, `Id_restaurant`) VALUES
-(9, 6, 14);
+(10, 6, 2);
 
 -- --------------------------------------------------------
 
@@ -145,7 +145,7 @@ INSERT INTO `tbl_imatge` (`Id_imatge`, `Id_restaurant`, `Id_usuari`, `Ruta_Text_
 (24, 27, 6, 'uploads/XTPbmjqBetioVtdv6CTXZpsDTUE7WHAZtBse1DXL.jpg', 'minamo'),
 (26, 2, 6, 'uploads/vn3jmouCUGZY4BO82trxcC0eLjoB8PxQxAlB7nVW.jpg', 'Al punt'),
 (27, 3, 6, 'uploads/Yf5QmFvwcycp46QyPjTNmhXqKdOSDBJ75ktCknKm.jpg', 'Koy Shunka'),
-(28, 1, 6, 'uploads/pgUtg1MurUCLs1EvpPmFhzvC6MwP16SZCPA1Vkku.jpg', 'Cuina Deu');
+(28, 1, 6, 'uploads/YMAxACfVtKCdcaYyOPEMJFQ427BCauE6275nI35F.jpg', 'Cuina Deu');
 
 -- --------------------------------------------------------
 
@@ -171,7 +171,7 @@ CREATE TABLE `tbl_restaurant` (
 --
 
 INSERT INTO `tbl_restaurant` (`Id_restaurant`, `Nom_restaurant`, `Valoracio`, `Ciutat_restaurant`, `Adreca_restaurant`, `CP_restaurant`, `Preu_mitja_restaurant`, `Correu_gerent_restaurant`, `Nom_gerent_restaurant`, `Descripcio_restaurant`) VALUES
-(1, 'Cuina Deu', '5.0', 'L\'Hospitalet de Llobregat', 'Passatge oliveres, 11', '08011', '25.00', 'cuinadeu@gerente.com', 'Peter', 'El restaurante Cuina Deu, cocina una amplia gama de platos provenientes de china.'),
+(1, 'Cuina Deu', '5.0', 'L\'Hospitalet de Llobregat', 'Passatge oliveres, 11', '08904', '25.00', 'cuinadeu@gerente.com', 'Peter', 'El restaurante Cuina Deu, cocina una amplia gama de platos provenientes de china.'),
 (2, 'Al punt', NULL, 'L\'Hospitalet de Llobregat', 'Carrer de Girona, 51', '08009', '10.00', 'alpunt@gerente.com', 'Oscar', 'Recetas mediterráneas y argentinas, una combinación explosiva y exquisita.'),
 (3, 'Koy Shunka', '2.0', 'Barcelona', 'C/Copons, 7', '08002', '30.00', 'koyshunka@gerente.com', 'Lee', 'Comida japonesa, preparada y pulida por los mejores chefs japoneses.'),
 (6, 'L\'home dels Nassos', NULL, 'L\'Hospitalet de Llobregat', 'Carrer de Melcior de Palau, 62', '08028', '10.00', 'lopez@gerente.com', 'Micheal', 'Es un restaurante de los más original y creativo. Si te interesa probar platos que nunca pensaste en probar, el restaurante L\'Home dels Nassos es el indicado.'),
@@ -308,7 +308,7 @@ INSERT INTO `tbl_tipus_cuina` (`Id_tipus_cuina`, `Id_restaurant`, `Id_cuina`) VA
 (81, 24, 3),
 (82, 25, 2),
 (83, 26, 3),
-(88, 1, 3);
+(93, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -463,7 +463,7 @@ ALTER TABLE `tbl_valoracio`
 -- AUTO_INCREMENT de la tabla `tbl_categoria`
 --
 ALTER TABLE `tbl_categoria`
-  MODIFY `Id_categoria` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `Id_categoria` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_comentari`
@@ -481,7 +481,7 @@ ALTER TABLE `tbl_cuina`
 -- AUTO_INCREMENT de la tabla `tbl_favorit`
 --
 ALTER TABLE `tbl_favorit`
-  MODIFY `Id_favorit` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `Id_favorit` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_imatge`
@@ -523,7 +523,7 @@ ALTER TABLE `tbl_tipus_categoria`
 -- AUTO_INCREMENT de la tabla `tbl_tipus_cuina`
 --
 ALTER TABLE `tbl_tipus_cuina`
-  MODIFY `Id_tipus_cuina` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `Id_tipus_cuina` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_usuari`
