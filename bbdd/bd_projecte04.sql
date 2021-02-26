@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-02-2021 a las 15:51:44
+-- Tiempo de generación: 26-02-2021 a las 17:05:50
 -- Versión del servidor: 10.4.17-MariaDB
--- Versión de PHP: 7.4.14
+-- Versión de PHP: 8.0.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -62,7 +62,8 @@ CREATE TABLE `tbl_comentari` (
 
 INSERT INTO `tbl_comentari` (`Id_comentari`, `Id_restaurant`, `Id_usuari`, `Comentari`) VALUES
 (2, 1, 4, 'Muy bueno, volveremos 100%.'),
-(3, 3, 5, 'Horrible, jamás volvería…');
+(3, 3, 5, 'Horrible, jamás volvería…'),
+(4, 1, 6, 'Riquísimo');
 
 -- --------------------------------------------------------
 
@@ -102,7 +103,9 @@ CREATE TABLE `tbl_favorit` (
 --
 
 INSERT INTO `tbl_favorit` (`Id_favorit`, `Id_usuari`, `Id_restaurant`) VALUES
-(10, 6, 2);
+(10, 6, 2),
+(11, 5, 2),
+(12, 5, 15);
 
 -- --------------------------------------------------------
 
@@ -171,11 +174,11 @@ CREATE TABLE `tbl_restaurant` (
 --
 
 INSERT INTO `tbl_restaurant` (`Id_restaurant`, `Nom_restaurant`, `Valoracio`, `Ciutat_restaurant`, `Adreca_restaurant`, `CP_restaurant`, `Preu_mitja_restaurant`, `Correu_gerent_restaurant`, `Nom_gerent_restaurant`, `Descripcio_restaurant`) VALUES
-(1, 'Cuina Deu', '5.0', 'L\'Hospitalet de Llobregat', 'Passatge oliveres, 11', '08904', '25.00', 'cuinadeu@gerente.com', 'Peter', 'El restaurante Cuina Deu, cocina una amplia gama de platos provenientes de china.'),
-(2, 'Al punt', NULL, 'L\'Hospitalet de Llobregat', 'Carrer de Girona, 51', '08009', '10.00', 'alpunt@gerente.com', 'Oscar', 'Recetas mediterráneas y argentinas, una combinación explosiva y exquisita.'),
+(1, 'Cuina Deu', '4.5', 'L\'Hospitalet de Llobregat', 'Passatge oliveres, 11', '08904', '25.00', 'cuinadeu@gerente.com', 'Peter', 'El restaurante Cuina Deu, cocina una amplia gama de platos provenientes de china.'),
+(2, 'Al punt', '4.0', 'L\'Hospitalet de Llobregat', 'Carrer de Girona, 51', '08009', '10.00', 'alpunt@gerente.com', 'Oscar', 'Recetas mediterráneas y argentinas, una combinación explosiva y exquisita.'),
 (3, 'Koy Shunka', '2.0', 'Barcelona', 'C/Copons, 7', '08002', '30.00', 'koyshunka@gerente.com', 'Lee', 'Comida japonesa, preparada y pulida por los mejores chefs japoneses.'),
 (6, 'L\'home dels Nassos', NULL, 'L\'Hospitalet de Llobregat', 'Carrer de Melcior de Palau, 62', '08028', '10.00', 'lopez@gerente.com', 'Micheal', 'Es un restaurante de los más original y creativo. Si te interesa probar platos que nunca pensaste en probar, el restaurante L\'Home dels Nassos es el indicado.'),
-(7, 'Fismuler', NULL, 'Barcelona', 'Carrer de Rec Comtal,17', '08003', '14.00', 'mrfis@gerente.com', 'Tom', 'Tiene el mejor producto fresco, es por eso que lo presentan en platos muy creativos, pero tradicionales a la vez.'),
+(7, 'Fismuler', '2.0', 'Barcelona', 'Carrer de Rec Comtal,17', '08003', '14.00', 'mrfis@gerente.com', 'Tom', 'Tiene el mejor producto fresco, es por eso que lo presentan en platos muy creativos, pero tradicionales a la vez.'),
 (10, 'Ziqi', NULL, 'Barcelona', 'Av. De Mistral, 44', '08015', '9.99', 'Ziqi@gerente.com', 'Angela', 'Mezclan lo mejor de la comida japonesa con un carácter auténtico y cercano.'),
 (11, 'Da Zhong', NULL, 'Barcelona', 'Carrer d\'Alí Bei, 34', '08013', '13.00', 'Lee@gerente.com', 'Sora', 'Se puede encontrar una increíble variedad de platos tan exóticos como desconocidos'),
 (12, 'Kibotaberna', NULL, 'L\'Hospitalet de Llobregat', 'Carrer de Sant Eusebi, 38', '08907', '12.00', 'kibo@gerente.com', 'Kim', 'Lo cuidadoso selección de los ingredientes permite lograr el sabor de sus creación propias, originales, donde hay tradición, pero también innovación.'),
@@ -308,7 +311,7 @@ INSERT INTO `tbl_tipus_cuina` (`Id_tipus_cuina`, `Id_restaurant`, `Id_cuina`) VA
 (81, 24, 3),
 (82, 25, 2),
 (83, 26, 3),
-(93, 1, 3);
+(107, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -333,7 +336,8 @@ INSERT INTO `tbl_usuari` (`Id_usuari`, `Id_rol`, `Correu_usuari`, `Pwd_usuari`, 
 (3, 1, 'admin@gmail.com', '1234', 'Admin', '-'),
 (4, 2, 'alex-rodri@gmail.es', '1234', 'Alex', 'Rodriguez'),
 (5, 2, 'juditcava@gmail.com', '1234', 'Judit', 'Castedo'),
-(6, 2, 'xavijvives@gmail.com', '1234', 'Xavi', 'Jaramillo');
+(6, 2, 'xavijvives@gmail.com', '1234', 'Xavi', 'Jaramillo'),
+(10, 1, 'admin1@gmail.com', '1234', 'admin1', 'admin1');
 
 -- --------------------------------------------------------
 
@@ -354,7 +358,10 @@ CREATE TABLE `tbl_valoracio` (
 
 INSERT INTO `tbl_valoracio` (`Id_valoracio`, `Id_restaurant`, `Id_usuari`, `Valoracio`) VALUES
 (4, 1, 4, 5),
-(5, 3, 5, 2);
+(5, 3, 5, 2),
+(6, 2, 5, 4),
+(7, 7, 5, 2),
+(8, 1, 6, 4);
 
 --
 -- Índices para tablas volcadas
@@ -463,13 +470,13 @@ ALTER TABLE `tbl_valoracio`
 -- AUTO_INCREMENT de la tabla `tbl_categoria`
 --
 ALTER TABLE `tbl_categoria`
-  MODIFY `Id_categoria` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `Id_categoria` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_comentari`
 --
 ALTER TABLE `tbl_comentari`
-  MODIFY `Id_comentari` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `Id_comentari` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_cuina`
@@ -481,7 +488,7 @@ ALTER TABLE `tbl_cuina`
 -- AUTO_INCREMENT de la tabla `tbl_favorit`
 --
 ALTER TABLE `tbl_favorit`
-  MODIFY `Id_favorit` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `Id_favorit` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_imatge`
@@ -493,7 +500,7 @@ ALTER TABLE `tbl_imatge`
 -- AUTO_INCREMENT de la tabla `tbl_restaurant`
 --
 ALTER TABLE `tbl_restaurant`
-  MODIFY `Id_restaurant` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `Id_restaurant` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_rol`
@@ -511,31 +518,31 @@ ALTER TABLE `tbl_tag`
 -- AUTO_INCREMENT de la tabla `tbl_tag_intermitja`
 --
 ALTER TABLE `tbl_tag_intermitja`
-  MODIFY `Id_tag_restaurant` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `Id_tag_restaurant` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_tipus_categoria`
 --
 ALTER TABLE `tbl_tipus_categoria`
-  MODIFY `Id_tipus_categoria` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `Id_tipus_categoria` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_tipus_cuina`
 --
 ALTER TABLE `tbl_tipus_cuina`
-  MODIFY `Id_tipus_cuina` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+  MODIFY `Id_tipus_cuina` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_usuari`
 --
 ALTER TABLE `tbl_usuari`
-  MODIFY `Id_usuari` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `Id_usuari` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_valoracio`
 --
 ALTER TABLE `tbl_valoracio`
-  MODIFY `Id_valoracio` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Id_valoracio` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Restricciones para tablas volcadas
