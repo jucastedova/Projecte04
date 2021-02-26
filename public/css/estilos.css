@@ -715,6 +715,7 @@ i.fas.fa-star:after {
 
 #modal-filter #mapfilter {
     display: none;
+    width: inherit!important;
 }
 
 #modal-filter.hasMap .modal-content-wrapper {
