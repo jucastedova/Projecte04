@@ -875,6 +875,7 @@ i.fas.fa-star:after {
     color: #760303;
     border-radius: 3px;
     padding: 6px 23px;
+    margin-right: 12px;
 }
 
 .dv_admin .btn--modificar-eliminar a {

@@ -44,7 +44,8 @@ function markerMap() {
                 let errorAddress = document.getElementById('error-address');
                 errorAddress.textContent = "";
                 let score = response.results[0].score;
-                if (score > 90) { // Si té un Score superior al 90%...
+                console.log(score);
+                if (score > 94) { // Si té un Score superior al 90%...
                     map.fitBounds(response.results[0].bounds);
                     map.setZoom(18);
                     restMarker = L.marker(response.results[0].latlng, { icon: greenIcon });
