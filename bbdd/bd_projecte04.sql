@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-02-2021 a las 00:04:20
+-- Tiempo de generación: 26-02-2021 a las 15:51:44
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 7.4.14
 
@@ -487,13 +487,13 @@ ALTER TABLE `tbl_favorit`
 -- AUTO_INCREMENT de la tabla `tbl_imatge`
 --
 ALTER TABLE `tbl_imatge`
-  MODIFY `Id_imatge` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `Id_imatge` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_restaurant`
 --
 ALTER TABLE `tbl_restaurant`
-  MODIFY `Id_restaurant` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `Id_restaurant` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_rol`
@@ -523,7 +523,7 @@ ALTER TABLE `tbl_tipus_categoria`
 -- AUTO_INCREMENT de la tabla `tbl_tipus_cuina`
 --
 ALTER TABLE `tbl_tipus_cuina`
-  MODIFY `Id_tipus_cuina` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
+  MODIFY `Id_tipus_cuina` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_usuari`
