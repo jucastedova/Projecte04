@@ -216,7 +216,7 @@ class RestauranteController extends Controller
         if ($flagTag) {
             if ($nombreRestaurante != '') {
                 $tag = substr($nombreRestaurante, 1);
-                $queryConditions .= ($queryConditions != '' ? ' AND ' : ' WHERE ') . ' EXISTS (SELECT inter.Id_restaurant FROM tbl_tag_intermitja inter INNER JOIN tbl_tag t ON inter.Id_tag = t.Id_tag WHERE inter.Id_restaurant = r.Id_restaurant AND Nom_tag IN (\'' . $tag . '\'))';
+                $queryConditions .= ($queryConditions != '' ? ' AND ' : ' WHERE ') . ' EXISTS (SELECT inter.Id_restaurant FROM tbl_tag_intermitja inter INNER JOIN tbl_tag t ON inter.Id_tag = t.Id_tag WHERE inter.Id_restaurant = r.Id_restaurant AND Nom_tag IN (\'' . $tag . '\') AND inter.Id_usuari = '. $userId .')';
             }
         } else {
             if ($nombreRestaurante != '') {
