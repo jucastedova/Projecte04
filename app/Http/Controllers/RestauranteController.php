@@ -379,7 +379,7 @@ class RestauranteController extends Controller
 
     public function getCategorias()
     {
-        $query = 'SELECT `tbl_categoria`.* FROM `tbl_categoria`';
+        $query = 'SELECT `tbl_categoria`.* FROM `tbl_categoria` ORDER BY Id_categoria ASC';
         $categorias = DB::select($query);
         return response()->json($categorias, 200);
     }
