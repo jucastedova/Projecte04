@@ -37,13 +37,15 @@ class RestauranteController extends Controller
                 }
             }
 
-            $tipos_categorias = $datos['Tipos_Categorias'];
-
-            foreach ($tipos_categorias as $tipoCat) {
-                $categorias = DB::table('tbl_categoria')
-                    ->where([['Nom_categoria', '=', $tipoCat]])->get();
-                foreach ($categorias as $cat) {
-                    DB::table('tbl_tipus_categoria')->insertGetId(['Id_restaurant' => $data, 'Id_categoria' => $cat->Id_categoria]);
+            if(isset($datos['Tipos_Categorias'])) {
+                $tipos_categorias = $datos['Tipos_Categorias'];
+    
+                foreach ($tipos_categorias as $tipoCat) {
+                    $categorias = DB::table('tbl_categoria')
+                        ->where([['Nom_categoria', '=', $tipoCat]])->get();
+                    foreach ($categorias as $cat) {
+                        DB::table('tbl_tipus_categoria')->insertGetId(['Id_restaurant' => $data, 'Id_categoria' => $cat->Id_categoria]);
+                    }
                 }
             }
 
