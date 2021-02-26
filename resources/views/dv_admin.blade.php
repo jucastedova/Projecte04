@@ -13,6 +13,7 @@
 </head>
 
 <body class="dv_admin">
+    <input type="hidden" value="{{ session()->get('userId') }}" id="idUsuario">
     <!-- Tener en cuenta que el menú cambia si está o no logueado. También paarecerá o no el cerrar sesión -->
     <nav class="menu_nav">
         <div class="logo_nav"><a href="{{url('dv_admin')}}"><img src="{{asset('img/LogoProjecte04.png')}}" alt="logo geoeat"></a></div>

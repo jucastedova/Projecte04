@@ -9,10 +9,10 @@ window.onload = function() {
         searchRestaurantsAdmin();
     } else {
         searchRestaurants();
+        renderTags();
     }
     //Modal tag
     modalTag = document.getElementById('modal-tag');
-    renderTags();
 }
 
 function openModal() {
@@ -63,6 +63,7 @@ function openMapModal(address, city, cp) {
                 .openPopup();
             restLat = response.results[0].latlng.lat;
             restLong = response.results[0].latlng.lng;
+            console.log('restSetTo' + restLat + ', ' + restLong)
         });
 }
 
@@ -88,6 +89,10 @@ function onPositionObtained(position) { // Funció que obté la posició actual 
 var lastControl;
 
 function calcRoute(myLat1, myLong1, restLat, restLong) {
+    console.log('myLat1', myLat1);
+    console.log('myLong1', myLong1);
+    console.log('restLat', restLat);
+    console.log('restLong', restLong);
 
     var greenIcon = new L.Icon({
         iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
